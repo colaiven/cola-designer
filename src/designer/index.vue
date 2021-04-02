@@ -1,0 +1,241 @@
+<template>
+  <div>
+    <div class="top">
+      <el-row :gutter="24" style="margin: 0;font-size: 18px;line-height: 60px;">
+        <el-col :span="2" align="right">
+          <el-image style="width: 50px; height: 50px" :src="require('/src/assets/logo.png')"
+                    fit="fill"></el-image>
+        </el-col>
+        <el-col :span="3" align="left">
+          <span class="el-icon-box lg" style="width: 30px"></span>
+          <span>网站管理</span>
+        </el-col>
+        <el-col :span="19" align="right">
+          <el-button type="primary" @click="submitDesign">保存</el-button>
+          <el-button type="primary" plain @click="preview">预览</el-button>
+          <el-button type="primary" plain>取消</el-button>
+        </el-col>
+      </el-row>
+    </div>
+    <div class="webContainer" @dragover="allowDrop" @drop="drop">
+      <div v-for="(item,index) in cacheComponents" :key="item+index"
+           v-drag class="cptDiv" :style="{width:item.cptWidth+'px',height:item.cptHeight+'px',
+                  top:item.cptY+'px',left:item.cptX+'px',zIndex:item.cptZ}"
+           @click="showConfigBar(item,index)" :cptIndex="index">
+        <comment :is="item.cptName" :width="item.cptWidth" :height="item.cptHeight"
+                 :option="item.option"></comment>
+        <div class="delTag" @click.stop="delCpt(item)"><i class="el-icon-delete"/></div>
+      </div>
+    </div>
+    <div style="position: fixed;left:40px;z-index: 10000" v-for="(item,index) in panelList" :key="index"
+         class="panelSty"
+         :class="item.barShow?'panelStyHA':''" :style="{bottom:item.bottom}" @click="changeShow(item)"
+         @mouseover="panelChange(item)"
+         @mouseleave="panelReback(item)">
+      <div class="panel-div" :class="item.icon"></div>
+      <span v-show="item.nameShow">{{ item.panelName }}</span>
+    </div>
+    <!--    <div style="position: fixed;bottom:20px;left:40px;">-->
+    <!--      <el-button type="success" icon="el-icon-suitcase-1" circle-->
+    <!--                 @click="componentBarShow = !componentBarShow"></el-button>-->
+    <!--    </div>-->
+    <component-bar v-show="componentBarShow" :activeName="componentBarIndex" @dragStart="dragStart"/>
+    <config-bar v-show="configBarShow" ref="configBar" @change="changeCpt" @close="closeConfigBar"
+                :currentCpt="currentCpt"></config-bar>
+  </div>
+</template>
+
+<script>
+import ComponentBar from "@/designer/componentBar";
+import ConfigBar from "@/designer/configBar";
+
+const cacheComponents = [];
+import cptOptions from "@/components/options"
+
+export default {
+  name: 'design-index',
+  components: {ConfigBar, ComponentBar},
+  data() {
+    return {
+      copyDom: '',
+      componentBarShow: true,
+      cacheComponents, cptOptions,
+      configBarShow: false,
+      currentCptIndex: 0,
+      currentCpt: {option: undefined},
+      componentBarIndex: 2,
+      panelList: [
+        {index: 1, icon: 'el-icon-menu', barShow: false, nameShow: false, bottom: '80px', panelName: '栏目模块'},
+        {index: 2, icon: 'el-icon-plus', barShow: true, nameShow: true, bottom: '20px', panelName: '新增模块'}
+      ]
+    }
+  },
+  methods: {
+    changeShow(item) {
+      item.barShow = !item.barShow;
+      for (let i = 0; i < this.panelList.length; i++) {
+        if (item.index !== this.panelList[i].index && item.barShow) {
+          this.panelList[i].barShow = false;
+        }
+      }
+      this.componentBarShow = item.barShow;
+      this.componentBarIndex = item.index;
+    },
+    panelChange(item) {
+      item.nameShow = true;
+    },
+    panelReback(item) {
+      if (item.barShow) {
+        item.nameShow = true;
+      } else {
+        item.nameShow = false;
+      }
+    },
+    submitDesign() {
+      console.log('组件数据', this.cacheComponents)
+    },
+    preview() {
+      localStorage.setItem('cptCache', JSON.stringify(this.cacheComponents));
+      window.open('/preview', '_blank')
+    },
+    delCpt(cpt) {
+      this.cacheComponents.splice(this.cacheComponents.indexOf(cpt), 1);
+      this.configBarShow = false;
+    },
+    changeCpt(position) {
+      position.cptName = this.cacheComponents[this.currentCptIndex].cptName;
+      position.option = this.cacheComponents[this.currentCptIndex].option;
+      this.cacheComponents[this.currentCptIndex] = position
+      this.cacheComponents.splice(0, 1, this.cacheComponents[0])
+    },
+    showConfigBar(item, index) {
+      this.currentCpt = item;
+      this.currentCptIndex = index;
+      let currentCptPosition = {
+        cptWidth: item.cptWidth,
+        cptHeight: item.cptHeight,
+        cptX: item.cptX,
+        cptY: item.cptY,
+        cptZ: item.cptZ
+      }
+      this.$refs['configBar'].updateData(currentCptPosition);
+      if (this.configBarShow === false) {
+        this.configBarShow = true;
+      }
+    },
+    dragStart(copyDom) {
+      this.copyDom = copyDom;
+      copyDom.draggable = false;
+    },
+    allowDrop(e) {
+      e.preventDefault()
+    },
+    drop(e) {
+      let config = JSON.parse(this.copyDom.getAttribute('config'));
+      let cpt = {
+        cptName: config.tag, cptX: e.offsetX, cptY: e.offsetY, cptZ: 1,
+        cptWidth: config.initWidth, cptHeight: config.initHeight,
+        option: undefined
+      }
+      const option = this.cptOptions[config.tag + '-option'];
+      if (option) {
+        cpt.option = JSON.parse(JSON.stringify(option))
+      }
+      this.cacheComponents.push(cpt);
+      this.showConfigBar(cpt, this.cacheComponents.length - 1)
+    },
+    closeConfigBar() {
+      this.configBarShow = false
+    }
+  },
+  directives: {
+    drag(el) {
+      el.onmousedown = function (e) {
+        const disX = e.clientX - el.offsetLeft;
+        const disY = e.clientY - el.offsetTop;
+        let cptX, cptY;
+        document.onmousemove = function (e) {
+          cptX = e.clientX - disX;
+          cptY = e.clientY - disY
+          el.style.left = cptX + 'px';
+          el.style.top = cptY + 'px';
+        }
+        document.onmouseup = function () {
+          document.onmousemove = document.onmouseup = null;
+          const cptIndex = el.getAttribute('cptIndex')
+          cacheComponents[cptIndex].cptX = cptX;
+          cacheComponents[cptIndex].cptY = cptY;
+        }
+        return false;
+      }
+    }
+  },
+}
+</script>
+
+<style scoped>
+.top {
+  height: 60px;
+  border: 1px solid #EBEEF5;
+  box-shadow: 0 2px 12px 0 rgba(0, 0, 0, .1);
+}
+
+.webContainer {
+  height: 600px;
+}
+
+.webContainer:hover, .webContainer:active {
+  border: 1px dashed #ccc;
+}
+
+.cptDiv {
+  position: absolute;
+  overflow: auto;
+  border: 1px dashed rgba(255, 0, 0, 0.4);
+}
+
+.delTag {
+  z-index: 9999;
+  width: 20px;
+  height: 20px;
+  background: #66b1ff;
+  border-radius: 2px;
+  position: absolute;
+  top: 0;
+  right: 0;
+  text-align: center;
+  display: none
+}
+
+.delTag:hover {
+  cursor: pointer
+}
+
+.cptDiv:hover .delTag {
+  display: block
+}
+
+.panelSty {
+  background-color: #fafafa;
+  box-shadow: 2px 3px 7px 0 rgba(0, 0, 0, .2);
+  transition: background-color, width .2s;
+  height: 40px;
+  width: 40px;
+  border-radius: 40px;
+  overflow: hidden;
+  cursor: pointer;
+
+}
+
+.panel-div {
+  width: 30px;
+  height: 30px;
+  margin: 13px 0 0 13px;
+}
+
+.panelStyHA, .panelSty:hover, .panelSty:active {
+  background-color: blue;
+  color: white;
+  width: 120px;
+}
+</style>

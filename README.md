@@ -1,24 +1,22 @@
-# front-vue
+# cola-designer-vue
 
-## Project setup
+#### 安装
 ```
 yarn install
 ```
-
-### Compiles and hot-reloads for development
+#### 运行
 ```
 yarn serve
 ```
-
-### Compiles and minifies for production
+#### 打包
 ```
 yarn build
 ```
 
-### Lints and fixes files
-```
-yarn lint
-```
+### 相关问题
+#### T：自定义组件注册方式
+#### T：自定义组件命名方式
+#### Q：提示组件未注册
+#### Q：提示组件属性未注册
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+### 待优化项

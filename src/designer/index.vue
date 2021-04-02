@@ -27,19 +27,11 @@
         <div class="delTag" @click.stop="delCpt(item)"><i class="el-icon-delete"/></div>
       </div>
     </div>
-    <div style="position: fixed;left:40px;z-index: 10000" v-for="(item,index) in panelList" :key="index"
-         class="panelSty"
-         :class="item.barShow?'panelStyHA':''" :style="{bottom:item.bottom}" @click="changeShow(item)"
-         @mouseover="panelChange(item)"
-         @mouseleave="panelReback(item)">
-      <div class="panel-div" :class="item.icon"></div>
-      <span v-show="item.nameShow">{{ item.panelName }}</span>
+    <div style="position: fixed;bottom:20px;left:40px;">
+      <el-button type="success" icon="el-icon-suitcase-1" circle
+                 @click="componentBarShow = !componentBarShow"></el-button>
     </div>
-    <!--    <div style="position: fixed;bottom:20px;left:40px;">-->
-    <!--      <el-button type="success" icon="el-icon-suitcase-1" circle-->
-    <!--                 @click="componentBarShow = !componentBarShow"></el-button>-->
-    <!--    </div>-->
-    <component-bar v-show="componentBarShow" :activeName="componentBarIndex" @dragStart="dragStart"/>
+    <component-bar v-show="componentBarShow" @dragStart="dragStart"/>
     <config-bar v-show="configBarShow" ref="configBar" @change="changeCpt" @close="closeConfigBar"
                 :currentCpt="currentCpt"></config-bar>
   </div>
@@ -63,34 +55,9 @@ export default {
       configBarShow: false,
       currentCptIndex: 0,
       currentCpt: {option: undefined},
-      componentBarIndex: 2,
-      panelList: [
-        {index: 1, icon: 'el-icon-menu', barShow: false, nameShow: false, bottom: '80px', panelName: '栏目模块'},
-        {index: 2, icon: 'el-icon-plus', barShow: true, nameShow: true, bottom: '20px', panelName: '新增模块'}
-      ]
     }
   },
   methods: {
-    changeShow(item) {
-      item.barShow = !item.barShow;
-      for (let i = 0; i < this.panelList.length; i++) {
-        if (item.index !== this.panelList[i].index && item.barShow) {
-          this.panelList[i].barShow = false;
-        }
-      }
-      this.componentBarShow = item.barShow;
-      this.componentBarIndex = item.index;
-    },
-    panelChange(item) {
-      item.nameShow = true;
-    },
-    panelReback(item) {
-      if (item.barShow) {
-        item.nameShow = true;
-      } else {
-        item.nameShow = false;
-      }
-    },
     submitDesign() {
       console.log('组件数据', this.cacheComponents)
     },
@@ -213,29 +180,5 @@ export default {
 
 .cptDiv:hover .delTag {
   display: block
-}
-
-.panelSty {
-  background-color: #fafafa;
-  box-shadow: 2px 3px 7px 0 rgba(0, 0, 0, .2);
-  transition: background-color, width .2s;
-  height: 40px;
-  width: 40px;
-  border-radius: 40px;
-  overflow: hidden;
-  cursor: pointer;
-
-}
-
-.panel-div {
-  width: 30px;
-  height: 30px;
-  margin: 13px 0 0 13px;
-}
-
-.panelStyHA, .panelSty:hover, .panelSty:active {
-  background-color: blue;
-  color: white;
-  width: 120px;
 }
 </style>

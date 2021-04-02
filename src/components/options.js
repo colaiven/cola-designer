@@ -22,7 +22,7 @@ let options = {
         textAlign: 'center'
     },
     'cpt-image-option':{
-        url:'http://a4.att.hudong.com/27/67/01300000921826141299672233506.jpg',
+        url:'https://cbu01.alicdn.com/img/ibank/O1CN016bJ3Hc26L0C9E6Nmw_!!3307277644-0-cib.220x220.jpg',
         fit:'fill',preview:false
     },
     'cpt-carousel-option':{trigger:'hover',url:''}

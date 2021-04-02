@@ -1,9 +1,9 @@
 <template>
   <div :style="{textAlign:option.textAlign}">
-    <span
-        :style="{color:option.textColor,fontSize: option.textSize,fontWeight:option.textWeight,lineHeight:option.textLineWeight,fontFamily:option.textFamily}">{{
-        option.text
-      }}</span>
+    <span :style="{color:option.textColor,fontSize: option.textSize,
+    fontWeight:option.textWeight,lineHeight:option.textLineWeight,fontFamily:option.textFamily}">
+      {{option.text}}
+    </span>
   </div>
 </template>
 

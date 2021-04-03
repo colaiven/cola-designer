@@ -40,8 +40,6 @@
 <script>
 import ComponentBar from "@/designer/componentBar";
 import ConfigBar from "@/designer/configBar";
-
-const cacheComponents = [];
 import cptOptions from "@/components/options"
 
 export default {
@@ -51,7 +49,7 @@ export default {
     return {
       copyDom: '',
       componentBarShow: true,
-      cacheComponents, cptOptions,
+      cacheComponents:[],
       configBarShow: false,
       currentCptIndex: 0,
       currentCpt: {option: undefined},
@@ -69,7 +67,7 @@ export default {
       this.cacheComponents.splice(this.cacheComponents.indexOf(cpt), 1);
       this.configBarShow = false;
     },
-    changeCpt(position) {
+    changeCpt(position) {//基础属性修改
       position.cptName = this.cacheComponents[this.currentCptIndex].cptName;
       position.option = this.cacheComponents[this.currentCptIndex].option;
       this.cacheComponents[this.currentCptIndex] = position
@@ -102,7 +100,7 @@ export default {
         cptWidth: config.initWidth, cptHeight: config.initHeight,
         option: undefined
       }
-      const group = this.cptOptions[config.group];
+      const group = cptOptions[config.group];
       if (group && group[config.tag + '-option']) {
         const option = group[config.tag + '-option']
         cpt.option = JSON.parse(JSON.stringify(option))
@@ -118,7 +116,8 @@ export default {
     }
   },
   directives: {
-    drag(el) {//页面上的组件挪到位置
+    drag(el, binding, vNode) {//页面上的组件挪到位置
+      const that = vNode.context;
       el.onmousedown = function (e) {
         const disX = e.clientX - el.offsetLeft;
         const disY = e.clientY - el.offsetTop;
@@ -132,8 +131,8 @@ export default {
         document.onmouseup = function () {
           document.onmousemove = document.onmouseup = null;
           const cptIndex = el.getAttribute('cptIndex')
-          cacheComponents[cptIndex].cptX = cptX;
-          cacheComponents[cptIndex].cptY = cptY;
+          that.cacheComponents[cptIndex].cptX = cptX;
+          that.cacheComponents[cptIndex].cptY = cptY;
         }
         return false;
       }
@@ -143,44 +142,13 @@ export default {
 </script>
 
 <style scoped>
-.top {
-  height: 60px;
-  border: 1px solid #EBEEF5;
-  box-shadow: 0 2px 12px 0 rgba(0, 0, 0, .1);
+.top {height: 60px;border: 1px solid #EBEEF5;box-shadow: 0 2px 12px 0 rgba(0, 0, 0, .1);}
+.webContainer {height: 600px;}
+.webContainer:hover, .webContainer:active {border: 1px dashed #ccc;}
+.cptDiv {position: absolute;overflow: auto;border: 1px dashed rgba(102, 177, 205, 0.6);}
+.delTag {z-index: 9999;width: 20px;height: 20px;background: #66b1ff;border-radius: 2px;
+  position: absolute;top: 0;right: 0;text-align: center;display: none
 }
-
-.webContainer {
-  height: 600px;
-}
-
-.webContainer:hover, .webContainer:active {
-  border: 1px dashed #ccc;
-}
-
-.cptDiv {
-  position: absolute;
-  overflow: auto;
-  border: 1px dashed rgba(255, 0, 0, 0.4);
-}
-
-.delTag {
-  z-index: 9999;
-  width: 20px;
-  height: 20px;
-  background: #66b1ff;
-  border-radius: 2px;
-  position: absolute;
-  top: 0;
-  right: 0;
-  text-align: center;
-  display: none
-}
-
-.delTag:hover {
-  cursor: pointer
-}
-
-.cptDiv:hover .delTag {
-  display: block
-}
+.delTag:hover {cursor: pointer}
+.cptDiv:hover .delTag {display: block}
 </style>

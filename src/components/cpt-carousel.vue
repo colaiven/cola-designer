@@ -11,10 +11,11 @@
 <script>
 export default {
   name: "cpt-carousel",
-  text: '走马灯',
+  title: '走马灯',
   icon: 'el-icon-money',
   initWidth: 400,
   initHeight: 200,
+  group:'element',
   props:{
     height:{type:Number,default:200},
     option:Object

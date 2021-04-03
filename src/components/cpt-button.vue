@@ -11,10 +11,11 @@
 <script>
 export default {
   name: "cpt-button",
-  text: "按钮",
+  title: "按钮",
   icon: 'el-icon-thumb',
   initWidth: 150,
   initHeight:40,
+  group:'element',
   props:{option:Object},
   methods:{
     redirect(){

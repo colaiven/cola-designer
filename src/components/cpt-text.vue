@@ -9,10 +9,11 @@
 <script>
 export default {
   name: "cpt-text",
-  text: '文字框',
+  title: '文字框',
   icon: 'el-icon-chat-line-square',
   initWidth: 300,
   initHeight: 50,
+  group:'element',
   props: {
     option: Object
   },

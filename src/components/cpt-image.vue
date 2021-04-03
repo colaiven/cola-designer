@@ -9,8 +9,9 @@
 <script>
 export default {
   name: "cpt-image",
-  text: '图片',
+  title: '图片',
   icon: 'el-icon-picture-outline',
+  group:'element',
   props: {option: Object},
   data() {
     return {

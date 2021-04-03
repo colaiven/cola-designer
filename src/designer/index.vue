@@ -31,9 +31,9 @@
       <el-button type="success" icon="el-icon-suitcase-1" circle
                  @click="componentBarShow = !componentBarShow"></el-button>
     </div>
-    <component-bar v-show="componentBarShow" @dragStart="dragStart"/>
+    <component-bar v-show="componentBarShow" @dragStart="dragStart"/><!--左侧组件栏-->
     <config-bar v-show="configBarShow" ref="configBar" @change="changeCpt" @close="closeConfigBar"
-                :currentCpt="currentCpt"></config-bar>
+                :currentCpt="currentCpt"></config-bar><!--右侧属性栏-->
   </div>
 </template>
 
@@ -75,7 +75,7 @@ export default {
       this.cacheComponents[this.currentCptIndex] = position
       this.cacheComponents.splice(0, 1, this.cacheComponents[0])
     },
-    showConfigBar(item, index) {
+    showConfigBar(item, index) {//刷新属性栏数据，页面上拖动的组件执行click事件来更新组件的属性栏
       this.currentCpt = item;
       this.currentCptIndex = index;
       let currentCptPosition = {
@@ -90,33 +90,35 @@ export default {
         this.configBarShow = true;
       }
     },
-    dragStart(copyDom) {
+    dragStart(copyDom) {//从组件栏拿起组件
       this.copyDom = copyDom;
       copyDom.draggable = false;
     },
-    allowDrop(e) {
-      e.preventDefault()
-    },
-    drop(e) {
+    allowDrop(e) {e.preventDefault()},
+    drop(e) {//从组件栏丢下组件
       let config = JSON.parse(this.copyDom.getAttribute('config'));
       let cpt = {
         cptName: config.tag, cptX: e.offsetX, cptY: e.offsetY, cptZ: 1,
         cptWidth: config.initWidth, cptHeight: config.initHeight,
         option: undefined
       }
-      const option = this.cptOptions[config.tag + '-option'];
-      if (option) {
+      const group = this.cptOptions[config.group];
+      if (group && group[config.tag + '-option']) {
+        const option = group[config.tag + '-option']
         cpt.option = JSON.parse(JSON.stringify(option))
+      }else {
+        this.$message.error("未再options.js中查找到"+config.group+"."+config.tag+"-option的自定义属性")
+        return;
       }
       this.cacheComponents.push(cpt);
-      this.showConfigBar(cpt, this.cacheComponents.length - 1)
+      this.showConfigBar(cpt, this.cacheComponents.length - 1)//丢下组件后刷新组件属性栏
     },
     closeConfigBar() {
       this.configBarShow = false
     }
   },
   directives: {
-    drag(el) {
+    drag(el) {//页面上的组件挪到位置
       el.onmousedown = function (e) {
         const disX = e.clientX - el.offsetLeft;
         const disY = e.clientY - el.offsetTop;

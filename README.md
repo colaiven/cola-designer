@@ -26,6 +26,7 @@ yarn build
    | initWidth  | 组件宽度(px)   | Number  | 否     | 300 |
    | initHeight | 组件高度(px)   | Number  | 否     | 200 |
    | group      | 组件分组标识   | String  | 否     | default |
+   
     props（以下属性可直接在组建中使用，值与页面同步）：
    
    | 属性名      | 说明          | 类型    |
@@ -33,7 +34,9 @@ yarn build
    | option     | 自定义组件的自定义属性| Object |
    | height     | 组件高度| Number |
    | width      | 组件宽度| Number |
+   
     示例：
+
 ```html
 <template>
   <div>
@@ -59,7 +62,9 @@ export default {
 }
 </script>
 ```
+
 3. 在components/registerCpt.js中注册组件
+
 ![img.png](src/assets/readme/registerCpt.png)
    
 4. 创建组件的自定义属性表单，命名方式为组件名-option
@@ -85,6 +90,7 @@ export default {
 }
 </script>
 ```
+
 5. 在components/registerOption.js中注册组件的自定义属性表单
 ![img.png](src/assets/readme/registerOption.png)
    

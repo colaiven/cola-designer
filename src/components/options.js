@@ -12,14 +12,16 @@ let options = {
         textAlign: 'center'
     },
     'cpt-text-option': {
-        text: '企业门户网站',
+        text: '普通文本',
         url: '',
         textColor: '#4BB344',
-        textSize: '30px',
-        textWeight: 'bold',
-        textLineWeight: '50px',
+        textSize: 30,
+        fontWeight: 'bold',
+        textLineHeight: 50,
         textFamily: '微软雅黑',
-        textAlign: 'center'
+        textAlign: 'center',
+        fontStyle:'normal',
+        textDecoration:'none'
     },
     'cpt-image-option':{
         url:'https://cbu01.alicdn.com/img/ibank/O1CN016bJ3Hc26L0C9E6Nmw_!!3307277644-0-cib.220x220.jpg',

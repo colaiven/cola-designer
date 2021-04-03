@@ -1,9 +1,8 @@
 <template>
-  <div :style="{textAlign:option.textAlign}">
-    <span :style="{color:option.textColor,fontSize: option.textSize,
-    fontWeight:option.textWeight,lineHeight:option.textLineWeight,fontFamily:option.textFamily}">
-      {{option.text}}
-    </span>
+  <div :style="{textAlign:option.textAlign,color:option.textColor,fontSize: option.textSize+'px',fontStyle:option.fontStyle,
+    fontWeight:option.fontWeight,lineHeight:option.textLineHeight+'px',fontFamily:option.textFamily,
+    textDecoration:option.textDecoration}" @click="redirect">
+    {{option.text}}
   </div>
 </template>
 
@@ -20,7 +19,13 @@ export default {
   data() {
     return {}
   },
-  methods: {},
+  methods: {
+    redirect(){
+      if (this.option.url){
+        window.open(this.option.url)
+      }
+    }
+  },
 }
 </script>
 

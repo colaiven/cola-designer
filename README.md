@@ -1,14 +1,14 @@
 # cola-designer-vue
 
-#### 安装
+#### Project setup
 ```
 yarn install
 ```
-#### 运行
+#### Compiles and hot-reloads for development
 ```
 yarn serve
 ```
-#### 打包
+#### Compiles and minifies for production
 ```
 yarn build
 ```

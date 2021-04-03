@@ -17,6 +17,14 @@
         </el-col>
       </el-row>
     </div>
+    <transition name="slide-fade">
+      <div v-if="checkScreenShow">
+        <div style="text-align: center;line-height: 60px;font-size: 30px;
+        margin: 30px 0 30px 0;color: #409eff"><b>选择屏幕比例</b></div>
+        <check-screen @checkedScreen="checkedScreen"/>
+      </div>
+    </transition>
+
     <div class="webContainer" @dragover="allowDrop" @drop="drop">
       <div v-for="(item,index) in cacheComponents" :key="item+index"
            v-drag class="cptDiv" :style="{width:item.cptWidth+'px',height:item.cptHeight+'px',
@@ -41,12 +49,14 @@
 import ComponentBar from "@/designer/componentBar";
 import ConfigBar from "@/designer/configBar";
 import cptOptions from "@/components/options"
+import CheckScreen from "@/designer/checkScreen";
 
 export default {
   name: 'design-index',
-  components: {ConfigBar, ComponentBar},
+  components: {CheckScreen, ConfigBar, ComponentBar},
   data() {
     return {
+      checkScreenShow:true,
       copyDom: '',
       componentBarShow: true,
       cacheComponents:[],
@@ -111,6 +121,10 @@ export default {
       this.cacheComponents.push(cpt);
       this.showConfigBar(cpt, this.cacheComponents.length - 1)//丢下组件后刷新组件属性栏
     },
+    checkedScreen(val){
+      console.log(val)
+      this.checkScreenShow = false
+    },
     closeConfigBar() {
       this.configBarShow = false
     }
@@ -143,12 +157,13 @@ export default {
 
 <style scoped>
 .top {height: 60px;border: 1px solid #EBEEF5;box-shadow: 0 2px 12px 0 rgba(0, 0, 0, .1);}
-.webContainer {height: 600px;}
-.webContainer:hover, .webContainer:active {border: 1px dashed #ccc;}
+.webContainer {height: 300px;border: 1px dashed #ccc;}
 .cptDiv {position: absolute;overflow: auto;border: 1px dashed rgba(102, 177, 205, 0.6);}
 .delTag {z-index: 9999;width: 20px;height: 20px;background: #66b1ff;border-radius: 2px;
   position: absolute;top: 0;right: 0;text-align: center;display: none
 }
 .delTag:hover {cursor: pointer}
 .cptDiv:hover .delTag {display: block}
+.slide-fade-leave-active {transition: all .3s ease;}
+.slide-fade-leave-to{transform: scale(0.1);}
 </style>

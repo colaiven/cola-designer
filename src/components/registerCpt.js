@@ -12,10 +12,10 @@ let cptList = [
 let listComponent = [];
 cptList.forEach(ele => {
     Vue.component(ele.name, ele);
-    const name = ele.title?ele.title:'未命名组件';
-    const initWidth = ele.initWidth?ele.initWidth:300;
-    const initHeight = ele.initHeight?ele.initHeight:200;
-    const group = ele.group ? ele.group:'default'
-    listComponent.push({group:group,name: name,tag:ele.name,icon:ele.icon,initWidth:initWidth,initHeight:initHeight})
+    const name = ele.title ? ele.title:'未命名组件';
+    const initWidth = ele.initWidth ? ele.initWidth:300;
+    const initHeight = ele.initHeight ? ele.initHeight:200;
+    const group = ele.group ? ele.group:'default';
+    listComponent.push({group:group,name: name,tag:ele.name,icon:ele.icon,initWidth:initWidth,initHeight:initHeight});
 });
 export default listComponent;

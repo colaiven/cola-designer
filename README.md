@@ -98,6 +98,7 @@ export default {
 
 ![img.png](src/assets/readme/options.png)
 至此完成对自定义组件的注册，可在组件栏使用自己的组件
+![img.png](src/assets/readme/test.png)
 #### T：自定义组件命名方式
  建议使用：个人/公司名称简称-分组名-组件名
 

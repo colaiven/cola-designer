@@ -1,9 +1,9 @@
 import Vue from 'vue'
-import cpt_input from '@/components/cpt-input'
-import cpt_text from '@/components/cpt-text'
-import cpt_carousel from '@/components/cpt-carousel'
-import cpt_button from '@/components/cpt-button'
-import cpt_image from '@/components/cpt-image'
+import cpt_input from '@/components/element/cpt-input'
+import cpt_text from '@/components/element/cpt-text'
+import cpt_carousel from '@/components/element/cpt-carousel'
+import cpt_button from '@/components/element/cpt-button'
+import cpt_image from '@/components/element/cpt-image'
 
 let cptList = [
     cpt_input,cpt_text,cpt_carousel,cpt_button,cpt_image

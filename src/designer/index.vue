@@ -14,12 +14,12 @@
         <el-button type="primary" plain @click="preview" style="margin-right: 20px;">预览</el-button>
       </el-col>
     </el-row>
-    <el-row :style="{height: windowHeight+'px'}">
-      <el-col :span="3" style="height: 100%">
+    <div :style="{height: windowHeight+'px'}">
+      <div style="float: left;height: 100%;width: 194px">
         <component-bar @dragStart="dragStart"/><!--左侧组件栏-->
-      </el-col>
-      <el-col :span="21">
-        <div class="webContainer" @dragover="allowDrop" @drop="drop">
+      </div>
+      <div style="float: left;" :style="{width:windowWidth+'px'}">
+        <div class="webContainer" :style="{width:windowWidth - 40+'px',height:((windowWidth - 40)/16*9)+'px'}" @dragover="allowDrop" @drop="drop">
           <div v-for="(item,index) in cacheComponents" :key="item+index"
                v-drag class="cptDiv" :style="{width:item.cptWidth+'px',height:item.cptHeight+'px',
                   top:item.cptY+'px',left:item.cptX+'px',zIndex:item.cptZ}"
@@ -29,8 +29,8 @@
             <div class="delTag" @click.stop="delCpt(item)"><i class="el-icon-delete"/></div>
           </div>
         </div>
-      </el-col>
-    </el-row>
+      </div>
+    </div>
     <config-bar v-show="configBarShow" ref="configBar" @change="changeCpt" @close="closeConfigBar"
                 :currentCpt="currentCpt"></config-bar><!--右侧属性栏-->
   </div>
@@ -47,12 +47,16 @@ export default {
   data() {
     return {
       windowHeight: document.documentElement.clientHeight-60,
+      windowWidth: document.documentElement.clientWidth-200,
       copyDom: '',
       cacheComponents:[],
       configBarShow: false,
       currentCptIndex: 0,
       currentCpt: {option: undefined},
     }
+  },
+  created() {
+    console.log(this.windowHeight)
   },
   methods: {
     submitDesign() {
@@ -141,9 +145,9 @@ export default {
 </script>
 
 <style scoped>
-.top {height: 60px;box-shadow: 0 2px 5px #222 inset;color: #fff;
+.top {height: 60px;box-shadow: 0 2px 5px #222 inset;color: #fff;overflow: hidden;
   margin: 0;font-size: 18px;line-height: 55px;background: #353F50}
-.webContainer {width:1510px;border: 1px dashed #ccc;margin: 10px auto;height:850px;background: #2B3340}
+.webContainer {border: 1px dashed #ccc;margin: 10px auto;background: #2B3340}
 .cptDiv {position: absolute;overflow: auto;border: 1px dashed rgba(102, 177, 205, 0.6);}
 .delTag {z-index: 9999;width: 20px;height: 20px;background: #2b3340;border-radius: 2px;color: #ccc;
   position: absolute;top: 0;right: 0;text-align: center;display: none

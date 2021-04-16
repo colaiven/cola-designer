@@ -1,45 +1,36 @@
 <template>
   <div>
-    <div class="top">
-      <el-row :gutter="24" style="margin: 0;font-size: 18px;line-height: 60px;">
-        <el-col :span="2" align="right">
-          <el-image style="width: 50px; height: 50px" :src="require('/src/assets/logo.png')"
-                    fit="fill"></el-image>
-        </el-col>
-        <el-col :span="3" align="left">
-          <span class="el-icon-box lg" style="width: 30px"></span>
-          <span>网站管理</span>
-        </el-col>
-        <el-col :span="19" align="right">
-          <el-button type="primary" @click="submitDesign">保存</el-button>
-          <el-button type="primary" plain @click="preview">预览</el-button>
-          <el-button type="primary" plain>取消</el-button>
-        </el-col>
-      </el-row>
-    </div>
-    <transition name="slide-fade">
-      <div v-if="checkScreenShow">
-        <div style="text-align: center;line-height: 60px;font-size: 30px;
-        margin: 30px 0 30px 0;color: #409eff"><b>选择屏幕比例</b></div>
-        <check-screen @checkedScreen="checkedScreen"/>
-      </div>
-    </transition>
-
-    <div class="webContainer" @dragover="allowDrop" @drop="drop">
-      <div v-for="(item,index) in cacheComponents" :key="item+index"
-           v-drag class="cptDiv" :style="{width:item.cptWidth+'px',height:item.cptHeight+'px',
+    <el-row class="top">
+      <el-col :span="2" align="right" style="height: 100%;overflow: hidden;">
+        <el-image style="width: 50px; height: 50px;padding: 0;margin: 0" :src="require('/src/assets/logo.png')"
+                  fit="fill"></el-image>
+      </el-col>
+      <el-col :span="3" align="left">
+        <span class="el-icon-box lg" style="width: 30px"></span>
+        <span>Cola Designer</span>
+      </el-col>
+      <el-col :span="19" align="right">
+        <el-button type="primary" @click="submitDesign">保存</el-button>
+        <el-button type="primary" plain @click="preview" style="margin-right: 20px;">预览</el-button>
+      </el-col>
+    </el-row>
+    <el-row :style="{height: windowHeight+'px'}">
+      <el-col :span="3" style="height: 100%">
+        <component-bar @dragStart="dragStart"/><!--左侧组件栏-->
+      </el-col>
+      <el-col :span="21">
+        <div class="webContainer" @dragover="allowDrop" @drop="drop">
+          <div v-for="(item,index) in cacheComponents" :key="item+index"
+               v-drag class="cptDiv" :style="{width:item.cptWidth+'px',height:item.cptHeight+'px',
                   top:item.cptY+'px',left:item.cptX+'px',zIndex:item.cptZ}"
-           @click="showConfigBar(item,index)" :cptIndex="index">
-        <comment :is="item.cptName" :width="item.cptWidth" :height="item.cptHeight"
-                 :option="item.option"></comment>
-        <div class="delTag" @click.stop="delCpt(item)"><i class="el-icon-delete"/></div>
-      </div>
-    </div>
-    <div style="position: fixed;bottom:20px;left:40px;">
-      <el-button type="success" icon="el-icon-suitcase-1" circle
-                 @click="componentBarShow = !componentBarShow"></el-button>
-    </div>
-    <component-bar v-show="componentBarShow" @dragStart="dragStart"/><!--左侧组件栏-->
+               @click="showConfigBar(item,index)" :cptIndex="index">
+            <comment :is="item.cptName" :width="item.cptWidth" :height="item.cptHeight"
+                     :option="item.option"></comment>
+            <div class="delTag" @click.stop="delCpt(item)"><i class="el-icon-delete"/></div>
+          </div>
+        </div>
+      </el-col>
+    </el-row>
     <config-bar v-show="configBarShow" ref="configBar" @change="changeCpt" @close="closeConfigBar"
                 :currentCpt="currentCpt"></config-bar><!--右侧属性栏-->
   </div>
@@ -49,16 +40,14 @@
 import ComponentBar from "@/designer/componentBar";
 import ConfigBar from "@/designer/configBar";
 import cptOptions from "@/components/options"
-import CheckScreen from "@/designer/checkScreen";
 
 export default {
   name: 'design-index',
-  components: {CheckScreen, ConfigBar, ComponentBar},
+  components: {ConfigBar, ComponentBar},
   data() {
     return {
-      checkScreenShow:true,
+      windowHeight: document.documentElement.clientHeight-60,
       copyDom: '',
-      componentBarShow: true,
       cacheComponents:[],
       configBarShow: false,
       currentCptIndex: 0,
@@ -121,10 +110,6 @@ export default {
       this.cacheComponents.push(cpt);
       this.showConfigBar(cpt, this.cacheComponents.length - 1)//丢下组件后刷新组件属性栏
     },
-    checkedScreen(val){
-      console.log(val)
-      this.checkScreenShow = false
-    },
     closeConfigBar() {
       this.configBarShow = false
     }
@@ -156,14 +141,13 @@ export default {
 </script>
 
 <style scoped>
-.top {height: 60px;border: 1px solid #EBEEF5;box-shadow: 0 2px 12px 0 rgba(0, 0, 0, .1);}
-.webContainer {height: 300px;border: 1px dashed #ccc;}
+.top {height: 60px;box-shadow: 0 2px 5px #222 inset;color: #fff;
+  margin: 0;font-size: 18px;line-height: 55px;background: #353F50}
+.webContainer {width:1510px;border: 1px dashed #ccc;margin: 10px auto;height:850px;background: #2B3340}
 .cptDiv {position: absolute;overflow: auto;border: 1px dashed rgba(102, 177, 205, 0.6);}
-.delTag {z-index: 9999;width: 20px;height: 20px;background: #66b1ff;border-radius: 2px;
+.delTag {z-index: 9999;width: 20px;height: 20px;background: #2b3340;border-radius: 2px;color: #ccc;
   position: absolute;top: 0;right: 0;text-align: center;display: none
 }
 .delTag:hover {cursor: pointer}
 .cptDiv:hover .delTag {display: block}
-.slide-fade-leave-active {transition: all .3s ease;}
-.slide-fade-leave-to{transform: scale(0.1);}
 </style>

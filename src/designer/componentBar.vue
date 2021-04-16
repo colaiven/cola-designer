@@ -1,21 +1,18 @@
 <template>
-  <div>
-    <el-row style="position: fixed;width: 260px;height:400px;bottom: 70px;
-      left: 20px;border-radius: 6px;border: 1px solid #409eff;z-index: 2000">
-      <el-row v-drag class="cptTitle">选择组件</el-row>
-      <el-row style="height: 350px;width: 100%;overflow: auto">
-        <el-col :span="8" v-for="(item,index) in listComponent" :key="item.name"
-                style="height: 70px;text-align: center;
-        border-bottom: 1px solid #409eff;" :style="(index+1)%3!==0?'border-right: 1px solid #409eff':''">
-          <div draggable="true" :config="JSON.stringify(item)" @dragstart="dragStart">
-            <div style="font-size: 20px;line-height: 40px;"><i :class="item.icon?item.icon:'el-icon-question'"></i>
-            </div>
-            <div style="color: #666">{{ item.name }}</div>
+  <el-row style="width:100%;height:100%;background: #49586E;z-index: 2000;color: #fff">
+    <el-row class="cptTitle">组件库</el-row>
+    <el-row style="height: 350px;width: 100%;overflow: auto">
+      <el-col :span="8" v-for="(item,index) in listComponent" :key="item.name"
+              style="height: 70px;text-align: center;border-bottom: 1px solid #2b3340;"
+              :style="(index+1)%3!==0?'border-right: 1px solid #2b3340':''">
+        <div draggable="true" :config="JSON.stringify(item)" @dragstart="dragStart">
+          <div style="font-size: 20px;line-height: 40px;"><i :class="item.icon?item.icon:'el-icon-question'"></i>
           </div>
-        </el-col>
-      </el-row>
+          <div>{{ item.name }}</div>
+        </div>
+      </el-col>
     </el-row>
-  </div>
+  </el-row>
 </template>
 
 <script>
@@ -34,35 +31,10 @@ export default {
       this.$emit('dragStart', copyDom);
     }
   },
-  directives: {
-    drag(el) {
-      el.onmousedown = function (e) {
-        console.log(e)
-        const disX = e.clientX - el.parentNode.offsetLeft;
-        const disY = e.clientY - el.parentNode.offsetTop;
-        document.onmousemove = function (e) {
-          el.parentNode.style.left = e.clientX - disX + 'px';
-          el.parentNode.style.top = e.clientY - disY + 'px';
-        }
-        document.onmouseup = function () {
-          document.onmousemove = document.onmouseup = null;
-        }
-        return false;
-      }
-    }
-  },
 }
 </script>
 
 <style scoped>
-.cptTitle {
-  line-height: 35px;
-  text-align: center;
-  background: #409eff;
-  color: #fff
-}
-
-.cptTitle:hover {
-  cursor: move
-}
+.cptTitle {line-height: 45px;text-align: center;background: #3F4B5F;}
+.cptTitle:hover {cursor: move}
 </style>

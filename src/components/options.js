@@ -1,5 +1,4 @@
-let options = {
-    'default':{},
+const cptOptions = {
     'element':{
         'cpt-button-option': {
             text: '按钮1', url: '', bgColor: '#409eff', textColor: '#fff',
@@ -39,4 +38,4 @@ let options = {
         }
     },
 }
-export default options
+export default cptOptions

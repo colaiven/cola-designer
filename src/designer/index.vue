@@ -160,7 +160,7 @@ export default {
 <style scoped>
 .top {height: 60px;box-shadow: 0 2px 5px #222 inset;color: #fff;overflow: hidden;
   margin: 0;font-size: 18px;line-height: 55px;background: #353F50}
-.webContainer {border: 1px dashed #ccc;margin: 10px auto;background: #2B3340}
+.webContainer {border: 1px dashed #ccc;margin: 10px auto;background: #2B3340;position: relative}
 .cptDiv {position: absolute;overflow: auto;border: 1px dashed rgba(102, 177, 205, 0.6);}
 .delTag {z-index: 9999;width: 20px;height: 20px;background: #2b3340;border-radius: 2px;color: #ccc;
   position: absolute;top: 0;right: 0;text-align: center;display: none

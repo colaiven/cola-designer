@@ -2,7 +2,7 @@
   <div>
     <el-row class="top">
       <el-col :span="2" align="right" style="height: 100%;overflow: hidden;">
-        <el-image style="width: 50px; height: 50px;padding: 0;margin: 0" :src="require('/src/assets/logo.png')"
+        <el-image style="width: 45px; height: 45px;padding: 0;margin: 0" :src="require('/src/assets/logo.png')"
                   fit="fill"></el-image>
       </el-col>
       <el-col :span="3" align="left">
@@ -14,8 +14,8 @@
         <el-button size="small" @click="preview" style="margin-right: 20px;background: #49586e;color: #fff">预览</el-button>
       </el-col>
     </el-row>
-    <div :style="{height: (windowHeight-60)+'px'}">
-      <div style="float: left;height: 100%;" :style="{width:cptBarWidth+'px'}" >
+    <div :style="{height: (windowHeight-50)+'px'}">
+      <div style="float: left;height: 100%;" :style="{width:cptBarWidth+'px'}">
         <component-bar @dragStart="dragStart"/><!--左侧组件栏-->
       </div>
       <div style="float: left;" :style="{width:(windowWidth-cptBarWidth-10)+'px'}">
@@ -27,6 +27,7 @@
             <comment :is="item.cptName" :width="item.cptWidth" :height="item.cptHeight"
                      :option="item.option"></comment>
             <div class="delTag" @click.stop="delCpt(item)"><i class="el-icon-delete"/></div>
+            <div class="resizeTag" @mousedowm="resizeCptDown" @mousemove="resizeCptMove"></div>
           </div>
         </div>
       </div>
@@ -51,6 +52,7 @@ export default {
       windowHeight:document.documentElement.clientHeight,
       conWidth: 0,
       conHeight: 0,
+      resizeDown:false,
       copyDom: '',
       cacheComponents:[],
       configBarShow: false,
@@ -108,6 +110,17 @@ export default {
       this.copyDom = copyDom;
       copyDom.draggable = false;
     },
+    resizeCptDown(e){
+      console.log(111)
+      console.log(e)
+      this.resizeDown = true;
+    },
+    resizeCptMove(e){
+      console.log(222)
+      if (this.resizeDown){
+        console.log(e)
+      }
+    },
     allowDrop(e) {e.preventDefault()},
     drop(e) {//从组件栏丢下组件
       let config = JSON.parse(this.copyDom.getAttribute('config'));
@@ -158,13 +171,15 @@ export default {
 </script>
 
 <style scoped>
-.top {height: 60px;box-shadow: 0 2px 5px #222 inset;color: #fff;overflow: hidden;
-  margin: 0;font-size: 18px;line-height: 55px;background: #353F50}
+.top {height: 50px;box-shadow: 0 2px 5px #222 inset;color: #fff;overflow: hidden;
+  margin: 0;font-size: 18px;line-height: 48px;background: #353F50}
 .webContainer {border: 1px dashed #ccc;margin: 10px auto;background: #2B3340;position: relative}
 .cptDiv {position: absolute;overflow: auto;border: 1px dashed rgba(102, 177, 205, 0.6);}
-.delTag {z-index: 9999;width: 20px;height: 20px;background: #2b3340;border-radius: 2px;color: #ccc;
+.delTag {width: 20px;height: 20px;background: #2b3340;border-radius: 2px;color: #ccc;
   position: absolute;top: 0;right: 0;text-align: center;display: none
 }
 .delTag:hover {cursor: pointer}
 .cptDiv:hover .delTag {display: block}
+.resizeTag{width: 8px;height: 8px;position: absolute;bottom: 0;right: 0}
+.resizeTag:hover{cursor: nwse-resize}
 </style>

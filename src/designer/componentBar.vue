@@ -2,13 +2,13 @@
   <el-row style="width:100%;height:100%;background: #49586E;z-index: 2000;color: #fff;overflow: auto">
     <el-row class="cptTitle">组件库</el-row>
     <div v-for="group in cptGroupKeys" :key="group">
-      <div style="line-height: 40px" class="hoverPointer" @click="checkGroup(group)">
+      <div style="line-height: 40px;border-bottom: 1px solid #3F4B5F" class="hoverPointer" @click="checkGroup(group)">
         <div style="display: inline-block;text-indent: 1em;width: 170px;">{{group}}</div>
         <div style="display: inline-block;">
           <i :class=" openedKey === group ? 'el-icon-arrow-down':'el-icon-arrow-right'"></i>
         </div>
       </div>
-      <el-row style="border: 1px solid #2b3340" v-show="openedKey === group">
+      <el-row style="border-bottom: 1px solid #3F4B5F" v-show="openedKey === group">
         <el-col :span="8" v-for="(item,index) in cptGroups[group]" :key="item.name"
                 style="height: 70px;text-align: center;"
                 :style="{borderRight:(index+1)%3!==0 ? '1px solid #3F4B5F':''

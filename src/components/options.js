@@ -29,7 +29,14 @@ let options = {
             url:'https://cbu01.alicdn.com/img/ibank/O1CN016bJ3Hc26L0C9E6Nmw_!!3307277644-0-cib.220x220.jpg',
             fit:'fill',preview:false
         },
-        'cpt-carousel-option':{trigger:'hover',url:''}
+        'cpt-carousel-option':{
+            trigger:'hover',
+            imgUrls:[
+                require('@/assets/readme/test.png'),
+                require('@/assets/readme/options.png')
+            ],
+            fit:'cover'
+        }
     },
 }
 export default options

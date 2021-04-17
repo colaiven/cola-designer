@@ -2,7 +2,7 @@ let options = {
     'default':{},
     'element':{
         'cpt-button-option': {
-            text: '按钮1', url: '', bgColor: '#2b3340', textColor: '#fff',
+            text: '按钮1', url: '', bgColor: '#409eff', textColor: '#fff',
             radius: 6,
         },
         'cpt-text-option': {

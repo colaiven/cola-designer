@@ -10,16 +10,16 @@
         <span>Cola Designer</span>
       </el-col>
       <el-col :span="19" align="right">
-        <el-button type="primary" @click="submitDesign">保存</el-button>
-        <el-button type="primary" plain @click="preview" style="margin-right: 20px;">预览</el-button>
+        <el-button size="small" @click="submitDesign" style="background: #d5d9e2;">保存</el-button>
+        <el-button size="small" @click="preview" style="margin-right: 20px;background: #49586e;color: #fff">预览</el-button>
       </el-col>
     </el-row>
-    <div :style="{height: windowHeight+'px'}">
-      <div style="float: left;height: 100%;width: 194px">
+    <div :style="{height: (windowHeight-60)+'px'}">
+      <div style="float: left;height: 100%;" :style="{width:cptBarWidth+'px'}" >
         <component-bar @dragStart="dragStart"/><!--左侧组件栏-->
       </div>
-      <div style="float: left;" :style="{width:windowWidth+'px'}">
-        <div class="webContainer" :style="{width:windowWidth - 40+'px',height:((windowWidth - 40)/16*9)+'px'}" @dragover="allowDrop" @drop="drop">
+      <div style="float: left;" :style="{width:(windowWidth-cptBarWidth-10)+'px'}">
+        <div class="webContainer" :style="{width:conWidth+'px',height:conHeight+'px'}" @dragover="allowDrop" @drop="drop">
           <div v-for="(item,index) in cacheComponents" :key="item+index"
                v-drag class="cptDiv" :style="{width:item.cptWidth+'px',height:item.cptHeight+'px',
                   top:item.cptY+'px',left:item.cptX+'px',zIndex:item.cptZ}"
@@ -46,8 +46,11 @@ export default {
   components: {ConfigBar, ComponentBar},
   data() {
     return {
-      windowHeight: document.documentElement.clientHeight-60,
-      windowWidth: document.documentElement.clientWidth-200,
+      cptBarWidth:200,
+      windowWidth:document.documentElement.clientWidth,
+      windowHeight:document.documentElement.clientHeight,
+      conWidth: 0,
+      conHeight: 0,
       copyDom: '',
       cacheComponents:[],
       configBarShow: false,
@@ -56,9 +59,19 @@ export default {
     }
   },
   created() {
-    console.log(this.windowHeight)
+    this.initContainerSize();
   },
   methods: {
+    initContainerSize(){
+      let tempWidth = this.windowWidth - this.cptBarWidth - 40;//流出空隙
+      let tempHeight = tempWidth / 16 * 9;
+      if (tempHeight > this.windowHeight - 88){//上下边框各占1px
+        tempHeight = this.windowHeight - 88;
+        tempWidth = tempHeight / 9 * 16
+      }
+      this.conWidth = tempWidth;
+      this.conHeight = tempHeight;
+    },
     submitDesign() {
       console.log('组件数据', this.cacheComponents)
     },

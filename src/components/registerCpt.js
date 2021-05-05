@@ -4,9 +4,11 @@ import cpt_text from '@/components/element/cpt-text'
 import cpt_carousel from '@/components/element/cpt-carousel'
 import cpt_button from '@/components/element/cpt-button'
 import cpt_image from '@/components/element/cpt-image'
+import cpt_chart_column from '@/components/echarts/cpt-chart-column'
 
 let cptList = [
-    cpt_input,cpt_text,cpt_carousel,cpt_button,cpt_image
+    cpt_input,cpt_text,cpt_carousel,cpt_button,cpt_image,
+    cpt_chart_column
 ]
 
 let cptGroups = {}

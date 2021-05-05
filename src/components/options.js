@@ -37,5 +37,16 @@ const cptOptions = {
             fit:'cover'
         }
     },
+    'echarts':{
+        'cpt-chart-column-option':{
+            chartTitle:'标题一',titleLeft:'center', titleTop:10, titleTextColor:'#fff',
+            xLabelColor:'#0a7eea',xLineColor:'#fff',yLabelColor:'#0bd124',yLineColor:'#fff',
+            yGridLineShow:false,yTickShow:true,
+            barBgShow:false,barBorderRadius:5,barColor:'#0775eb',
+            barWidth:24,
+            xData:"Mon,Tue,Wed,Thu,Fri,Sat,Sun",
+            yData:"120,200,150,80,70,110,130"
+        }
+    }
 }
 export default cptOptions

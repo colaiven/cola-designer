@@ -10,7 +10,7 @@
       </div>
       <el-row style="border-bottom: 1px solid #3F4B5F" v-show="openedKey === group">
         <el-col :span="8" v-for="(item,index) in cptGroups[group]" :key="item.name"
-                style="height: 70px;text-align: center;"
+                style="height: 70px;text-align: center;background-color: #59697f"
                 :style="{borderRight:(index+1)%3!==0 ? '1px solid #3F4B5F':''
                 ,borderBottom:index > cptGroups['element'].length-3 ? '':'1px solid #3F4B5F'}">
           <div draggable="true" :config="JSON.stringify(item)" @dragstart="dragStart">

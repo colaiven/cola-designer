@@ -39,8 +39,8 @@ const cptOptions = {
     },
     'echarts':{
         'cpt-chart-column-option':{
-            chartTitle:'标题一',titleLeft:'center', titleTop:10, titleTextColor:'#fff',
-            xLabelColor:'#0a7eea',xLineColor:'#fff',yLabelColor:'#0bd124',yLineColor:'#fff',
+            chartTitle:'标题一',titleLeft:'center', titleTop:10, titleTextColor:'#aaa',
+            xLabelColor:'#0a7eea',xLineColor:'#aaa',yLabelColor:'#0bd124',yLineColor:'#aaa',
             yGridLineShow:false,yTickShow:true,
             barBgShow:false,barBorderRadius:5,barColor:'#0775eb',
             barWidth:24,

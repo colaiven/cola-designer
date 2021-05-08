@@ -124,14 +124,15 @@ export default {
     allowDrop(e) {e.preventDefault()},
     drop(e) {//从组件栏丢下组件
       let config = JSON.parse(this.copyDom.getAttribute('config'));
+      console.log("config=>",config)
       let cpt = {
         cptName: config.tag, cptX: e.offsetX, cptY: e.offsetY, cptZ: 1,
         cptWidth: config.initWidth, cptHeight: config.initHeight,
         option: undefined
       }
       const group = cptOptions[config.group];
-      if (group && group[config.tag + '-option']) {
-        const option = group[config.tag + '-option']
+      if (group && group.options[config.tag + '-option']) {
+        const option = group.options[config.tag + '-option']
         cpt.option = JSON.parse(JSON.stringify(option))
       }else {
         this.$message.error("未再options.js中查找到"+config.group+"."+config.tag+"-option的自定义属性")

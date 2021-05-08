@@ -6,7 +6,7 @@
 export default {
   name: "cpt-chart-column",
   title: "柱状图",
-  icon: 'el-icon-thumb',
+  icon: 'el-icon-s-data',
   initWidth: 400,
   initHeight: 300,
   group: 'echarts',

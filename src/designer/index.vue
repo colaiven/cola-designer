@@ -112,7 +112,6 @@ export default {
     allowDrop(e) {e.preventDefault()},
     drop(e) {//从组件栏丢下组件
       let config = JSON.parse(this.copyDom.getAttribute('config'));
-      console.log("config=>",config)
       let cpt = {
         cptName: config.tag, cptX: e.offsetX, cptY: e.offsetY, cptZ: 1,
         cptWidth: config.initWidth, cptHeight: config.initHeight,
@@ -141,8 +140,10 @@ export default {
         const disY = e.clientY - el.parentNode.offsetTop;
         let cptX, cptY;
         document.onmousemove = function (me) {
-          el.parentNode.style.left = me.clientX - disX + 'px';
-          el.parentNode.style.top = me.clientY - disY + 'px';
+          cptX = me.clientX - disX;
+          cptY = me.clientY - disY;
+          el.parentNode.style.left = cptX + 'px';
+          el.parentNode.style.top = cptY + 'px';
         }
         document.onmouseup = function () {
           document.onmousemove = document.onmouseup = null;
@@ -155,17 +156,23 @@ export default {
     },
     resize(el, binding, vNode) {//页面上的组件挪到位置
       const that = vNode.context;
-      el.onmousedown = function (e) {
-        const disX = e.clientX - el.parentNode.offsetLeft;
-        const disY = e.clientY - el.parentNode.offsetTop;
+      el.onmousedown = function () {
+        let cptWidth,cptHeight;
         document.onmousemove = function (me) {
-          console.log('x====>',me.clientX - disX + 'px');
-          console.log('y====>',me.clientY - disY + 'px');
+          cptWidth = me.offsetX - el.parentNode.offsetLeft;
+          cptHeight = me.offsetY - el.parentNode.offsetTop;
+          cptWidth = cptWidth < 30 ? 30:cptWidth;//限制最小缩放
+          cptHeight = cptHeight < 10 ? 10:cptHeight;
+          el.parentNode.style.width = cptWidth + 'px';
+          el.parentNode.style.height = cptHeight + 'px';
         }
         document.onmouseup = function () {
           document.onmousemove = document.onmouseup = null;
           const cptIndex = el.parentNode.getAttribute('cptIndex');
-          console.log('完成',that.cacheComponents[cptIndex])
+          that.cacheComponents[cptIndex].cptWidth = cptWidth;
+          that.cacheComponents[cptIndex].cptHeight = cptHeight;
+          that.cacheComponents.splice(cptIndex, 1, that.cacheComponents[cptIndex])
+          console.log('缩放结束',that.cacheComponents[cptIndex])
         }
         return false;
       }

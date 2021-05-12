@@ -21,13 +21,13 @@
       <div style="float: left;" :style="{width:(windowWidth-cptBarWidth-10)+'px'}">
         <div class="webContainer" :style="{width:conWidth+'px',height:conHeight+'px'}" @dragover="allowDrop" @drop="drop">
           <div v-for="(item,index) in cacheComponents" :key="item+index"
-               v-drag class="cptDiv" :style="{width:item.cptWidth+'px',height:item.cptHeight+'px',
+               class="cptDiv" :style="{width:item.cptWidth+'px',height:item.cptHeight+'px',
                   top:item.cptY+'px',left:item.cptX+'px',zIndex:item.cptZ}"
                @click="showConfigBar(item,index)" :cptIndex="index">
-            <comment :is="item.cptName" :width="item.cptWidth" :height="item.cptHeight"
+            <comment v-drag :is="item.cptName" :width="item.cptWidth" :height="item.cptHeight"
                      :option="item.option"></comment>
             <div class="delTag" @click.stop="delCpt(item)"><i class="el-icon-delete"/></div>
-            <div class="resizeTag" @mousedowm="resizeCptDown" @mousemove="resizeCptMove"></div>
+            <div class="resizeTag" v-resize></div>
           </div>
         </div>
       </div>
@@ -52,7 +52,6 @@ export default {
       windowHeight:document.documentElement.clientHeight,
       conWidth: 0,
       conHeight: 0,
-      resizeDown:false,
       copyDom: '',
       cacheComponents:[],
       configBarShow: false,
@@ -110,17 +109,6 @@ export default {
       this.copyDom = copyDom;
       copyDom.draggable = false;
     },
-    resizeCptDown(e){
-      console.log(111)
-      console.log(e)
-      this.resizeDown = true;
-    },
-    resizeCptMove(e){
-      console.log(222)
-      if (this.resizeDown){
-        console.log(e)
-      }
-    },
     allowDrop(e) {e.preventDefault()},
     drop(e) {//从组件栏丢下组件
       let config = JSON.parse(this.copyDom.getAttribute('config'));
@@ -149,20 +137,35 @@ export default {
     drag(el, binding, vNode) {//页面上的组件挪到位置
       const that = vNode.context;
       el.onmousedown = function (e) {
-        const disX = e.clientX - el.offsetLeft;
-        const disY = e.clientY - el.offsetTop;
+        const disX = e.clientX - el.parentNode.offsetLeft;
+        const disY = e.clientY - el.parentNode.offsetTop;
         let cptX, cptY;
-        document.onmousemove = function (e) {
-          cptX = e.clientX - disX;
-          cptY = e.clientY - disY
-          el.style.left = cptX + 'px';
-          el.style.top = cptY + 'px';
+        document.onmousemove = function (me) {
+          el.parentNode.style.left = me.clientX - disX + 'px';
+          el.parentNode.style.top = me.clientY - disY + 'px';
         }
         document.onmouseup = function () {
           document.onmousemove = document.onmouseup = null;
-          const cptIndex = el.getAttribute('cptIndex')
+          const cptIndex = el.parentNode.getAttribute('cptIndex')
           that.cacheComponents[cptIndex].cptX = cptX;
           that.cacheComponents[cptIndex].cptY = cptY;
+        }
+        return false;
+      }
+    },
+    resize(el, binding, vNode) {//页面上的组件挪到位置
+      const that = vNode.context;
+      el.onmousedown = function (e) {
+        const disX = e.clientX - el.parentNode.offsetLeft;
+        const disY = e.clientY - el.parentNode.offsetTop;
+        document.onmousemove = function (me) {
+          console.log('x====>',me.clientX - disX + 'px');
+          console.log('y====>',me.clientY - disY + 'px');
+        }
+        document.onmouseup = function () {
+          document.onmousemove = document.onmouseup = null;
+          const cptIndex = el.parentNode.getAttribute('cptIndex');
+          console.log('完成',that.cacheComponents[cptIndex])
         }
         return false;
       }

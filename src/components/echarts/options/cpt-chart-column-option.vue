@@ -43,6 +43,8 @@
       <el-form-item label="柱体宽度">
         <el-input-number v-model="option.barWidth" :min="10" :max="100"/>
       </el-form-item>
+    </el-form>
+    <el-form label-position="top">
       <el-form-item label="x轴数据">
         <el-input type="textarea" :rows="3" placeholder="请输入内容" v-model="option.xData"/>
       </el-form-item>

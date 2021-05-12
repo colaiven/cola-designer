@@ -171,7 +171,6 @@ export default {
           const cptIndex = el.parentNode.getAttribute('cptIndex');
           that.cacheComponents[cptIndex].cptWidth = cptWidth;
           that.cacheComponents[cptIndex].cptHeight = cptHeight;
-          that.cacheComponents.splice(cptIndex, 1, that.cacheComponents[cptIndex])
           console.log('缩放结束',that.cacheComponents[cptIndex])
         }
         return false;

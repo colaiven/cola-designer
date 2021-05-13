@@ -162,7 +162,6 @@ export default {
         let cptWidth,cptHeight;
         document.onmousemove = function (me) {
           if (me.offsetX > 10 && me.offsetY > 10){//鼠标滑动区域还在拖动小方块内时，offsetX和offsetY小于小方块的宽高
-            console.log('offsetX->',me.offsetX)
             cptWidth = me.offsetX - disX;
             cptHeight = me.offsetY - disY;
             cptWidth = cptWidth < 40 ? 40:cptWidth;//限制最小缩放
@@ -195,6 +194,6 @@ export default {
 }
 .delTag:hover {cursor: pointer}
 .cptDiv:hover .delTag {display: block}
-.resizeTag{width: 10px;height: 10px;position: absolute;bottom: -5px;right: -5px;background-color: #f00;z-index: 1600;}
+.resizeTag{width: 10px;height: 10px;position: absolute;bottom: -5px;right: -5px;background-color: #49586e;z-index: 1600;border-radius: 50%}
 .resizeTag:hover{cursor: nwse-resize}
 </style>

@@ -29,6 +29,7 @@
             <div class="delTag" @click.stop="delCpt(item)"><i class="el-icon-delete"/></div>
             <div class="resizeTag" v-resize></div>
           </div>
+          {{cacheComponents}}
         </div>
       </div>
     </div>
@@ -154,21 +155,19 @@ export default {
         return false;
       }
     },
-    resize(el, binding, vNode) {//页面上的组件挪到位置
+    resize(el, binding, vNode) {//组件拉伸
       const that = vNode.context;
-      el.onmousedown = function () {
-        const disX = el.parentNode.offsetLeft;
-        const disY = el.parentNode.offsetTop;
+      el.onmousedown = function (e) {
+        const disX = e.clientX - el.parentNode.offsetWidth;
+        const disY = e.clientY - el.parentNode.offsetHeight;
         let cptWidth,cptHeight;
-        document.onmousemove = function (me) {//缩放时me对象焦点可能在内部组件聚焦
-          if (me.offsetX > 10 && me.offsetY > 10){//鼠标滑动区域还在拖动小方块内时，offsetX和offsetY小于小方块的宽高
-            cptWidth = me.offsetX - disX;
-            cptHeight = me.offsetY - disY;
-            cptWidth = cptWidth < 40 ? 40:cptWidth;//限制最小缩放
-            cptHeight = cptHeight < 20 ? 20:cptHeight;
-            el.parentNode.style.width = cptWidth + 'px';
-            el.parentNode.style.height = cptHeight + 'px';
-          }
+        document.onmousemove = function (me) {
+          cptWidth = me.clientX - disX;
+          cptHeight = me.clientY - disY;
+          cptWidth = cptWidth < 40 ? 40:cptWidth;//限制最小缩放
+          cptHeight = cptHeight < 20 ? 20:cptHeight;
+          el.parentNode.style.width = cptWidth + 'px';
+          el.parentNode.style.height = cptHeight+ 'px';
         }
         document.onmouseup = function () {
           document.onmousemove = document.onmouseup = null;
@@ -189,11 +188,11 @@ export default {
   margin: 0;font-size: 18px;line-height: 48px;background: #353F50}
 .webContainer {border: 1px dashed #ccc;margin: 10px auto;background: #2B3340;position: relative}
 .cptDiv {position: absolute;border: 1px dashed rgba(102, 177, 205, 0.6);}
-.delTag {width: 20px;height: 20px;background: #2b3340;border-radius: 2px;color: #ccc;
+.delTag {width: 20px;height: 20px;background: #2b3340;border-radius: 2px;color: #ccc;z-index: 2000;
   position: absolute;top: 0;right: 0;text-align: center;display: none
 }
 .delTag:hover {cursor: pointer}
 .cptDiv:hover .delTag {display: block}
-.resizeTag{width: 10px;height: 10px;position: absolute;bottom: -5px;right: -5px;background-color: #49586e;z-index: 1600;border-radius: 50%}
+.resizeTag{width: 10px;height: 10px;position: absolute;bottom: -5px;right: -5px;background-color: #49586e;z-index: 2600;border-radius: 50%}
 .resizeTag:hover{cursor: nwse-resize}
 </style>

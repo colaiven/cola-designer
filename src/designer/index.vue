@@ -160,7 +160,7 @@ export default {
         const disX = el.parentNode.offsetLeft;
         const disY = el.parentNode.offsetTop;
         let cptWidth,cptHeight;
-        document.onmousemove = function (me) {
+        document.onmousemove = function (me) {//缩放时me对象焦点可能在内部组件聚焦
           if (me.offsetX > 10 && me.offsetY > 10){//鼠标滑动区域还在拖动小方块内时，offsetX和offsetY小于小方块的宽高
             cptWidth = me.offsetX - disX;
             cptHeight = me.offsetY - disY;

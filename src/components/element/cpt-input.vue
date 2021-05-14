@@ -1,11 +1,8 @@
 <template>
   <div>
-    <el-form :model="option" :rel="option" style="width: 100%">
-      <el-form-item :style="{textAlign:option.textAlign}">
-        <span style="display: inline-block">{{ option.label }}：</span>
-        <el-input style="display: inline-block;" :style="{width:option.inputWidth}" v-model="option.value"
-                  :type="option.type" :placeholder="option.placeholderValue"
-        ></el-input>
+    <el-form :label-position="option.labelPosition" :label-width="option.labelWidth+'px'" :size="option.formSize">
+      <el-form-item :label="option.label">
+        <el-input v-model="option.value" :type="option.type" :placeholder="option.placeholderValue"/>
       </el-form-item>
     </el-form>
   </div>

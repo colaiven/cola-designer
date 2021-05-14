@@ -25,8 +25,9 @@ const cptOptions = {
                 placeholderValue: '请输入姓名',
                 value: '',
                 type: 'text',
-                inputWidth: '150px',
-                textAlign: 'center'
+                labelWidth: 80,
+                labelPosition: 'left',
+                formSize: 'mini'
             },
             'cpt-image-option':{
                 url:'https://cbu01.alicdn.com/img/ibank/O1CN016bJ3Hc26L0C9E6Nmw_!!3307277644-0-cib.220x220.jpg',

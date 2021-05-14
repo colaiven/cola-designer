@@ -10,7 +10,10 @@ export default {
   initWidth: 400,
   initHeight: 300,
   group: 'echarts',
-  props:{option:Object},
+  props:{
+    width:Number,
+    option:Object
+  },
   data(){
     return {
       uuid:'',
@@ -24,6 +27,9 @@ export default {
         this.loadChart(newObj);
       },
       deep: true//深度监听
+    },
+    width(){
+      this.chart.resize();
     }
   },
   created() {

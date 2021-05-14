@@ -24,8 +24,10 @@
                class="cptDiv" :style="{width:item.cptWidth+'px',height:item.cptHeight+'px',
                   top:item.cptY+'px',left:item.cptX+'px',zIndex:item.cptZ}"
                @click="showConfigBar(item,index)" :cptIndex="index">
-            <comment v-drag :is="item.cptName" :width="item.cptWidth" :height="item.cptHeight"
-                     :option="item.option" style="width: 100%;height: 100%"></comment>
+            <div v-dragParent style="width: 100%;height: 100%;overflow: auto;">
+              <comment :is="item.cptName" :width="item.cptWidth" :height="item.cptHeight"
+                       :option="item.option"></comment>
+            </div>
             <div class="delTag" @click.stop="delCpt(item)"><i class="el-icon-delete"/></div>
             <div class="resizeTag" v-resize></div>
           </div>
@@ -134,7 +136,7 @@ export default {
     }
   },
   directives: {
-    drag(el, binding, vNode) {//页面上的组件挪到位置
+    dragParent(el, binding, vNode) {//页面上的组件挪到位置
       const that = vNode.context;
       el.onmousedown = function (e) {
         const disX = e.clientX - el.parentNode.offsetLeft;

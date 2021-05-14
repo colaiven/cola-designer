@@ -174,7 +174,7 @@ export default {
           const cptIndex = el.parentNode.getAttribute('cptIndex');
           that.cacheComponents[cptIndex].cptWidth = cptWidth;
           that.cacheComponents[cptIndex].cptHeight = cptHeight;
-          console.log('缩放结束',that.cacheComponents[cptIndex])
+          that.$refs['configBar'].updateData(that.cacheComponents[cptIndex]);//解决缩放组件被遮挡时 配置栏数据不更新
         }
         return false;
       }

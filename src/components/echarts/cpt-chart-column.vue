@@ -7,8 +7,8 @@ export default {
   name: "cpt-chart-column",
   title: "柱状图",
   icon: 'el-icon-s-data',
-  initWidth: 400,
-  initHeight: 300,
+  initWidth: 256,
+  initHeight: 191,
   group: 'echarts',
   props:{
     width:Number,

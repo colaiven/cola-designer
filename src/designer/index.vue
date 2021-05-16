@@ -60,6 +60,7 @@ export default {
       configBarShow: false,
       currentCptIndex: 0,
       currentCpt: {option: undefined},
+      containerScale:1
     }
   },
   created() {
@@ -75,6 +76,7 @@ export default {
       }
       this.conWidth = tempWidth;
       this.conHeight = tempHeight;
+      this.containerScale = tempWidth / 1024//原始比例1024:576
     },
     submitDesign() {
       console.log('组件数据', this.cacheComponents)
@@ -117,7 +119,8 @@ export default {
       let config = JSON.parse(this.copyDom.getAttribute('config'));
       let cpt = {
         cptName: config.tag, cptX: e.offsetX, cptY: e.offsetY, cptZ: 1,
-        cptWidth: config.initWidth, cptHeight: config.initHeight,
+        cptWidth: Math.round(this.containerScale * config.initWidth),
+        cptHeight: Math.round(this.containerScale * config.initHeight),
         option: undefined
       }
       const group = cptOptions[config.group];
@@ -141,7 +144,7 @@ export default {
       el.onmousedown = function (e) {
         const disX = e.clientX - el.parentNode.offsetLeft;
         const disY = e.clientY - el.parentNode.offsetTop;
-        let cptX, cptY;
+        let cptX = e.clientX - disX, cptY = e.clientY - disY;
         document.onmousemove = function (me) {
           cptX = me.clientX - disX;
           cptY = me.clientY - disY;
@@ -190,7 +193,7 @@ export default {
   margin: 0;font-size: 18px;line-height: 48px;background: #353F50}
 .webContainer {border: 1px dashed #ccc;margin: 10px auto;background: #2B3340;position: relative}
 .cptDiv {position: absolute;border: 1px dashed rgba(102, 177, 205, 0.6);}
-.delTag {width: 20px;height: 20px;background: #2b3340;border-radius: 2px;color: #ccc;z-index: 2000;
+.delTag {width: 20px;height: 20px;background: rgba(43, 51, 64, 0.8);border-radius: 2px;color: #ccc;z-index: 2000;
   position: absolute;top: 0;right: 0;text-align: center;display: none
 }
 .delTag:hover {cursor: pointer}

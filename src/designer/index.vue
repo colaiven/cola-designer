@@ -31,7 +31,6 @@
             <div class="delTag" @click.stop="delCpt(item)"><i class="el-icon-delete"/></div>
             <div class="resizeTag" v-resize></div>
           </div>
-          {{cacheComponents}}
         </div>
       </div>
     </div>
@@ -76,13 +75,20 @@ export default {
       }
       this.conWidth = tempWidth;
       this.conHeight = tempHeight;
+      //缩放思路：组件尺寸始终保持1024为基准，保证在每台电脑上的尺寸一致，设计实时缩放，需同步更新配置栏数据
       this.containerScale = tempWidth / 1024//原始比例1024:576
     },
     submitDesign() {
       console.log('组件数据', this.cacheComponents)
     },
     preview() {
-      localStorage.setItem('cptCache', JSON.stringify(this.cacheComponents));
+      let designCache = {
+        title:'我的大屏',
+        bgColor:'#2B3340',
+        designScale:this.containerScale,
+        comments:this.cacheComponents
+      }
+      localStorage.setItem('designCache', JSON.stringify(designCache));
       window.open('/preview', '_blank')
     },
     delCpt(cpt) {

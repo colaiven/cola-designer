@@ -30,7 +30,7 @@ const cptOptions = {
                 formSize: 'mini'
             },
             'cpt-image-option':{
-                url:'https://cbu01.alicdn.com/img/ibank/O1CN016bJ3Hc26L0C9E6Nmw_!!3307277644-0-cib.220x220.jpg',
+                url:require('/src/assets/exam/btfGirl.png'),
                 fit:'fill',preview:false
             },
             'cpt-carousel-option':{

@@ -1,9 +1,9 @@
 <template>
-  <div>
-    <div v-for="(item,index) in pageComponents" :key="item+index"
+  <div v-if="containerScale">
+    <div v-for="(item,index) in designCache.comments" :key="item+index"
          style="position: absolute;overflow: auto"
          :style="{width:Math.round(containerScale * item.cptWidth)+'px',height:Math.round(containerScale * item.cptHeight)+'px',
-                  top:item.cptY+'px',left:item.cptX+'px',zIndex:item.cptZ}">
+                  top:Math.round(containerScale*item.cptY)+'px',left:Math.round(containerScale*item.cptX)+'px',zIndex:item.cptZ}">
       <comment :is="item.cptName" :width="item.cptWidth" :height="item.cptHeight"
                :option="item.option"></comment>
     </div>
@@ -15,8 +15,8 @@ export default {
   name: "preview_index",
   data(){
     return{
-      pageComponents:[],
-      containerScale:document.documentElement.clientWidth/1024
+      designCache:{},
+      containerScale:undefined
     }
   },
   created() {
@@ -24,7 +24,9 @@ export default {
   },
   methods:{
     loadCacheData(){
-      this.pageComponents = JSON.parse(localStorage.getItem('cptCache'));
+      let designCache = JSON.parse(localStorage.getItem('designCache'));
+      this.containerScale = document.documentElement.clientWidth/(1024 * designCache.designScale)
+      this.designCache = designCache;
     }
   }
 }

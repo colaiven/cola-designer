@@ -5,13 +5,17 @@
         <el-image style="width: 45px; height: 45px;padding: 0;margin: 0" :src="require('/src/assets/logo.png')"
                   fit="fill"></el-image>
       </el-col>
-      <el-col :span="3" align="left">
+      <el-col :span="3">
         <span class="el-icon-box lg" style="width: 30px"></span>
         <span>Cola Designer</span>
       </el-col>
-      <el-col :span="19" align="right">
-        <el-button size="small" @click="submitDesign" style="background: #d5d9e2;">保存</el-button>
-        <el-button size="small" @click="preview" style="margin-right: 20px;background: #49586e;color: #fff">预览</el-button>
+      <el-col :span="19">
+        <el-button size="small" @click="preview"
+                   style="margin: 10px 10px;background: #49586e;color: #fff;float: right">预览</el-button>
+        <el-button size="small" @click="submitDesign" style="margin: 10px 5px;background: #d5d9e2;float: right">保存</el-button>
+        <div style="float: right;margin: 5px 10px;" class="configBtn" @click="showConfigForm">
+          <i style="font-size: 22px;" class="el-icon-s-tools"></i>
+        </div>
       </el-col>
     </el-row>
     <div :style="{height: (windowHeight-50)+'px'}">
@@ -21,12 +25,13 @@
       <div style="float: left;" :style="{width:(windowWidth-cptBarWidth-10)+'px'}">
         <div class="webContainer" :style="{width:conWidth+'px',height:conHeight+'px'}" @dragover="allowDrop" @drop="drop">
           <div v-for="(item,index) in cacheComponents" :key="item+index"
-               class="cptDiv" :style="{width:item.cptWidth+'px',height:item.cptHeight+'px',
-                  top:item.cptY+'px',left:item.cptX+'px',zIndex:item.cptZ}"
-               @click="showConfigBar(item,index)" :cptIndex="index">
+               class="cptDiv" :style="{width:Math.round(containerScale*item.cptWidth)+'px',
+                  height:Math.round(containerScale*item.cptHeight)+'px',
+                  top:Math.round(containerScale*item.cptY)+'px',left:Math.round(containerScale*item.cptX)+'px',
+                  zIndex:item.cptZ}" @click="showConfigBar(item,index)" :cptIndex="index">
             <div v-dragParent style="width: 100%;height: 100%;overflow: auto;">
-              <comment :is="item.cptName" :width="item.cptWidth" :height="item.cptHeight"
-                       :option="item.option"></comment>
+              <comment :is="item.cptName" :width="Math.round(containerScale*item.cptWidth)"
+                       :height="Math.round(containerScale*item.cptHeight)" :option="item.option"/>
             </div>
             <div class="delTag" @click.stop="delCpt(item)"><i class="el-icon-delete"/></div>
             <div class="resizeTag" v-resize></div>
@@ -35,7 +40,8 @@
       </div>
     </div>
     <config-bar v-show="configBarShow" ref="configBar" @change="changeCpt" @close="closeConfigBar"
-                :currentCpt="currentCpt"></config-bar><!--右侧属性栏-->
+                :currentCpt="currentCpt"/><!--右侧属性栏-->
+    <config-form ref="configForm"/>
   </div>
 </template>
 
@@ -43,10 +49,11 @@
 import ComponentBar from "@/designer/componentBar";
 import ConfigBar from "@/designer/configBar";
 import cptOptions from "@/components/options"
+import ConfigForm from "@/designer/configForm";
 
 export default {
   name: 'design-index',
-  components: {ConfigBar, ComponentBar},
+  components: {ConfigForm, ConfigBar, ComponentBar},
   data() {
     return {
       cptBarWidth:200,
@@ -83,9 +90,7 @@ export default {
     },
     preview() {
       let designCache = {
-        title:'我的大屏',
-        bgColor:'#2B3340',
-        designScale:this.containerScale,
+        title:'我的大屏',bgColor:'#2B3340',
         comments:this.cacheComponents
       }
       localStorage.setItem('designCache', JSON.stringify(designCache));
@@ -124,10 +129,10 @@ export default {
     drop(e) {//从组件栏丢下组件
       let config = JSON.parse(this.copyDom.getAttribute('config'));
       let cpt = {
-        cptName: config.tag, cptX: e.offsetX, cptY: e.offsetY, cptZ: 1,
-        cptWidth: Math.round(this.containerScale * config.initWidth),
-        cptHeight: Math.round(this.containerScale * config.initHeight),
-        option: undefined
+        cptName: config.tag,cptZ: 1,option: undefined,
+        cptX: Math.round(e.offsetX / this.containerScale),
+        cptY: Math.round(e.offsetY / this.containerScale),
+        cptWidth: config.initWidth, cptHeight: config.initHeight
       }
       const group = cptOptions[config.group];
       if (group && group.options[config.tag + '-option']) {
@@ -142,6 +147,9 @@ export default {
     },
     closeConfigBar() {
       this.configBarShow = false
+    },
+    showConfigForm() {
+      this.$refs['configForm'].opened();
     }
   },
   directives: {
@@ -160,8 +168,9 @@ export default {
         document.onmouseup = function () {
           document.onmousemove = document.onmouseup = null;
           const cptIndex = el.parentNode.getAttribute('cptIndex')
-          that.cacheComponents[cptIndex].cptX = cptX;
-          that.cacheComponents[cptIndex].cptY = cptY;
+          //缩放适应不同屏幕，在容器显示时会重新*缩放比例
+          that.cacheComponents[cptIndex].cptX = Math.round(cptX/that.containerScale);
+          that.cacheComponents[cptIndex].cptY = Math.round(cptY/that.containerScale);
         }
         return false;
       }
@@ -183,8 +192,9 @@ export default {
         document.onmouseup = function () {
           document.onmousemove = document.onmouseup = null;
           const cptIndex = el.parentNode.getAttribute('cptIndex');
-          that.cacheComponents[cptIndex].cptWidth = cptWidth;
-          that.cacheComponents[cptIndex].cptHeight = cptHeight;
+          //拉伸适应不同屏幕，在容器显示时会重新*缩放比例
+          that.cacheComponents[cptIndex].cptWidth = Math.round(cptWidth/that.containerScale);
+          that.cacheComponents[cptIndex].cptHeight = Math.round(cptHeight/that.containerScale);
           that.$refs['configBar'].updateData(that.cacheComponents[cptIndex]);//解决缩放组件被遮挡时 配置栏数据不更新
         }
         return false;
@@ -206,4 +216,5 @@ export default {
 .cptDiv:hover .delTag {display: block}
 .resizeTag{width: 10px;height: 10px;position: absolute;bottom: -5px;right: -5px;background-color: #49586e;z-index: 2600;border-radius: 50%}
 .resizeTag:hover{cursor: nwse-resize}
+.configBtn:hover{cursor: pointer;color: #B6BFCE}
 </style>

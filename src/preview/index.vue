@@ -28,7 +28,7 @@ export default {
     loadCacheData(){
       let designCache = JSON.parse(localStorage.getItem('designCache'));
       document.title = designCache.title
-      this.containerScale = this.windowWidth/(1024 * designCache.designScale)
+      this.containerScale = this.windowWidth/1024
       this.designCache = designCache;
     }
   }

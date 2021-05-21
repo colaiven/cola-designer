@@ -11,8 +11,8 @@ export default {
   name: "cpt-text",
   title: '文字框',
   icon: 'el-icon-chat-line-square',
-  initWidth: 300,
-  initHeight: 50,
+  initWidth: 150,
+  initHeight: 30,
   group:'element',
   props: {
     option: Object

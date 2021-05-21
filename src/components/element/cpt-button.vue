@@ -13,8 +13,8 @@ export default {
   name: "cpt-button",
   title: "按钮",
   icon: 'el-icon-thumb',
-  initWidth: 150,
-  initHeight:40,
+  initWidth: 100,
+  initHeight: 30,
   group:'element',
   props:{option:Object},
   methods:{

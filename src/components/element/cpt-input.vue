@@ -14,7 +14,7 @@ export default {
   title: '输入框',
   icon: 'el-icon-edit-outline',
   initWidth: 200,
-  initHeight: 100,
+  initHeight: 50,
   group:'element',
   props: {
     option: Object

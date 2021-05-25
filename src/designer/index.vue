@@ -10,12 +10,17 @@
         <span>Cola Designer</span>
       </el-col>
       <el-col :span="19">
-        <el-button size="small" @click="preview"
-                   style="margin: 10px 10px;background: #49586e;color: #fff;float: right">预览</el-button>
+        <el-button size="small" @click="preview" style="margin: 10px 10px;
+            background: #49586e;color: #fff;float: right">预览</el-button>
         <el-button size="small" @click="submitDesign" style="margin: 10px 5px;background: #d5d9e2;float: right">保存</el-button>
-        <div style="float: right;margin: 5px 10px;" class="configBtn" @click="showConfigForm">
-          <i style="font-size: 22px;" class="el-icon-s-tools"></i>
+        <div style="float: right;margin: 4px 10px;" class="configBtn" @click="showConfigForm">
+          <i style="font-size: 22px;" class="el-icon-setting"></i>
         </div>
+        <el-popover style="float: right;margin: 4px 10px;"
+            placement="bottom" title="已选组件" width="200" trigger="click"
+            content="组件1">
+          <i slot="reference" style="font-size: 22px;" class="el-icon-tickets"></i>
+        </el-popover>
       </el-col>
     </el-row>
     <div :style="{height: (windowHeight-50)+'px'}">

@@ -17,8 +17,14 @@
           <i style="font-size: 22px;" class="el-icon-setting"></i>
         </div>
         <el-popover style="float: right;margin: 4px 10px;"
-            placement="bottom" title="已选组件" width="200" trigger="click"
-            content="组件1">
+            placement="bottom" title="已选组件" width="200" trigger="click">
+          <div style="overflow: auto" :style="{maxHeight:(conHeight-30)+'px'}">
+            <el-row v-for="(item,index) in cacheComponents" :key="item.cptTag+index+'x'" class="selectedItem">
+              <el-col :span="4" style="text-align: center"><i :class="item.icon"></i></el-col>
+              <el-col :span="20">{{item.cptName}}</el-col>
+            </el-row>
+          </div>
+
           <i slot="reference" style="font-size: 22px;" class="el-icon-tickets"></i>
         </el-popover>
       </el-col>
@@ -29,13 +35,13 @@
       </div>
       <div style="float: left;" :style="{width:(windowWidth-cptBarWidth-10)+'px'}">
         <div class="webContainer" :style="{width:conWidth+'px',height:conHeight+'px'}" @dragover="allowDrop" @drop="drop">
-          <div v-for="(item,index) in cacheComponents" :key="item+index"
+          <div v-for="(item,index) in cacheComponents" :key="item.cptTag+index"
                class="cptDiv" :style="{width:Math.round(containerScale*item.cptWidth)+'px',
                   height:Math.round(containerScale*item.cptHeight)+'px',
                   top:Math.round(containerScale*item.cptY)+'px',left:Math.round(containerScale*item.cptX)+'px',
                   zIndex:item.cptZ}" @click="showConfigBar(item,index)" :cptIndex="index">
             <div v-dragParent style="width: 100%;height: 100%;overflow: auto;">
-              <comment :is="item.cptName" :width="Math.round(containerScale*item.cptWidth)"
+              <comment :is="item.cptTag" :width="Math.round(containerScale*item.cptWidth)"
                        :height="Math.round(containerScale*item.cptHeight)" :option="item.option"/>
             </div>
             <div class="delTag" @click.stop="delCpt(item)"><i class="el-icon-delete"/></div>
@@ -71,7 +77,7 @@ export default {
       configBarShow: false,
       currentCptIndex: 0,
       currentCpt: {option: undefined},
-      containerScale:1
+      containerScale:1,
     }
   },
   created() {
@@ -106,7 +112,7 @@ export default {
       this.configBarShow = false;
     },
     changeCpt(position) {//基础属性修改
-      position.cptName = this.cacheComponents[this.currentCptIndex].cptName;
+      position.cptTag = this.cacheComponents[this.currentCptIndex].cptTag;
       position.option = this.cacheComponents[this.currentCptIndex].option;
       this.cacheComponents[this.currentCptIndex] = position
       this.cacheComponents.splice(0, 1, this.cacheComponents[0])
@@ -133,8 +139,10 @@ export default {
     allowDrop(e) {e.preventDefault()},
     drop(e) {//从组件栏丢下组件
       let config = JSON.parse(this.copyDom.getAttribute('config'));
+      console.log(config)
       let cpt = {
-        cptName: config.tag,cptZ: 1,option: undefined,
+        groupTag: config.group, cptName:config.name, icon: config.icon,
+        cptTag: config.tag, cptZ: 1, option: undefined,
         cptX: Math.round(e.offsetX / this.containerScale),
         cptY: Math.round(e.offsetY / this.containerScale),
         cptWidth: config.initWidth, cptHeight: config.initHeight
@@ -222,4 +230,6 @@ export default {
 .resizeTag{width: 10px;height: 10px;position: absolute;bottom: -5px;right: -5px;background-color: #49586e;z-index: 2600;border-radius: 50%}
 .resizeTag:hover{cursor: nwse-resize}
 .configBtn:hover{cursor: pointer;color: #B6BFCE}
+.selectedItem{margin-top: 2px;line-height: 35px;border-radius: 4px;}
+.selectedItem:hover{cursor: pointer;background: #ddd}
 </style>

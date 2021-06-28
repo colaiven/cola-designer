@@ -1,5 +1,5 @@
 <template>
-  <el-row style="position: fixed;width: 260px;height:400px;z-index: 2000;
+  <el-row style="position: fixed;width: 260px;height:400px;z-index: 2010;
       bottom: 60px;right: 20px;border-radius: 6px;background: rgba(228,230,236,.8);border: 1px solid #3F4B5F">
     <el-row v-drag class="cptTitle">
       <el-col :span="21"><div>组件属性</div></el-col>
@@ -35,7 +35,7 @@
       <el-tab-pane label="自定义属性" name="custom">
         <div v-show="!customOptionShow" style="text-align: center">未注册自定义组件属性</div>
         <div v-if="customOptionShow" class="customForm">
-          <comment :is="currentCpt.cptName+'-option'" :option="currentCpt.option"></comment>
+          <comment :is="currentCpt.cptTag+'-option'" :option="currentCpt.option"></comment>
         </div>
       </el-tab-pane>
     </el-tabs>
@@ -52,7 +52,7 @@ export default {
   watch:{
     currentCpt(newVal) {
       for (let i = 0; i < listOptions.length; i++) {
-        if(newVal.cptName+'-option' === listOptions[i]){
+        if(newVal.cptTag+'-option' === listOptions[i]){
           this.customOptionShow = true;
           return;
         }

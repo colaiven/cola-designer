@@ -10,8 +10,8 @@ Vue.config.productionTip = false
 Vue.use(ElementUI)
 
 const routes = {
-  '/': App,
-  '/preview': Preview
+  '/cola-designer/': App,
+  '/cola-designer/preview': Preview
 }
 
 new Vue({

@@ -105,7 +105,10 @@ export default {
         comments:this.cacheComponents
       }
       localStorage.setItem('designCache', JSON.stringify(designCache));
-      window.open('/cola-designer/preview', '_blank')
+      let routeUrl = this.$router.resolve({
+        path: "/preview"
+      });
+      window.open(routeUrl.href, '_blank');
     },
     delCpt(cpt) {
       this.cacheComponents.splice(this.cacheComponents.indexOf(cpt), 1);

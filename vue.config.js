@@ -3,4 +3,5 @@ module.exports = {
         disableHostCheck: true
     },
     publicPath: './',
+    outputDir: "docs",
 }

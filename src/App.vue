@@ -1,15 +1,12 @@
 <template>
   <div id="app">
-    <Designer/>
+    <router-view />
   </div>
 </template>
 
 <script>
-import Designer from './designer/index.vue'
-
 export default {
   name: 'App',
-  components: {Designer}
 }
 </script>
 

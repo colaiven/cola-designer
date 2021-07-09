@@ -12,7 +12,8 @@
     "echarts": "^4.9.0",
     "element-ui": "^2.15.0",
     "uuid": "^8.3.2",
-    "vue": "^2.6.11"
+    "vue": "^2.6.11",
+    "vue-router": "^3.5.2"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "~4.5.0",

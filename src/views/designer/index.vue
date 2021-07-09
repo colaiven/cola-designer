@@ -17,11 +17,12 @@
           <i style="font-size: 22px;" class="el-icon-setting"></i>
         </div>
         <el-popover style="float: right;margin: 4px 10px;"
-            placement="bottom" title="已选组件" width="200" trigger="click">
+                    placement="bottom" title="已选组件" width="200" trigger="click">
           <div style="overflow: auto" :style="{maxHeight:(conHeight-30)+'px'}">
             <el-row v-for="(item,index) in cacheComponents" :key="item.cptTag+index+'x'" class="selectedItem">
               <el-col :span="4" style="text-align: center"><i :class="item.icon"></i></el-col>
-              <el-col :span="20">{{item.cptName}}</el-col>
+              <el-col :span="17" @click.native="showConfigBar(item,index)">{{item.cptName}}</el-col>
+              <el-col :span="3" style="text-align: center" @click.native="delCpt(item,index)"><i class="el-icon-delete"></i></el-col>
             </el-row>
           </div>
 
@@ -39,12 +40,13 @@
                class="cptDiv" :style="{width:Math.round(containerScale*item.cptWidth)+'px',
                   height:Math.round(containerScale*item.cptHeight)+'px',
                   top:Math.round(containerScale*item.cptY)+'px',left:Math.round(containerScale*item.cptX)+'px',
-                  zIndex:item.cptZ}" @click="showConfigBar(item,index)" :cptIndex="index">
+                  zIndex:item.cptZ,border: currentCptIndex === index ? '1px dashed rgba(62, 250, 0, 0.6)':'1px dashed rgba(102, 177, 205, 0.6)'}"
+               @mousedown="showConfigBar(item,index)" :cptIndex="index">
             <div v-dragParent style="width: 100%;height: 100%;overflow: auto;">
               <comment :is="item.cptTag" :width="Math.round(containerScale*item.cptWidth)"
                        :height="Math.round(containerScale*item.cptHeight)" :option="item.option"/>
             </div>
-            <div class="delTag" @click.stop="delCpt(item)"><i class="el-icon-delete"/></div>
+            <div class="delTag" @click.stop="delCpt(item,index)"><i class="el-icon-delete"/></div>
             <div class="resizeTag" v-resize></div>
           </div>
         </div>
@@ -57,10 +59,10 @@
 </template>
 
 <script>
-import ComponentBar from "@/designer/componentBar";
-import ConfigBar from "@/designer/configBar";
+import ComponentBar from "@/views/designer/componentBar";
+import ConfigBar from "@/views/designer/configBar";
 import cptOptions from "@/components/options"
-import ConfigForm from "@/designer/configForm";
+import ConfigForm from "@/views/designer/configForm";
 
 export default {
   name: 'design-index',
@@ -110,9 +112,16 @@ export default {
       });
       window.open(routeUrl.href, '_blank');
     },
-    delCpt(cpt) {
-      this.cacheComponents.splice(this.cacheComponents.indexOf(cpt), 1);
-      this.configBarShow = false;
+    delCpt(cpt,index) {
+      //this.cacheComponents.splice(this.cacheComponents.indexOf(cpt), 1);
+      this.$confirm('删除'+cpt.cptName+'组件?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        this.cacheComponents.splice(index, 1);
+        this.configBarShow = false;
+      }).catch(() => {});
     },
     changeCpt(position) {//基础属性修改
       position.cptTag = this.cacheComponents[this.currentCptIndex].cptTag;
@@ -142,7 +151,6 @@ export default {
     allowDrop(e) {e.preventDefault()},
     drop(e) {//从组件栏丢下组件
       let config = JSON.parse(this.copyDom.getAttribute('config'));
-      console.log(config)
       let cpt = {
         groupTag: config.group, cptName:config.name, icon: config.icon,
         cptTag: config.tag, cptZ: 1, option: undefined,
@@ -224,7 +232,7 @@ export default {
 .top {height: 50px;box-shadow: 0 2px 5px #222 inset;color: #fff;overflow: hidden;
   margin: 0;font-size: 18px;line-height: 48px;background: #353F50}
 .webContainer {border: 1px dashed #ccc;margin: 10px auto;background: #2B3340;position: relative}
-.cptDiv {position: absolute;border: 1px dashed rgba(102, 177, 205, 0.6);}
+.cptDiv {position: absolute;}
 .delTag {width: 20px;height: 20px;background: rgba(43, 51, 64, 0.8);border-radius: 2px;color: #ccc;z-index: 2000;
   position: absolute;top: 0;right: 0;text-align: center;display: none
 }

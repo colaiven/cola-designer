@@ -105,7 +105,7 @@ export default {
         comments:this.cacheComponents
       }
       localStorage.setItem('designCache', JSON.stringify(designCache));
-      window.open('/preview', '_blank')
+      window.open('/cola-designer/preview', '_blank')
     },
     delCpt(cpt) {
       this.cacheComponents.splice(this.cacheComponents.indexOf(cpt), 1);

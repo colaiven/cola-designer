@@ -57,7 +57,7 @@ export default {
           return;
         }
       }
-      this.$message.warning('组件属性未注册')
+      this.$message.warning('组件属性表单未注册')
       this.customOptionShow = false;
     },
   },

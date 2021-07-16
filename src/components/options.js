@@ -56,6 +56,10 @@ const cptOptions = {
                 barWidth: 24,
                 xData: "Mon,Tue,Wed,Thu,Fri,Sat,Sun",
                 yData: "120,200,150,80,70,110,130"
+            },
+            'cpt-chart-pie-option': {
+                theme:'light',chartTitle: '标题一', titleLeft:'center', titleTop: 10, titleTextColor: '#ccc',
+                subtext:'纯属虚构',titleFontSize:18, orient: 'vertical'
             }
         }
     }

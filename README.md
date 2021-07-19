@@ -1,5 +1,7 @@
 # cola-designer-vue
+由于gitee的pages迟迟不上线，代码仓库已经移步到[github](https://github.com/colaiven/cola-designer )，gitee启用远程同步
 
+预览地址：https://colaiven.github.io/cola-designer/#/
 #### Project setup
 ```
 yarn install

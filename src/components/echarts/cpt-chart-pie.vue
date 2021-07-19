@@ -6,7 +6,7 @@
 export default {
   name: "cpt-chart-pie",
   title: "饼图",
-  icon: 'el-icon-s-data',
+  icon: 'el-icon-pie-chart',
   initWidth: 256,
   initHeight: 191,
   group: 'echarts',
@@ -36,7 +36,7 @@ export default {
     this.uuid = require('uuid').v1();
   },
   mounted() {
-    this.chart = this.$echarts.init(document.getElementById(this.uuid), this.option.theme);
+    this.chart = this.$echarts.init(document.getElementById(this.uuid));
     this.loadChart(this.option);
   },
   methods:{
@@ -47,8 +47,8 @@ export default {
           text: option.chartTitle,
           //backgroundColor: '#EEE',
           subtext: option.subtext,
-          left: option.titleLeft,
-          top:option.titleTop,
+          left: option.titleX,
+          top:option.titleY,
           textStyle: { fontSize: option.titleFontSize, color: option.titleTextColor },
           // 副标题文本样式设置
           subtextStyle: { fontSize: 12, color: '#aaa' }
@@ -58,25 +58,27 @@ export default {
         },
         legend: {
           orient: option.orient,
-          left: 'left',
+          x: option.legendX,
+          y: option.legendY,
+          textStyle:{
+            color: option.legendTextColor
+          }
         },
         series: [
           {
             name: '访问来源',
             type: 'pie',
             radius: '50%',
-            data: [
-              {value: 1048, name: '搜索引擎'},
-              {value: 735, name: '直接访问'},
-              {value: 580, name: '邮件营销'},
-              {value: 484, name: '联盟广告'},
-              {value: 300, name: '视频广告'}
-            ],
+            label: {
+              fontSize: 14,
+              color: '#ddd'
+            },
+            data: JSON.parse(option.seriesData),
             emphasis: {
               itemStyle: {
                 shadowBlur: 10,
                 shadowOffsetX: 0,
-                shadowColor: 'rgba(0, 0, 0, 0.5)'
+                shadowColor: 'rgba(255, 0, 0, 0.5)'
               }
             }
           }

@@ -113,19 +113,19 @@ export default {
       window.open(routeUrl.href, '_blank');
     },
     delCpt(cpt,index) {
-      //this.cacheComponents.splice(this.cacheComponents.indexOf(cpt), 1);
-      this.$confirm('删除'+cpt.cptName+'组件?', '提示', {
+      this.cacheComponents.splice(index, 1);
+      /*this.$confirm('删除'+cpt.cptName+'组件?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
         this.cacheComponents.splice(index, 1);
         this.configBarShow = false;
-      }).catch(() => {});
+      }).catch(() => {});*/
     },
     changeCpt(position) {//基础属性修改
       position.cptTag = this.cacheComponents[this.currentCptIndex].cptTag;
-      position.option = this.cacheComponents[this.currentCptIndex].option;
+      position.option = this.cacheComponents[this.currentCptIndex].option;//这俩句突然搞忘了为啥存在，空了再来看看
       this.cacheComponents[this.currentCptIndex] = position
       this.cacheComponents.splice(0, 1, this.cacheComponents[0])
     },
@@ -133,11 +133,10 @@ export default {
       this.currentCpt = item;
       this.currentCptIndex = index;
       let currentCptPosition = {
+        groupTag:item.groupTag, cptName:item.cptName, icon:item.icon,
         cptWidth: item.cptWidth,
         cptHeight: item.cptHeight,
-        cptX: item.cptX,
-        cptY: item.cptY,
-        cptZ: item.cptZ
+        cptX: item.cptX, cptY: item.cptY, cptZ: item.cptZ
       }
       this.$refs['configBar'].updateData(currentCptPosition);
       if (this.configBarShow === false) {

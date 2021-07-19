@@ -58,8 +58,12 @@ const cptOptions = {
                 yData: "120,200,150,80,70,110,130"
             },
             'cpt-chart-pie-option': {
-                theme:'light',chartTitle: '标题一', titleLeft:'center', titleTop: 10, titleTextColor: '#ccc',
-                subtext:'纯属虚构',titleFontSize:18, orient: 'vertical'
+                theme:'light',chartTitle: '标题一', titleX: 40, titleY: 'top', titleTextColor: '#ccc',
+                subtext:'纯属虚构',titleFontSize:18, orient: 'horizontal',legendTextColor:'#ddd',legendX:'center',
+                legendY:'bottom',seriesData:"[{\"value\":1048,\"name\":\"搜索引擎\"},{\"value\":735,\"name\":\"直接访问\"},{\"value\":580,\"name\":\"邮件营销\"},{\"value\":484,\"name\":\"联盟广告\"},{\"value\":300,\"name\":\"视频广告\"}]"
+            },
+            'cpt-chart-clock-option':{
+                axisLineWidth: 6,axisLabelSize:24,hourPointerColor:'#C0911F'
             }
         }
     }

@@ -76,6 +76,7 @@ export default {
             color: option.yLabelColor
           },
           axisLine:{
+            show: true,
             lineStyle:{
               color: option.yLineColor
             }
@@ -96,9 +97,7 @@ export default {
           },
           barWidth: option.barWidth,
           itemStyle: {
-            normal: {
-              barBorderRadius: option.barBorderRadius
-            }
+            borderRadius: option.barBorderRadius
           }
         }]
       };

@@ -3227,12 +3227,13 @@ ecc-jsbn@~0.1.1:
     jsbn "~0.1.0"
     safer-buffer "^2.1.0"
 
-echarts@^4.9.0:
-  version "4.9.0"
-  resolved "https://registry.nlark.com/echarts/download/echarts-4.9.0.tgz#a9b9baa03f03a2a731e6340c55befb57a9e1347d"
-  integrity sha1-qbm6oD8Doqcx5jQMVb77V6nhNH0=
+echarts@^5.0.1:
+  version "5.1.2"
+  resolved "https://registry.nlark.com/echarts/download/echarts-5.1.2.tgz#aa1ab0cef5b74fa2f7c620261a5f286893d30fd1"
+  integrity sha1-qhqwzvW3T6L3xiAmGl8oaJPTD9E=
   dependencies:
-    zrender "4.3.2"
+    tslib "2.0.3"
+    zrender "5.1.1"
 
 ee-first@1.1.1:
   version "1.1.1"
@@ -7814,6 +7815,11 @@ ts-pnp@^1.1.6:
   resolved "https://registry.npm.taobao.org/ts-pnp/download/ts-pnp-1.2.0.tgz#a500ad084b0798f1c3071af391e65912c86bca92"
   integrity sha1-pQCtCEsHmPHDBxrzkeZZEshrypI=
 
+tslib@2.0.3:
+  version "2.0.3"
+  resolved "https://registry.nlark.com/tslib/download/tslib-2.0.3.tgz#8e0741ac45fc0c226e58a17bfc3e64b9bc6ca61c"
+  integrity sha1-jgdBrEX8DCJuWKF7/D5kubxsphw=
+
 tslib@^1.9.0:
   version "1.14.1"
   resolved "https://registry.npm.taobao.org/tslib/download/tslib-1.14.1.tgz?cache=0&sync_timestamp=1609887446826&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Ftslib%2Fdownload%2Ftslib-1.14.1.tgz#cf2d38bdc34a134bcaf1091c41f6619e2f672d00"
@@ -8141,6 +8147,11 @@ vue-loader@^15.9.2:
     loader-utils "^1.1.0"
     vue-hot-reload-api "^2.3.0"
     vue-style-loader "^4.1.0"
+
+vue-router@^3.5.2:
+  version "3.5.2"
+  resolved "https://registry.nlark.com/vue-router/download/vue-router-3.5.2.tgz#5f55e3f251970e36c3e8d88a7cd2d67a350ade5c"
+  integrity sha1-X1Xj8lGXDjbD6NiKfNLWejUK3lw=
 
 vue-style-loader@^4.1.0, vue-style-loader@^4.1.2:
   version "4.1.2"
@@ -8502,7 +8513,9 @@ yorkie@^2.0.0:
     normalize-path "^1.0.0"
     strip-indent "^2.0.0"
 
-zrender@4.3.2:
-  version "4.3.2"
-  resolved "https://registry.npm.taobao.org/zrender/download/zrender-4.3.2.tgz?cache=0&sync_timestamp=1618215776804&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fzrender%2Fdownload%2Fzrender-4.3.2.tgz#ec7432f9415c82c73584b6b7b8c47e1b016209c6"
-  integrity sha1-7HQy+UFcgsc1hLa3uMR+GwFiCcY=
+zrender@5.1.1:
+  version "5.1.1"
+  resolved "https://registry.nlark.com/zrender/download/zrender-5.1.1.tgz#0515f4f8cc0f4742f02a6b8819550a6d13d64c5c"
+  integrity sha1-BRX0+MwPR0LwKmuIGVUKbRPWTFw=
+  dependencies:
+    tslib "2.0.3"

@@ -22,7 +22,7 @@
       <el-form-item label="y轴字体颜色">
         <el-color-picker v-model="option.yLabelColor" show-alpha/>
       </el-form-item>
-      <el-form-item label="y轴字体颜色">
+      <el-form-item label="y轴颜色">
         <el-color-picker v-model="option.yLineColor" show-alpha/>
       </el-form-item>
       <el-form-item label="y轴网格线">

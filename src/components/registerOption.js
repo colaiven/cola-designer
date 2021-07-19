@@ -7,10 +7,11 @@ import cpt_image_option from '@/components/element/options/cpt-image-option'
 import cpt_carousel_option from '@/components/element/options/cpt-carousel-option'
 import cpt_chart_column_option from '@/components/echarts/options/cpt-chart-column-option'
 import cpt_chart_pie_option from '@/components/echarts/options/cpt-chart-pie-option'
+import cpt_chart_clock_option from '@/components/echarts/options/cpt-chart-clock-option'
 
 let cptOptionsList = [
     cpt_button_option, cpt_text_option, cpt_input_option, cpt_image_option,
-    cpt_carousel_option, cpt_chart_column_option,cpt_chart_pie_option
+    cpt_carousel_option, cpt_chart_column_option,cpt_chart_pie_option,cpt_chart_clock_option
 ]
 let listOptions = [];
 cptOptionsList.forEach(ele => {

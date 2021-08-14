@@ -7,10 +7,12 @@ import cpt_image from '@/components/element/cpt-image'
 import cpt_chart_column from '@/components/echarts/cpt-chart-column'
 import cpt_chart_pie from '@/components/echarts/cpt-chart-pie'
 import cpt_chart_clock from '@/components/echarts/cpt-chart-clock'
+import cpt_dataV_border from '@/components/dataV/cpt-dataV-border'
 
 let cptList = [
+    cpt_dataV_border,
     cpt_input,cpt_text,cpt_carousel,cpt_button,cpt_image,
-    cpt_chart_column,cpt_chart_pie,cpt_chart_clock
+    cpt_chart_column,cpt_chart_pie,cpt_chart_clock,
 ]
 
 let cptGroups = {}

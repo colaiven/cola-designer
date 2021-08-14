@@ -1,7 +1,7 @@
 <template>
   <div>
     <el-form label-width="80px" size="mini">
-      <el-form-item label="图片">
+      <el-form-item label="图片地址">
         <el-input v-model="option.url"></el-input>
       </el-form-item>
       <el-form-item label="填充方式">

@@ -4,10 +4,12 @@ import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 import * as echarts from 'echarts'
 import router from './router'
+import dataV from '@jiaminghi/data-view'
 
 Vue.prototype.$echarts = echarts
 Vue.config.productionTip = false
 Vue.use(ElementUI)
+Vue.use(dataV)
 
 new Vue({
   router,

@@ -100,6 +100,7 @@ export default {
             }
           },
           splitLine: {
+            distance: option.splitLineDistance,
             lineStyle: {
               shadowColor: 'rgba(0, 0, 0, 0.3)',
               shadowBlur: 3,
@@ -109,7 +110,7 @@ export default {
           },
           axisLabel: {
             fontSize: option.axisLabelSize,//表盘字体大小
-            distance: 10,
+            distance: option.axisLabelDistance,
             formatter: function (value) {
               if (value === 0) {
                 return '';

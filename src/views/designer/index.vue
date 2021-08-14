@@ -2,22 +2,25 @@
   <div>
     <el-row class="top">
       <el-col :span="2" align="right" style="height: 100%;overflow: hidden;">
-        <el-image style="width: 45px; height: 45px;padding: 0;margin: 0" :src="require('/src/assets/logo.png')"
+        <el-image style="width: 40px; height: 40px;padding: 0;margin: 0" :src="require('/src/assets/logo.png')"
                   fit="fill"></el-image>
       </el-col>
       <el-col :span="3">
-        <span class="el-icon-box lg" style="width: 30px"></span>
+        <span class="el-icon-magic-stick lg" style="width: 30px"></span>
         <span>Cola Designer</span>
+        <a style="margin: 0 4px;" href='https://gitee.com/colaiven/cola-designer' target="_blank">
+          <el-image style="width: 50px; height: 16px;padding: 0;margin: 0" src='https://gitee.com/colaiven/cola-designer/badge/star.svg?theme=dark' alt='star'/>
+        </a>
       </el-col>
-      <el-col :span="19">
-        <el-button size="small" @click="preview" style="margin: 10px 10px;
+      <el-col :span="19" @click.self.native="outBlur">
+        <el-button size="mini" @click="preview" style="margin: 10px 10px;
             background: #49586e;color: #fff;float: right">预览</el-button>
-        <el-button size="small" @click="submitDesign" style="margin: 10px 5px;background: #d5d9e2;float: right">保存</el-button>
-        <div style="float: right;margin: 4px 10px;" class="configBtn" @click="showConfigForm">
+        <el-button size="mini" @click="submitDesign" style="margin: 10px 5px;background: #d5d9e2;float: right">保存</el-button>
+        <div style="float: right;margin: 1px 10px;" class="configBtn" @click="showConfigForm">
           <i style="font-size: 22px;" class="el-icon-setting"></i>
         </div>
-        <el-popover style="float: right;margin: 4px 10px;"
-                    placement="bottom" title="已选组件" width="200" trigger="click">
+        <el-popover style="float: right;margin: 1px 10px;"
+                    placement="bottom" title="已选图层" width="200" trigger="click">
           <div style="overflow: auto" :style="{maxHeight:(conHeight-30)+'px'}">
             <el-row v-for="(item,index) in cacheComponents" :key="item.cptTag+index+'x'" class="selectedItem">
               <el-col :span="4" style="text-align: center"><i :class="item.icon"></i></el-col>
@@ -30,17 +33,19 @@
         </el-popover>
       </el-col>
     </el-row>
-    <div :style="{height: (windowHeight-50)+'px'}">
+    <div :style="{height: (windowHeight-45)+'px'}">
       <div style="float: left;height: 100%;" :style="{width:cptBarWidth+'px'}">
         <component-bar @dragStart="dragStart"/><!--左侧组件栏-->
       </div>
-      <div style="float: left;" :style="{width:(windowWidth-cptBarWidth-10)+'px'}">
-        <div class="webContainer" :style="{width:conWidth+'px',height:conHeight+'px'}" @dragover="allowDrop" @drop="drop">
+      <div style="float: left;" :style="{width:(windowWidth-cptBarWidth-10)+'px'}" @click.self="outBlur">
+        <div class="webContainer" @click.self="outBlur" :style="{width:conWidth+'px',height:conHeight+'px',
+                  backgroundColor: designData.bgColor}" @dragover="allowDrop" @drop="drop">
           <div v-for="(item,index) in cacheComponents" :key="item.cptTag+index"
                class="cptDiv" :style="{width:Math.round(containerScale*item.cptWidth)+'px',
                   height:Math.round(containerScale*item.cptHeight)+'px',
                   top:Math.round(containerScale*item.cptY)+'px',left:Math.round(containerScale*item.cptX)+'px',
-                  zIndex:item.cptZ,border: currentCptIndex === index ? '1px dashed rgba(62, 250, 0, 0.6)':'1px dashed rgba(102, 177, 205, 0.6)'}"
+                  zIndex:item.cptZ,
+                  backgroundColor:currentCptIndex === index ? 'rgba(140, 197, 255, 0.4)':'#0000'}"
                @mousedown="showConfigBar(item,index)" :cptIndex="index">
             <div v-dragParent style="width: 100%;height: 100%;overflow: auto;">
               <comment :is="item.cptTag" :width="Math.round(containerScale*item.cptWidth)"
@@ -54,7 +59,7 @@
     </div>
     <config-bar v-show="configBarShow" ref="configBar" @change="changeCpt" @close="closeConfigBar"
                 :currentCpt="currentCpt"/><!--右侧属性栏-->
-    <config-form ref="configForm"/>
+    <config-form ref="configForm" :formData="designData" @saveConfigForm="saveConfigForm" @cancel="cancelConfigForm"/>
   </div>
 </template>
 
@@ -75,9 +80,13 @@ export default {
       conWidth: 0,
       conHeight: 0,
       copyDom: '',
+      designData:{
+        id:'',title:'我的大屏',bgColor:'#2B3340',simpleDesc:'',bgImg:'',viewCode:'',comments:[]
+      },
+      oldDesignData:'',//大屏参数表单未保存时还原
       cacheComponents:[],
       configBarShow: false,
-      currentCptIndex: 0,
+      currentCptIndex: -1,
       currentCpt: {option: undefined},
       containerScale:1,
     }
@@ -86,6 +95,10 @@ export default {
     this.initContainerSize();
   },
   methods: {
+    outBlur(){//取消聚焦组件
+      this.currentCptIndex = -1;
+      this.configBarShow = false;
+    },
     initContainerSize(){
       let tempWidth = this.windowWidth - this.cptBarWidth - 40;//流出空隙
       let tempHeight = tempWidth / 16 * 9;
@@ -99,14 +112,12 @@ export default {
       this.containerScale = tempWidth / 1024//原始比例1024:576
     },
     submitDesign() {
-      console.log('组件数据', this.cacheComponents)
+      this.designData.comments = this.cacheComponents;
+      console.log('组件数据', this.designData)
     },
     preview() {
-      let designCache = {
-        title:'我的大屏',bgColor:'#2B3340',
-        comments:this.cacheComponents
-      }
-      localStorage.setItem('designCache', JSON.stringify(designCache));
+      this.designData.comments = this.cacheComponents;
+      localStorage.setItem('designCache', JSON.stringify(this.designData));
       let routeUrl = this.$router.resolve({
         path: "/preview"
       });
@@ -114,6 +125,7 @@ export default {
     },
     delCpt(cpt,index) {
       this.cacheComponents.splice(index, 1);
+      this.configBarShow = false;
       /*this.$confirm('删除'+cpt.cptName+'组件?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
@@ -147,6 +159,12 @@ export default {
       this.copyDom = copyDom;
       copyDom.draggable = false;
     },
+    saveConfigForm(formData){
+      this.designData = formData;
+    },
+    cancelConfigForm(){
+      this.designData = JSON.parse(this.oldDesignData)
+    },
     allowDrop(e) {e.preventDefault()},
     drop(e) {//从组件栏丢下组件
       let config = JSON.parse(this.copyDom.getAttribute('config'));
@@ -172,6 +190,7 @@ export default {
       this.configBarShow = false
     },
     showConfigForm() {
+      this.oldDesignData = JSON.stringify(this.designData)//保存原有数据，点击取消时还原
       this.$refs['configForm'].opened();
     }
   },
@@ -228,10 +247,10 @@ export default {
 </script>
 
 <style scoped>
-.top {height: 50px;box-shadow: 0 2px 5px #222 inset;color: #fff;overflow: hidden;
+.top {height: 45px;box-shadow: 0 2px 5px #222 inset;color: #fff;overflow: hidden;
   margin: 0;font-size: 18px;line-height: 48px;background: #353F50}
-.webContainer {border: 1px dashed #ccc;margin: 10px auto;background: #2B3340;position: relative}
-.cptDiv {position: absolute;}
+.webContainer {border: 1px dashed #ccc;margin: 10px auto;position: relative}
+.cptDiv {position: absolute;border:1px dashed rgba(102, 177, 205, 0.6)}
 .delTag {width: 20px;height: 20px;background: rgba(43, 51, 64, 0.8);border-radius: 2px;color: #ccc;z-index: 2000;
   position: absolute;top: 0;right: 0;text-align: center;display: none
 }

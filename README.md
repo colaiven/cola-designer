@@ -1,5 +1,5 @@
 # cola-designer-vue
-由于gitee的pages迟迟不上线，代码仓库已经移步到[github](https://github.com/colaiven/cola-designer )，gitee启用远程同步
+由于gitee的pages迟迟不上线，代码仓库已经移步到[github](https://github.com/colaiven/cola-designer )，[gitee](https://gitee.com/colaiven/cola-designer )不定时同步
 
 预览地址：https://colaiven.github.io/cola-designer/#/
 #### Project setup
@@ -109,3 +109,13 @@ export default {
 #### Q：提示组件属性未注册
 
 ### 待优化项
+· 大屏尺寸自定义（目前固定为16:9）
+
+· 宽高100%组件拉伸滚动条常驻现象
+
+· 添加更多的组件
+
+· 示例模板
+
+· 后端对接
+

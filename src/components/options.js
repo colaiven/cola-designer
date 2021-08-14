@@ -4,6 +4,12 @@ const cptOptions = {
         icon:'',
         opened:true,
         options:{
+            'cpt-dataV-border-option':{
+                borderType:'dv-border-box-1',
+                borderColor1:'#409eff',borderColor2:'#f00',backgroundColor:'rgba(0, 0, 0, 0)',
+                borderTitle:'标题1',titleWidth:250,//样式11特殊配置
+                dur:3, reverse:false//样式8特殊配置
+            },
             'cpt-button-option': {
                 text: '按钮1', url: '', bgColor: '#409eff', textColor: '#fff',
                 radius: 6,
@@ -63,7 +69,8 @@ const cptOptions = {
                 legendY:'bottom',seriesData:"[{\"value\":1048,\"name\":\"搜索引擎\"},{\"value\":735,\"name\":\"直接访问\"},{\"value\":580,\"name\":\"邮件营销\"},{\"value\":484,\"name\":\"联盟广告\"},{\"value\":300,\"name\":\"视频广告\"}]"
             },
             'cpt-chart-clock-option':{
-                axisLineWidth: 6,axisLabelSize:24,hourPointerColor:'#C0911F'
+                axisLineWidth: 3,axisLabelSize:16,hourPointerColor:'#C0911F',axisLabelDistance:8,
+                splitLineDistance:4
             }
         }
     }

@@ -5,7 +5,7 @@
         <el-input v-model="option.label"></el-input>
       </el-form-item>
       <el-form-item label="label宽度">
-        <el-input-number v-model="option.labelWidth" min="20" max="1500"/>
+        <el-input-number v-model="option.labelWidth" :min="20" :max="1500"/>
       </el-form-item>
       <el-form-item label="提示内容">
         <el-input v-model="option.placeholderValue"></el-input>

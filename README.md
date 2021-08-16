@@ -1,7 +1,9 @@
 # cola-designer-vue
-由于gitee的pages迟迟不上线，代码仓库已经移步到[github](https://github.com/colaiven/cola-designer )，[gitee](https://gitee.com/colaiven/cola-designer )不定时同步
+gitee：[cola-designer-vue](https://gitee.com/colaiven/cola-designer )
 
-预览地址：https://colaiven.github.io/cola-designer/#/
+github：[~~cola-designer-vue(随缘更新)~~](https://github.com/colaiven/cola-designer )
+
+预览地址：http://colaiven.gitee.io/cola-designer/#/
 #### Project setup
 ```
 yarn install
@@ -109,13 +111,21 @@ export default {
 #### Q：提示组件属性未注册
 
 ### 待优化项
+· 组件重叠属性栏消失bug
+
 · 大屏尺寸自定义（目前固定为16:9）
+
+· 预览页面留白（目前可放大至全屏按f5刷新页面解决）
 
 · 宽高100%组件拉伸滚动条常驻现象
 
 · 添加更多的组件
 
-· 示例模板
+· 快捷复制组件
+
+· 示例模板（支持导入导出）
+
+· 大屏图片素材库
 
 · 后端对接
 

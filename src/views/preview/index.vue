@@ -1,13 +1,13 @@
 <template>
-  <div :style="{width: windowWidth+'px',height:windowHeight+'px',backgroundColor:designCache.bgColor}">
-    <div v-for="(item,index) in designCache.comments" :key="item+index"
+  <div :style="{width: windowWidth+'px',height: windowHeight+'px',backgroundColor: designCache.bgColor}" style="position:relative;overflow: hidden">
+    <div v-for="(item,index) in designCache.components" :key="item+index"
          style="position: absolute;overflow: auto"
          :style="{width:Math.round(containerScale * item.cptWidth)+'px',
                   height:Math.round(containerScale * item.cptHeight)+'px',
                   top:Math.round(containerScale*item.cptY)+'px',
                   left:Math.round(containerScale*item.cptX)+'px',
                   zIndex:item.cptZ}">
-      <comment :is="item.cptTag" :width="Math.round(containerScale * item.cptWidth)"
+      <comment :is="item.cptName" :width="Math.round(containerScale * item.cptWidth)"
                :height="Math.round(containerScale * item.cptHeight)"
                :option="item.option"/>
     </div>
@@ -21,7 +21,7 @@ export default {
     return{
       designCache:{},
       windowWidth:document.documentElement.clientWidth,
-      windowHeight:document.documentElement.clientHeight,
+      windowHeight: document.documentElement.clientHeight,
       containerScale:1
     }
   },
@@ -30,6 +30,7 @@ export default {
   },
   methods:{
     loadCacheData(){
+      this.windowHeight = this.windowWidth/16*9;
       let designCache = JSON.parse(localStorage.getItem('designCache'));
       document.title = designCache.title
       this.containerScale = this.windowWidth/1024

@@ -6,6 +6,10 @@ import * as echarts from 'echarts'
 import router from './router'
 import dataV from '@jiaminghi/data-view'
 
+//注册echarts地图
+import chinaGeoJson from '@/assets/map/china.json'
+echarts.registerMap('china', chinaGeoJson);
+
 Vue.prototype.$echarts = echarts
 Vue.config.productionTip = false
 Vue.use(ElementUI)

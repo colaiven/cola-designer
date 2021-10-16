@@ -15,7 +15,7 @@ export default {
   icon: 'el-icon-edit-outline',
   initWidth: 200,
   initHeight: 50,
-  group:'element',
+  group:'basic',
   props: {
     option: Object
   },

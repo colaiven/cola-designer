@@ -11,7 +11,7 @@ export default {
   name: "cpt-image",
   title: '图片',
   icon: 'el-icon-picture-outline',
-  group:'element',
+  group:'basic',
   props: {option: Object},
   data() {
     return {

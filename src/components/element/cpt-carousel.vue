@@ -13,7 +13,7 @@ export default {
   name: "cpt-carousel",
   title: '走马灯',
   icon: 'el-icon-money',
-  group:'element',
+  group:'basic',
   props:{
     height:{type:Number,default:168},
     option:Object

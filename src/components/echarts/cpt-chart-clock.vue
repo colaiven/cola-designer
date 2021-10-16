@@ -14,7 +14,7 @@ export default {
   icon: 'el-icon-time',
   initWidth: 256,
   initHeight: 191,
-  group: 'echarts',
+  group: 'chart',
   props:{
     width:Number,
     option:Object

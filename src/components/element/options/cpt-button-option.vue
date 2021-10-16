@@ -1,9 +1,6 @@
 <template>
   <div>
     <el-form label-width="80px" size="mini">
-      <el-form-item label="文本">
-        <el-input v-model="option.text"/>
-      </el-form-item>
       <el-form-item label="跳转路径">
         <el-input v-model="option.url"/>
       </el-form-item>

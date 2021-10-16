@@ -34,10 +34,15 @@
       <el-form-item label="图例文字颜色">
         <el-color-picker v-model="option.legendTextColor" show-alpha/>
       </el-form-item>
-    </el-form>
-    <el-form label-position="top">
-      <el-form-item label="数据">
-        <el-input type="textarea" :rows="4" v-model="option.seriesData"/>
+      <el-form-item label="大饼颜色">
+        <div>
+          <div v-for="(item,index) in option.pieColor" :key="index" class="colorBlock" :style="{backgroundColor:item}">
+            <div class="delTag" @click="delColor(index)">
+              <i class="el-icon-delete"></i>
+            </div>
+          </div>
+          <el-color-picker v-model="tempColor" show-alpha @change="addColor"/>
+        </div>
       </el-form-item>
     </el-form>
   </div>
@@ -47,9 +52,24 @@
 export default {
   name: "cpt-chart-pie-option",
   props: { option: Object },
+  data(){
+    return {
+      tempColor:''
+    }
+  },
+  methods:{
+    addColor(){
+      this.option.pieColor.push(this.tempColor)
+    },
+    delColor(index){
+      this.option.pieColor.splice(index, 1);
+    }
+  }
 }
 </script>
 
 <style scoped>
-
+.colorBlock{float: left; width: 25px;height: 25px;margin-right: 2px;}
+.colorBlock:hover .delTag{display: inline-block}
+.delTag{width: 100%;height: 100%;display: none;text-align: center;font-size: 18px;color: #fff}
 </style>

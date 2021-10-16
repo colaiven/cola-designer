@@ -9,7 +9,7 @@ export default {
   icon: 'el-icon-pie-chart',
   initWidth: 256,
   initHeight: 191,
-  group: 'echarts',
+  group: 'chart',
   props:{
     width:Number,
     option:Object
@@ -19,6 +19,7 @@ export default {
       uuid:'',
       chartOption:{},
       chart:undefined,
+      cptData:[]
     }
   },
   watch:{
@@ -37,15 +38,22 @@ export default {
   },
   mounted() {
     this.chart = this.$echarts.init(document.getElementById(this.uuid));
-    this.loadChart(this.option);
+    this.refreshCptData();
   },
   methods:{
+    refreshCptData(){
+      this.cptData = JSON.parse(this.option.cptDataForm.dataText)
+      if(this.option.cptDataForm.dataSource === 2){//调接口
+        this.$message.warning('接口还未实现')
+      }
+      this.loadChart(this.option);
+    },
     loadChart(option){
       const that = this;
       that.chartOption = {
+        color: option.pieColor,
         title: {
           text: option.chartTitle,
-          //backgroundColor: '#EEE',
           subtext: option.subtext,
           left: option.titleX,
           top:option.titleY,
@@ -73,7 +81,7 @@ export default {
               fontSize: 14,
               color: '#ddd'
             },
-            data: JSON.parse(option.seriesData),
+            data: this.cptData,
             emphasis: {
               itemStyle: {
                 shadowBlur: 10,

@@ -1,8 +1,10 @@
 <template>
   <div>
     <el-form label-width="80px" size="mini">
-      <el-form-item label="文本">
-        <el-input v-model="option.text"></el-input>
+      <el-form-item label="字体">
+        <el-select v-model="option.textFamily">
+          <el-option v-for="(item,index) in textFamilyList" :key="index+item" :label="item" :value="item"/>
+        </el-select>
       </el-form-item>
       <el-form-item label="颜色">
         <el-color-picker v-model="option.textColor" show-alpha></el-color-picker>
@@ -20,11 +22,6 @@
           <el-option label="正常" value="normal"/>
           <el-option label="斜体" value="italic"/>
           <el-option label="倾斜" value="oblique"/>
-        </el-select>
-      </el-form-item>
-      <el-form-item label="字体">
-        <el-select v-model="option.textFamily">
-          <el-option v-for="(item,index) in textFamilyList" :key="index+item" :label="item" :value="item"/>
         </el-select>
       </el-form-item>
       <el-form-item label="文字大小">

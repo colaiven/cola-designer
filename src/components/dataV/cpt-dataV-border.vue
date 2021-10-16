@@ -13,7 +13,7 @@ export default {
   icon: 'el-icon-help',
   initWidth: 256,
   initHeight: 191,
-  group: 'element',
+  group: 'basic',
   props:{
     width:Number,
     height:Number,

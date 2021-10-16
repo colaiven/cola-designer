@@ -8,12 +8,12 @@
         </div>
       </div>
       <el-row :gutter="2" v-show="group.opened">
-        <el-col :span="12" v-for="(item,index) in cptGroups[group.key]" :key="item.name+index">
+        <el-col :span="12" v-for="(item,index) in cptGroups[group.key]" :key="item.title+'c'+index">
           <div draggable="true" :config="JSON.stringify(item)" @dragstart="dragStart"
                style="background-color: #49586E;height: 70px;text-align: center;margin-top: 2px;">
             <div style="font-size: 20px;line-height: 40px;"><i :class="item.icon?item.icon:'el-icon-question'"></i>
             </div>
-            <div style="font-size: 13px">{{ item.name }}</div>
+            <div style="font-size: 13px">{{ item.title }}</div>
           </div>
         </el-col>
       </el-row>
@@ -30,8 +30,7 @@ export default {
   data() {
     return {
       cptGroups,cptOptions,
-      cptGroupKeys:[],
-      openedKey:''
+      cptGroupKeys:[]
     }
   },
   created() {
@@ -43,7 +42,6 @@ export default {
         opened:cptOptions[key].opened
       })
     }
-    this.openedKey = this.cptGroupKeys[0]
   },
   methods: {
     dragStart(e) {

@@ -30,10 +30,10 @@ export default {
   },
   methods:{
     loadCacheData(){
-      this.windowHeight = this.windowWidth/16*9;
       let designCache = JSON.parse(localStorage.getItem('designCache'));
+      this.windowHeight = Math.round(this.windowWidth / designCache.scaleX * designCache.scaleY);
       document.title = designCache.title
-      this.containerScale = this.windowWidth/1024
+      this.containerScale = this.windowWidth / 1024
       this.designCache = designCache;
     }
   }

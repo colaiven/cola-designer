@@ -38,7 +38,7 @@
           <i style="font-size: 22px;" class="el-icon-delete"/>
         </div>
         <div style="float: right;margin: 0 10px;">
-          <el-dropdown @command="handleCommand">
+          <el-dropdown @command="exportCommand">
             <span class="el-dropdown-link">
               导出<i class="el-icon-arrow-down el-icon--right"></i>
             </span>
@@ -82,7 +82,8 @@
     </div>
     <config-bar ref="configBar" @change="changeCpt"
                 :currentCpt="currentCpt" @refreshCptData="refreshCptData"/><!--右侧属性栏-->
-    <config-form ref="configForm" :formData="designData" @saveConfigForm="saveConfigForm" @cancel="cancelConfigForm"/>
+    <config-form ref="configForm" :formData="designData" @saveConfigForm="saveConfigForm"
+                 @cancel="cancelConfigForm" @updateScale="initContainerSize"/>
   </div>
 </template>
 
@@ -92,6 +93,7 @@ import ConfigBar from "@/views/designer/configBar";
 import cptOptions from "@/components/options"
 import ConfigForm from "@/views/designer/configForm";
 import html2canvas from 'html2canvas';
+import {fileDownload} from '@/utils/fileUtil'
 
 export default {
   name: 'design-index',
@@ -105,7 +107,8 @@ export default {
       conHeight: 0,
       copyDom: '',
       designData:{
-        id:'',title:'我的大屏',bgColor:'#2B3340',simpleDesc:'',bgImg:'',viewCode:'',components:[]
+        id:'',title:'我的大屏', scaleX:16, scaleY:9,
+        bgColor:'#2B3340',simpleDesc:'',bgImg:'',viewCode:'',components:[]
       },
       oldDesignData:'',//大屏参数表单未保存时还原
       cacheComponents:[],
@@ -119,29 +122,32 @@ export default {
     this.loadCacheData();
   },
   methods: {
-    handleCommand(command) {
+    initContainerSize(){
+      let tempWidth = this.windowWidth - this.cptBarWidth - 40;//流出空隙
+      let tempHeight = tempWidth / this.designData.scaleX * this.designData.scaleY;
+      if (tempHeight > this.windowHeight - 88){//上下边框各占1px
+        tempHeight = this.windowHeight - 88;
+        tempWidth = tempHeight / this.designData.scaleY * this.designData.scaleX
+      }
+      this.conWidth = tempWidth;
+      this.conHeight = tempHeight;
+      //缩放思路：组件尺寸始终保持1024为基准，保证在每台电脑上的尺寸一致，设计实时缩放，需同步更新配置栏数据
+      this.containerScale = tempWidth / 1024//原始比例1024:576  16:9
+    },
+    exportCommand(command) {
       if(command === 'img'){
         html2canvas(this.$refs.webContainer, {
           backgroundColor: '#ffffff'
         }).then(canvas => {
           const imgUrl = canvas.toDataURL("image/jpeg");
-          this.fileDownload(imgUrl,'.png');
+          fileDownload(imgUrl,this.designData.title+'.png');
         })
       }else if(command === 'json'){
         this.designData.comments = this.cacheComponents;
         const data = JSON.stringify(this.designData)
         let uri = 'data:text/csv;charset=utf-8,\ufeff' + encodeURIComponent(data);//encodeURIComponent解决中文乱码
-        this.fileDownload(uri,'.json');
+        fileDownload(uri,this.designData.title+'.json');
       }
-    },
-    fileDownload(downloadUrl,suffix) {
-      let aLink = document.createElement("a");
-      aLink.style.display = "none";
-      aLink.href = downloadUrl;
-      aLink.download = this.designData.title+suffix;
-      document.body.appendChild(aLink);
-      aLink.click();
-      document.body.removeChild(aLink);
     },
     clearDesign(){
       this.$confirm('此操作将会清空图层，是否继续？', '警告', {
@@ -183,18 +189,7 @@ export default {
       this.currentCpt = undefined;
       //this.configBarShow = false;
     },
-    initContainerSize(){
-      let tempWidth = this.windowWidth - this.cptBarWidth - 40;//流出空隙
-      let tempHeight = tempWidth / 16 * 9;
-      if (tempHeight > this.windowHeight - 88){//上下边框各占1px
-        tempHeight = this.windowHeight - 88;
-        tempWidth = tempHeight / 9 * 16
-      }
-      this.conWidth = tempWidth;
-      this.conHeight = tempHeight;
-      //缩放思路：组件尺寸始终保持1024为基准，保证在每台电脑上的尺寸一致，设计实时缩放，需同步更新配置栏数据
-      this.containerScale = tempWidth / 1024//原始比例1024:576  16:9
-    },
+
     submitDesign() {//保存到缓存
       this.designData.components = this.cacheComponents;
       localStorage.setItem('designCache', JSON.stringify(this.designData));
@@ -243,7 +238,8 @@ export default {
       this.designData = formData;
     },
     cancelConfigForm(){//设置表单关闭
-      this.designData = JSON.parse(this.oldDesignData)
+      this.designData = JSON.parse(this.oldDesignData);
+      this.initContainerSize();//待优化
     },
     allowDrop(e) {e.preventDefault()},
     drop(e) {//从组件栏丢下组件

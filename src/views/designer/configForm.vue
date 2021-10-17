@@ -8,6 +8,11 @@
         <el-form-item label="网站描述">
           <el-input type="textarea" v-model="formData.simpleDesc"></el-input>
         </el-form-item>
+        <el-form-item label="屏幕比例">
+          <el-select v-model="scale" placeholder="请选择" style="width: 100%" @change="scaleChange">
+            <el-option v-for="item in scaleOptions" :key="item.value" :label="item.label" :value="item.value"/>
+          </el-select>
+        </el-form-item>
         <el-form-item label="背景颜色">
           <el-color-picker v-model="formData.bgColor" show-alpha/>
         </el-form-item>
@@ -32,7 +37,7 @@
       </el-form>
       <div style="text-align: center;margin-top: 10px;">
         <el-button @click="close" size="small">取 消</el-button>
-        <el-button style="background: #2B3340;color: #eee" @click="save" size="small">保 存</el-button>
+        <el-button style="background: #2B3340;color: #eee" @click="save" size="small">确 定</el-button>
       </div>
     </el-dialog>
   </div>
@@ -46,11 +51,20 @@ export default {
   },
   data(){
     return {
-      dialogVisible:false
+      dialogVisible:false,
+      scale:'',
+      scaleOptions: [
+          { value: '18*9', label: '18 : 9'},
+          { value: '16*9', label: '16 : 9'},
+          { value: '4*3', label: '4 : 3'},
+          { value: '3*2', label: '3 : 2'},
+          { value: '1*1', label: '1 : 1'}
+      ]
     }
   },
   methods:{
     opened(){
+      this.scale = this.formData.scaleX + '*' + this.formData.scaleY
       this.dialogVisible = true;
     },
     close(){
@@ -60,6 +74,12 @@ export default {
     save(){
       this.$emit('saveConfigForm',JSON.parse(JSON.stringify(this.formData)));
       this.dialogVisible = false
+    },
+    scaleChange(value){//关闭时待优化
+      let split = value.split('*');
+      this.formData.scaleX = split[0]
+      this.formData.scaleY = split[1]
+      this.$emit('updateScale');
     },
     handleAvatarSuccess(){
 

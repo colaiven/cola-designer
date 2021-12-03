@@ -1,7 +1,7 @@
 <template>
-  <el-row style="width:100%;height:100%;background: #3F4B5F;z-index: 2000;color: #fff;overflow-x:hidden;overflow-y: auto">
+  <el-row style="width:100%;height:100%;background: #3F4B5F;color: #fff;overflow-x:hidden;overflow-y: auto">
     <div v-for="group in cptGroupKeys" :key="group.key">
-      <div style="line-height: 45px;" class="hoverPointer" @click="group.opened = !group.opened">
+      <div style="line-height: 45px;cursor: pointer" @click="group.opened = !group.opened">
         <div style="display: inline-block;text-indent: 1em;width: 170px;">{{group.name}}</div>
         <div style="display: inline-block;">
           <i :class="group.opened ? 'el-icon-arrow-down':'el-icon-arrow-right'"></i>

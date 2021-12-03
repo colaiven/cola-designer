@@ -9,6 +9,8 @@
 </template>
 
 <script>
+import {getDataStr, pollingRefresh} from "@/utils/refreshCptData";
+
 export default {
   name: "cpt-button",
   title: "按钮",
@@ -19,18 +21,22 @@ export default {
   props:{option:Object},
   data() {
     return {
-      cptData: ''
+      cptData: '',
+      uuid: null
     }
   },
   created() {
+    this.uuid = require('uuid').v1();
     this.refreshCptData();
   },
   methods:{
     refreshCptData(){
-      this.cptData = this.option.cptDataForm.dataText
-      if(this.option.cptDataForm.dataSource === 2){//调接口
-        this.$message.warning('接口还未实现')
-      }
+      pollingRefresh(this.uuid, this.option.cptDataForm, this.loadData)
+    },
+    loadData(){
+      getDataStr(this.option.cptDataForm).then(res => {
+        this.cptData = res;
+      });
     },
     redirect(){
       if(this.option.url){

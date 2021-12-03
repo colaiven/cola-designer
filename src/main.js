@@ -5,6 +5,7 @@ import 'element-ui/lib/theme-chalk/index.css'
 import * as echarts from 'echarts'
 import router from './router'
 import dataV from '@jiaminghi/data-view'
+import '@/permission' // permission control
 
 //注册echarts地图
 import chinaGeoJson from '@/assets/map/china.json'

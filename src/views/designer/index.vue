@@ -16,7 +16,7 @@
         <el-button size="mini" @click="preview" style="margin: 10px 10px;
             background: #49586e;color: #fff;float: right">预览</el-button>
         <el-button size="mini" @click="submitDesign" style="margin: 10px 5px;background: #d5d9e2;float: right">保存</el-button>
-        <div style="float: right;margin: 1px 10px;" class="configBtn" @click="showConfigForm">
+        <div style="float: right;margin: 1px 10px;" class="configBtn" @click="showSittingForm">
           <i style="font-size: 22px;" class="el-icon-setting"/>
         </div>
         <el-popover style="float: right;margin: 1px 10px;"
@@ -44,12 +44,12 @@
             </span>
             <el-dropdown-menu slot="dropdown">
               <el-dropdown-item command="img">图片</el-dropdown-item>
-              <el-dropdown-item command="json">JSON</el-dropdown-item>
+              <el-dropdown-item command="json">设计文件</el-dropdown-item>
             </el-dropdown-menu>
           </el-dropdown>
         </div>
-        <div style="float: right;margin: 0 10px;">
-          <span style="font-size: 14px;color: #aaa">导入</span>
+        <div style="float: right;margin: 0 10px;" @click="importDesign()">
+          <span style="font-size: 14px;cursor: pointer">导入</span>
         </div>
       </el-col>
     </el-row>
@@ -58,16 +58,17 @@
         <component-bar @dragStart="dragStart"/><!--左侧组件栏-->
       </div>
       <div style="float: left;" :style="{width:(windowWidth-cptBarWidth-10)+'px'}" @click.self="outBlur">
-        <div class="webContainer" :style="{width:conWidth+'px',height:conHeight+'px',
-                  backgroundColor: designData.bgColor}" @dragover="allowDrop" @drop="drop" ref="webContainer">
+        <div class="webContainer" :style="{width:conWidth+'px',height:conHeight+'px', backgroundColor: designData.bgColor,
+             backgroundImage: designData.bgImg ? 'url('+fileUrl+'/file/img/'+designData.bgImg+')':'none'}"
+             @dragover="allowDrop" @drop="drop" ref="webContainer">
           <div v-for="(item,index) in cacheComponents" :key="item.cptName+index"
-               :class="currentCptIndex === index ? {'focusCptClass':true}:{'cptDiv':true}"
+               :class="currentCptIndex === index ? 'focusCptClass' : 'cptDiv'"
                :style="{width:Math.round(containerScale*item.cptWidth)+'px',
                   height:Math.round(containerScale*item.cptHeight)+'px',
                   top:Math.round(containerScale*item.cptY)+'px',left:Math.round(containerScale*item.cptX)+'px',
-                  zIndex:item.cptZ}"
+                  zIndex: currentCptIndex === index ? 1800 : item.cptZ}"
                @mousedown="showConfigBar(item,index)" :cptIndex="index">
-            <div v-dragParent style="width: 100%;height: 100%;overflow: auto;">
+            <div v-dragParent style="width: 100%;height: 100%;">
               <comment :is="item.cptName" :ref="item.cptName+index" :width="Math.round(containerScale*item.cptWidth)"
                        :height="Math.round(containerScale*item.cptHeight)" :option="item.option"/>
             </div>
@@ -82,8 +83,9 @@
     </div>
     <config-bar ref="configBar" @change="changeCpt"
                 :currentCpt="currentCpt" @refreshCptData="refreshCptData"/><!--右侧属性栏-->
-    <config-form ref="configForm" :formData="designData" @saveConfigForm="saveConfigForm"
-                 @cancel="cancelConfigForm" @updateScale="initContainerSize"/>
+    <sitting-form ref="sittingForm" :formData="designData" @saveSittingForm="saveSittingForm"
+                 @cancel="cancelSittingForm" @updateScale="initContainerSize"/>
+    <input v-show="false" type="file" id="files" ref="refFile" @change="fileLoad" accept=".cd">
   </div>
 </template>
 
@@ -91,23 +93,33 @@
 import ComponentBar from "@/views/designer/componentBar";
 import ConfigBar from "@/views/designer/configBar";
 import cptOptions from "@/components/options"
-import ConfigForm from "@/views/designer/configForm";
+import SittingForm from "@/views/designer/sittingForm";
 import html2canvas from 'html2canvas';
-import {fileDownload} from '@/utils/fileUtil'
+import {fileDownload, base64toFile} from '@/utils/FileUtil'
+import env from "/env";
+import {saveOrUpdateApi,uploadFileApi, getByIdApi} from "@/api/DesignerApi";
+import {clearCptInterval} from "@/utils/refreshCptData";
 
 export default {
   name: 'design-index',
-  components: {ConfigForm, ConfigBar, ComponentBar},
+  components: {SittingForm, ConfigBar, ComponentBar},
+  computed:{
+    windowWidth(){
+      return document.documentElement.clientWidth;
+    },
+    windowHeight(){
+      return document.documentElement.clientHeight
+    }
+  },
   data() {
     return {
+      fileUrl:env.fileUrl,
       cptBarWidth:200,
-      windowWidth:document.documentElement.clientWidth,
-      windowHeight:document.documentElement.clientHeight,
       conWidth: 0,
       conHeight: 0,
       copyDom: '',
       designData:{
-        id:'',title:'我的大屏', scaleX:16, scaleY:9,
+        id:'',title:'我的大屏', scaleX:16, scaleY:9, version:'',
         bgColor:'#2B3340',simpleDesc:'',bgImg:'',viewCode:'',components:[]
       },
       oldDesignData:'',//大屏参数表单未保存时还原
@@ -118,7 +130,6 @@ export default {
     }
   },
   created() {
-    this.initContainerSize();
     this.loadCacheData();
   },
   methods: {
@@ -132,41 +143,90 @@ export default {
       this.conWidth = tempWidth;
       this.conHeight = tempHeight;
       //缩放思路：组件尺寸始终保持1024为基准，保证在每台电脑上的尺寸一致，设计实时缩放，需同步更新配置栏数据
-      this.containerScale = tempWidth / 1024//原始比例1024:576  16:9
+      this.containerScale = tempWidth / 1024//原始比例1024:576
     },
     exportCommand(command) {
       if(command === 'img'){
-        html2canvas(this.$refs.webContainer, {
-          backgroundColor: '#ffffff'
-        }).then(canvas => {
-          const imgUrl = canvas.toDataURL("image/jpeg");
-          fileDownload(imgUrl,this.designData.title+'.png');
+        html2canvas(this.$refs.webContainer, {backgroundColor: '#49586e'}).then(canvas => {
+          const canvasData = canvas.toDataURL("image/jpeg");
+          fileDownload(canvasData,this.designData.title+'.png');
         })
       }else if(command === 'json'){
-        this.designData.comments = this.cacheComponents;
+        this.designData.components = this.cacheComponents;
         const data = JSON.stringify(this.designData)
         let uri = 'data:text/csv;charset=utf-8,\ufeff' + encodeURIComponent(data);//encodeURIComponent解决中文乱码
-        fileDownload(uri,this.designData.title+'.json');
+        fileDownload(uri,this.designData.title+'.cd');
       }
+    },
+    importDesign(){
+      this.$refs.refFile.dispatchEvent(new MouseEvent('click'))
+    },
+    fileLoad(){
+      const that = this;
+      const selectedFile = this.$refs.refFile.files[0];
+      const reader = new FileReader();
+      reader.readAsText(selectedFile);
+      reader.onload = function() {
+        const fileJson = JSON.parse(this.result);//文件大小、合法性待校验
+        if (!fileJson.version || fileJson.version !== env.version){
+          that.$message.error('导入失败，与当前版本不一致');
+        }else{
+          that.designData = fileJson;
+          that.cacheComponents = fileJson.components;
+          that.designData.components = [];
+          that.$message.success('导入成功');
+        }
+      }
+      this.$refs.refFile.value =''
     },
     clearDesign(){
       this.$confirm('此操作将会清空图层，是否继续？', '警告', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning'
+        confirmButtonText: '确定', cancelButtonText: '取消', type: 'warning'
       }).then(() => {
         this.cacheComponents = [];
         this.designData.components = [];
+        this.currentCpt = undefined;
         localStorage.removeItem('designCache');
+        clearCptInterval(null, true);
         this.$message.success("清除成功");
       }).catch(() => {});
     },
     loadCacheData(){
-      const cacheStr = localStorage.getItem('designCache');
-      if (cacheStr){
-        this.designData = JSON.parse(cacheStr);
-        this.cacheComponents = this.designData.components;
-        this.designData.components = [];//单纯洁癖
+      const loading = this.$loading({
+        lock: true, text: '加载中', spinner: 'el-icon-loading',
+        background: 'rgba(0, 0, 0, 0.7)'
+      });
+      if ('preview' === env.active){
+        const cacheStr = localStorage.getItem('designCache');
+        if (cacheStr){
+          this.designData = JSON.parse(cacheStr);
+          if (!this.designData.version || this.designData.version !== env.version){
+            localStorage.removeItem('designCache');
+            this.$message.success("发现旧版缓存，已清除");
+          }else{
+            this.cacheComponents = this.designData.components;
+            this.designData.components = [];//强迫症
+          }
+        }
+        this.designData.version = env.version;
+        this.initContainerSize();
+        loading.close();
+      }else{
+        const id = this.$route.query.id;
+        if (id){
+          getByIdApi(id,0).then(res => {
+            this.designData = res.data;
+            this.cacheComponents = JSON.parse(this.designData.components);
+            if (!this.cacheComponents){
+              this.cacheComponents = []
+            }
+            this.designData.components = [];
+            this.initContainerSize();
+            loading.close();
+          })
+        }else{
+          this.$message.error('当前为DEV模式，请从管理端进入')
+        }
       }
     },
     copyCpt(item){
@@ -190,9 +250,37 @@ export default {
       //this.configBarShow = false;
     },
 
-    submitDesign() {//保存到缓存
-      this.designData.components = this.cacheComponents;
-      localStorage.setItem('designCache', JSON.stringify(this.designData));
+    submitDesign() {//保存
+      if ('preview'===env.active){
+        this.designData.components = this.cacheComponents;
+        localStorage.setItem('designCache', JSON.stringify(this.designData));
+        this.$message.success('已保存')
+      }else {
+        const that = this;
+        if(!that.$route.query.id){
+          that.$message.error('更新异常')
+          return;
+        }
+        const loading = this.$loading({
+          lock: true, text: '保存中', spinner: 'el-icon-loading',
+          background: 'rgba(0, 0, 0, 0.7)'
+        });
+
+        html2canvas(that.$refs.webContainer, {backgroundColor: '#49586e'}).then(canvas => {
+          const canvasData = canvas.toDataURL("image/jpeg");
+          let file = base64toFile(canvasData,that.designData.title+'.png');
+          let fileFormData = new FormData()
+          fileFormData.append('file',file)
+          uploadFileApi(that.designData.designImgId,fileFormData).then(res => {//上传预览图
+            that.designData.designImgId = res.data
+            that.designData.components = JSON.stringify(this.cacheComponents)
+            saveOrUpdateApi(this.designData).then(res => {
+              loading.close();
+              that.$message.success(res.msg);
+            })
+          })
+        })
+      }
     },
     preview() {//预览按钮
       this.designData.components = this.cacheComponents;
@@ -209,8 +297,10 @@ export default {
         type: 'warning'
       }).then(() => {
         this.cacheComponents.splice(index, 1);
-        //this.configBarShow = false;
         this.currentCpt = undefined;
+
+        const childId = this.$refs[cpt.cptName+index][0].uuid
+        clearCptInterval(childId);
       }).catch(() => {});
     },
     changeCpt(position) {//基础属性修改
@@ -234,10 +324,11 @@ export default {
       this.copyDom = copyDom;
       copyDom.draggable = false;
     },
-    saveConfigForm(formData){
+    saveSittingForm(formData){
       this.designData = formData;
+      this.submitDesign();
     },
-    cancelConfigForm(){//设置表单关闭
+    cancelSittingForm(){//设置表单关闭
       this.designData = JSON.parse(this.oldDesignData);
       this.initContainerSize();//待优化
     },
@@ -263,9 +354,9 @@ export default {
       this.showConfigBar(cpt, this.cacheComponents.length - 1)//丢下组件后刷新组件属性栏
       this.$refs['configBar'].showConfigBar();
     },
-    showConfigForm() {
+    showSittingForm() {
       this.oldDesignData = JSON.stringify(this.designData)//保存原有数据，点击取消时还原
-      this.$refs['configForm'].opened();
+      this.$refs['sittingForm'].opened();
     }
   },
   directives: {
@@ -324,7 +415,7 @@ export default {
 <style scoped>
 .top {height: 45px;box-shadow: 0 2px 5px #222 inset;color: #fff;overflow: hidden;
   margin: 0;font-size: 18px;line-height: 48px;background: #353F50}
-.webContainer {border: 1px dashed #ccc;margin: 10px auto;position: relative;}
+.webContainer {border: 1px dashed #ccc;margin: 10px auto;background-size:cover;position: relative;}
 .cptDiv {position: absolute;}
 .focusCptClass {
   position: absolute;
@@ -336,7 +427,7 @@ export default {
 }
 .cptDiv:hover .delTag {display: block}
 .focusCptClass:hover .delTag {display: block}
-.resizeTag{width: 10px;height: 10px;position: absolute;bottom: -5px;right: -5px;background-color: #49586e;z-index: 2600;border-radius: 50%}
+.resizeTag{width: 10px;height: 10px;position: absolute;bottom: -5px;right: -5px;background-color: #49586e;z-index: 2000;border-radius: 50%}
 .resizeTag:hover{cursor: nwse-resize}
 .configBtn:hover{cursor: pointer;color: #B6BFCE}
 .selectedItem{margin-top: 2px;line-height: 35px;border-radius: 4px;}

@@ -1,5 +1,5 @@
 import Vue from 'vue'
-import cpt_input from '@/components/element/cpt-input'
+//import cpt_input from '@/components/element/cpt-input'
 import cpt_text from '@/components/element/cpt-text'
 import cpt_carousel from '@/components/element/cpt-carousel'
 import cpt_button from '@/components/element/cpt-button'
@@ -15,13 +15,15 @@ import cpt_chart_mapMigrate from '@/components/echarts/cpt-chart-mapMigrate'
 import cpt_dataV_waterLevel from '@/components/dataV/cpt-dataV-waterLevel'
 import cpt_dataV_decoration from '@/components/dataV/cpt-dataV-decoration'
 import cpt_chart_line from '@/components/echarts/cpt-chart-line'
+import cpt_dataV_digitalFlop from '@/components/dataV/cpt-dataV-digitalFlop'
+import cpt_dataV_percentPond from '@/components/dataV/cpt-dataV-percentPond'
 
 let cptList = [
-    cpt_dataV_border,
-    cpt_input,cpt_text,cpt_carousel,cpt_button,cpt_image,
+    cpt_dataV_border,cpt_text,cpt_carousel,cpt_button,cpt_image,
     cpt_chart_column,cpt_chart_pie,cpt_chart_clock,cpt_dataV_scrollTable,
     cpt_dataV_scrollList,cpt_chart_mapGc,cpt_chart_mapMigrate,
-    cpt_dataV_waterLevel,cpt_dataV_decoration,cpt_chart_line
+    cpt_dataV_waterLevel,cpt_dataV_decoration,cpt_chart_line,
+    cpt_dataV_digitalFlop,cpt_dataV_percentPond
 ]
 
 let cptGroups = {}

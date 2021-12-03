@@ -1,9 +1,9 @@
 # cola-designer-vue
-gitee：[cola-designer-vue](https://gitee.com/colaiven/cola-designer )
+gitee：<a href="https://gitee.com/colaiven/cola-designer" target="_blank">cola-designer-vue</a>
 
 github：[~~cola-designer-vue(随缘更新)~~](https://github.com/colaiven/cola-designer )
 
-预览地址：https://colaiven.gitee.io/cola-designer/#/
+预览地址：<a href="http://colaiven.gitee.io/cola-designer/#/design" target="_blank">colaiven.gitee.io/cola-designer/#/design</a>
 #### Project setup
 ```
 yarn install
@@ -16,6 +16,12 @@ yarn serve
 ```
 yarn build
 ```
+### 后端程序
+后端程序：https://gitee.com/colaiven/cola-designer-java
+
+前期为了方便演示以将后端接口分离，默认使用缓存方式，链接后端需要将env.js中的active修改成dev
+![img.png](src/assets/img.png)
+后端架构：Springboot + SpringSecurity + mybatis-plus + mysql + redis
 
 ### 自定义组件
 #### T：自定义组件注册方式
@@ -111,15 +117,7 @@ export default {
 #### Q：提示组件属性未注册
 
 ### 待优化项
-· 预览页面留白
-
-· 宽高100%组件拉伸滚动条常驻现象
-
 · 添加更多的组件
 
 · 示例模板（支持导入导出）
-
-· 大屏图片素材库
-
-· 后端对接
 

@@ -1,5 +1,5 @@
 <template>
-  <comment :is="option.decorationType" :style="{width:width+'px',height:height+'px',color: option.textColor}"
+  <comment :key="refreshFlagKey" :is="option.decorationType" :style="{width:width+'px',height:height+'px',color: option.textColor}"
            :color="[option.color1, option.color2]" >{{option.text}}</comment>
 </template>
 
@@ -16,8 +16,21 @@ export default {
     height:Number,
     option:Object
   },
+  watch: {
+    option: {
+      handler() {
+        this.refreshFlagKey = require('uuid').v1();//强制刷新视图
+      },
+      deep: true//深度监听
+    },
+    width(){
+      this.refreshFlagKey = require('uuid').v1();
+    }
+  },
   data() {
-    return {}
+    return {
+      refreshFlagKey: require('uuid').v1()
+    }
   }
 }
 </script>

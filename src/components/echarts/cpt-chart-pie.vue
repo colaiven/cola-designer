@@ -3,6 +3,8 @@
 </template>
 
 <script>
+import {getDataStr, pollingRefresh} from "@/utils/refreshCptData";
+
 export default {
   name: "cpt-chart-pie",
   title: "饼图",
@@ -42,11 +44,13 @@ export default {
   },
   methods:{
     refreshCptData(){
-      this.cptData = JSON.parse(this.option.cptDataForm.dataText)
-      if(this.option.cptDataForm.dataSource === 2){//调接口
-        this.$message.warning('接口还未实现')
-      }
-      this.loadChart(this.option);
+      pollingRefresh(this.uuid, this.option.cptDataForm, this.loadData)
+    },
+    loadData(){
+      getDataStr(this.option.cptDataForm).then(res => {
+        this.cptData = JSON.parse(res);
+        this.loadChart(this.option);
+      });
     },
     loadChart(option){
       const that = this;

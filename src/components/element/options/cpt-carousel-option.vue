@@ -17,8 +17,10 @@
         </el-select>
       </el-form-item>
       <el-form-item label="轮播图片">
-        <el-upload action="#"
-            :before-upload="beforeImgUpload"
+        <el-upload :action="fileUrl+'/file/upload?dir=imgPool'"
+                   :headers="uploadHeaders"
+                   :before-upload="beforeBgImgUpload"
+                   :show-file-list="false"
             :on-error="handleError" list-type="picture"
             :on-success="handleAvatarSuccess">
           <el-button size="small" type="primary">点击上传</el-button>
@@ -39,31 +41,39 @@
 </template>
 
 <script>
+import {fileUrl} from "/env";
+import {getToken} from "@/utils/auth";
+
 export default {
   name: "cpt-carousel-option",
   props: {option: Object},
   data(){
     return {
+      fileUrl:fileUrl,
+      uploadHeaders:{'X-Token':getToken()},
       fileList:[]
     }
   },
   methods: {
-    beforeImgUpload(file) {
-      const isImg = file.type.indexOf('image') !== -1;
-      const isLt2M = file.size / 1024 / 1024 < 3;
-      if (!isImg) {
-        this.$message.error('不支持的格式');
+    beforeBgImgUpload(file){
+      const isIMG = file.type.substr(0,5) === 'image';
+      const isLt5M = file.size / 1024 / 1024 < 25;
+      if (!isIMG) {
+        this.$message.error('上传图片只能是图片格式!');
       }
-      if (!isLt2M) {
-        this.$message.error('上传图片大小不能超过 3MB!');
+      if (!isLt5M) {
+        this.$message.error('上传图片大小不能超过 25MB!');
       }
-      return isImg && isLt2M;
+      return isIMG && isLt5M;
     },
     handleRemove(index) {
       this.option.imgUrls.splice(index, 1);
     },
     handleAvatarSuccess(res) {
-      this.option.imgUrls.push(res.data.url);
+      if (res.code !== 1){
+        this.$message.error(res.msg)
+      }
+      this.option.imgUrls.push(fileUrl+'/file/img/'+res.data);
     },
     handleError(err, file){
       this.$message.error("图片上传失败，使用本地路径")

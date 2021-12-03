@@ -7,6 +7,7 @@
 </template>
 
 <script>
+import {getDataStr, pollingRefresh} from "@/utils/refreshCptData";
 export default {
   name: "cpt-dataV-scrollTable",
   title: "滚动表格",
@@ -21,7 +22,8 @@ export default {
   },
   data(){
     return {
-      config: []
+      config: {},
+      uuid: null
     }
   },
   watch: {
@@ -30,15 +32,18 @@ export default {
     }
   },
   created() {
+    this.uuid = require('uuid').v1();
     this.refreshCptData();
   },
   methods:{
     refreshCptData(){
-      this.config = JSON.parse(JSON.stringify(this.option))
-      this.config.data = JSON.parse(this.option.cptDataForm.dataText)
-      if(this.option.cptDataForm.dataSource === 2){//调接口
-        this.$message.warning('接口还未实现')
-      }
+      pollingRefresh(this.uuid, this.option.cptDataForm, this.loadData)
+    },
+    loadData(){
+      getDataStr(this.option.cptDataForm).then(res => {
+        this.config = JSON.parse(JSON.stringify(this.option))
+        this.config.data = JSON.parse(res);
+      });
     }
   }
 }

@@ -1,8 +1,9 @@
 <template>
-  <dv-water-level-pond :config="config" :style="{width:width+'px',height:height+'px'}" />
+  <dv-water-level-pond :key="refreshFlagKey" :config="config" :style="{width:width+'px',height:height+'px'}" />
 </template>
 
 <script>
+import {getDataStr, pollingRefresh} from "@/utils/refreshCptData";
 export default {
   name: "cpt-dataV-waterLevel",
   title: "水位图",
@@ -17,24 +18,34 @@ export default {
   },
   data(){
     return {
-      config: []
+      config: {},
+      uuid: null,
+      refreshFlagKey: null
     }
   },
   watch: {
     'option.refresh': function() {
       this.refreshCptData()
+    },
+    width(){
+      this.refreshCptData()
     }
   },
   created() {
+    this.uuid = require('uuid').v1();
+    this.refreshFlagKey = require('uuid').v1();
     this.refreshCptData();
   },
   methods:{
     refreshCptData(){
-      this.config = JSON.parse(JSON.stringify(this.option))
-      this.config.data = JSON.parse(this.option.cptDataForm.dataText)
-      if(this.option.cptDataForm.dataSource === 2){//调接口
-        this.$message.warning('接口还未实现')
-      }
+      pollingRefresh(this.uuid, this.option.cptDataForm, this.loadData);
+      this.refreshFlagKey = require('uuid').v1();
+    },
+    loadData(){
+      getDataStr(this.option.cptDataForm).then(res => {
+        this.config = JSON.parse(JSON.stringify(this.option))
+        this.config.data = JSON.parse(res);
+      });
     }
   }
 }

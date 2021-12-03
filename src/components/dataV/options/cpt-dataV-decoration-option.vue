@@ -20,7 +20,7 @@
       <el-form-item label="文本">
         <el-input v-model="option.text"/>
       </el-form-item>
-      <el-form-item label="颜色2">
+      <el-form-item label="颜色3">
         <el-color-picker v-model="option.textColor" show-alpha/>
       </el-form-item>
     </div>

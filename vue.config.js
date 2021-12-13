@@ -1,6 +1,6 @@
 module.exports = {
     publicPath: './',
-    outputDir: "docs",
+    outputDir: "dist",
     devServer: {
         disableHostCheck: true,
         port: 8009,

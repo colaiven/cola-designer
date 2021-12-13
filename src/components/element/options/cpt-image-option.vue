@@ -3,14 +3,14 @@
     <el-form label-width="80px" size="mini">
       <el-form-item label="图库选择">
 <!--        <div class="formItemDiv" @click="showGallery">图库选择</div>-->
-        <el-image v-if="option.url" @click="showGallery" style="width: 168px; height: 160px"
-                  :src="option.url" fit="fill"/>
+        <el-image v-if="attribute.url" @click="showGallery" style="width: 168px; height: 160px"
+                  :src="attribute.url" fit="fill"/>
         <div v-else @click="showGallery" class="formItemUpload">
           <i class="el-icon-plus"></i>
         </div>
       </el-form-item>
       <el-form-item label="填充方式">
-        <el-select v-model="option.fit" placeholder="请选择填充方式">
+        <el-select v-model="attribute.fit" placeholder="请选择填充方式">
           <el-option label="fill" value="fill"/>
           <el-option label="contain" value="contain"/>
           <el-option label="cover" value="cover"/>
@@ -19,7 +19,7 @@
         </el-select>
       </el-form-item>
       <el-form-item label="点击放大">
-        <el-radio-group v-model="option.preview">
+        <el-radio-group v-model="attribute.preview">
           <el-radio :label="true">是</el-radio>
           <el-radio :label="false">否</el-radio>
         </el-radio-group>
@@ -34,7 +34,7 @@ import Gallery from "@/components/gallery";
 export default {
   name: "cpt-image-option",
   components: {Gallery},
-  props: {option: Object},
+  props: {attribute: Object},
   data(){
     return {
 
@@ -45,7 +45,7 @@ export default {
       this.$refs.gallery.opened();
     },
     confirmCheck(fileUrl){
-      this.option.url = fileUrl
+      this.attribute.url = fileUrl
     }
   }
 }

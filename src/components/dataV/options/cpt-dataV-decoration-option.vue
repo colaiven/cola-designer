@@ -1,27 +1,27 @@
 <template>
   <el-form label-width="100px" size="mini">
     <el-form-item label="样式">
-      <el-select v-model="option.decorationType" placeholder="请选择">
+      <el-select v-model="attribute.decorationType" placeholder="请选择">
         <el-option v-for="item in decorationTypes"
                    :key="item.value" :label="item.label" :value="item.value">
         </el-option>
       </el-select>
     </el-form-item>
     <el-form-item label="颜色1">
-      <el-color-picker v-model="option.color1" show-alpha/>
+      <el-color-picker v-model="attribute.color1" show-alpha/>
     </el-form-item>
     <el-form-item label="颜色2">
-      <el-color-picker v-model="option.color2" show-alpha/>
+      <el-color-picker v-model="attribute.color2" show-alpha/>
     </el-form-item>
 
-    <div v-show="option.decorationType === 'dv-decoration-7'
-      || option.decorationType === 'dv-decoration-9' || option.decorationType === 'dv-decoration-11'
-      || option.decorationType === 'dv-decoration-12'">
+    <div v-show="attribute.decorationType === 'dv-decoration-7'
+      || attribute.decorationType === 'dv-decoration-9' || attribute.decorationType === 'dv-decoration-11'
+      || attribute.decorationType === 'dv-decoration-12'">
       <el-form-item label="文本">
-        <el-input v-model="option.text"/>
+        <el-input v-model="attribute.text"/>
       </el-form-item>
       <el-form-item label="颜色3">
-        <el-color-picker v-model="option.textColor" show-alpha/>
+        <el-color-picker v-model="attribute.textColor" show-alpha/>
       </el-form-item>
     </div>
 
@@ -31,7 +31,7 @@
 <script>
 export default {
   name: "cpt-dataV-decoration-option",
-  props: { option: Object },
+  props: { attribute: Object },
   data() {
     return {
       decorationTypes: [

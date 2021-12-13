@@ -25,7 +25,7 @@ export default {
     }
   },
   watch:{
-    option:{
+    'option.attribute':{
       handler(obj,newObj) {
         this.loadChart(newObj);
       },
@@ -49,18 +49,18 @@ export default {
     loadData() {
       getDataStr(this.option.cptDataForm).then(res => {
         this.cptData = JSON.parse(res);
-        this.loadChart(this.option);
+        this.loadChart(this.option.attribute);
       });
     },
-    loadChart(option){
+    loadChart(attribute){
       const that = this;
       that.chartOption = {
-        color: option.lineColor,
+        color: attribute.lineColor,
         title: {
-          text: option.title,
-          subtext: option.subtext,
+          text: attribute.title,
+          subtext: attribute.subtext,
           textStyle:{
-            color: option.titleTextColor
+            color: attribute.titleTextColor
           },
           subtextStyle: { fontSize: 12, color: '#aaa' }
         },
@@ -68,30 +68,30 @@ export default {
           type: 'category',
           data: that.cptData.xData.split(','),
           axisLabel:{
-            color: option.xLabelColor
+            color: attribute.xLabelColor
           },
           axisLine:{
             lineStyle: {
-              color: option.xLineColor
+              color: attribute.xLineColor
             }
           }
         },
         yAxis: {
           type: 'value',
           axisLabel:{
-            color: option.yLabelColor
+            color: attribute.yLabelColor
           },
           axisLine:{
             show: true,
             lineStyle:{
-              color: option.yLineColor
+              color: attribute.yLineColor
             }
           },
           axisTick:{//y轴刻度线
-            show: option.yTickShow
+            show: attribute.yTickShow
           },
           splitLine: {//网格线
-            show: option.yGridLineShow
+            show: attribute.yGridLineShow
           }
         },
         tooltip: {
@@ -103,7 +103,7 @@ export default {
         series: [{
           data: that.cptData.yData.split(','),
           type: 'line',
-          smooth: option.smooth,
+          smooth: attribute.smooth,
           areaStyle:{
             color: new that.$echarts.graphic.LinearGradient(0, 0, 0, 1, [{
               offset: 0,

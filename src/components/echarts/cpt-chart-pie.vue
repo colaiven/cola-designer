@@ -25,7 +25,7 @@ export default {
     }
   },
   watch:{
-    option:{
+    'option.attribute':{
       handler(obj,newObj) {
         this.loadChart(newObj);
       },
@@ -49,19 +49,19 @@ export default {
     loadData(){
       getDataStr(this.option.cptDataForm).then(res => {
         this.cptData = JSON.parse(res);
-        this.loadChart(this.option);
+        this.loadChart(this.option.attribute);
       });
     },
-    loadChart(option){
+    loadChart(attribute){
       const that = this;
       that.chartOption = {
-        color: option.pieColor,
+        color: attribute.pieColor,
         title: {
-          text: option.chartTitle,
-          subtext: option.subtext,
-          left: option.titleX,
-          top:option.titleY,
-          textStyle: { fontSize: option.titleFontSize, color: option.titleTextColor },
+          text: attribute.chartTitle,
+          subtext: attribute.subtext,
+          left: attribute.titleX,
+          top:attribute.titleY,
+          textStyle: { fontSize: attribute.titleFontSize, color: attribute.titleTextColor },
           // 副标题文本样式设置
           subtextStyle: { fontSize: 12, color: '#aaa' }
         },
@@ -69,11 +69,11 @@ export default {
           trigger: 'item'
         },
         legend: {
-          orient: option.orient,
-          x: option.legendX,
-          y: option.legendY,
+          orient: attribute.orient,
+          x: attribute.legendX,
+          y: attribute.legendY,
           textStyle:{
-            color: option.legendTextColor
+            color: attribute.legendTextColor
           }
         },
         series: [

@@ -24,7 +24,7 @@ export default {
     }
   },
   watch: {
-    option: {
+    'option.attribute': {
       handler() {
         this.loadData();
       },
@@ -46,11 +46,11 @@ export default {
       getDataStr(this.option.cptDataForm).then(res => {
         this.flopConfig = {
           number: res.split(',').map(Number),
-          content: this.option.content,
-          toFixed: this.option.toFixedNum,
-          textAlign: this.option.textAlign,
-          rowGap: this.option.rowGap,
-          style: this.option.style
+          content: this.option.attribute.content,
+          toFixed: this.option.attribute.toFixedNum,
+          textAlign: this.option.attribute.textAlign,
+          rowGap: this.option.attribute.rowGap,
+          style: this.option.attribute.style
         }
       });
     }

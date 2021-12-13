@@ -41,7 +41,7 @@
             <el-tab-pane label="属性" name="custom">
               <div v-show="!customOptionShow" style="text-align: center">未注册自定义组件属性</div>
               <div v-if="customOptionShow" class="customForm">
-                <comment :is="currentCpt.cptName+'-option'" :option="currentCpt.option"></comment>
+                <comment :is="currentCpt.cptName+'-option'" :attribute="currentCpt.option.attribute"></comment>
               </div>
             </el-tab-pane>
             <!--      展示数据表单需在option.js初始化cptDataForm-->

@@ -1,7 +1,7 @@
 <template>
-  <div :style="{textAlign:option.textAlign,color:option.textColor,fontSize: option.textSize+'px',fontStyle:option.fontStyle,
-    fontWeight:option.fontWeight,lineHeight:option.textLineHeight+'px',fontFamily:option.textFamily,
-    textDecoration:option.textDecoration}" @click="redirect">
+  <div :style="{textAlign:option.attribute.textAlign,color:option.attribute.textColor,fontSize: option.attribute.textSize+'px',
+    fontStyle:option.attribute.fontStyle, fontWeight:option.attribute.fontWeight,lineHeight:option.attribute.textLineHeight+'px',
+    fontFamily:option.attribute.textFamily, textDecoration:option.attribute.textDecoration}" @click="redirect">
     {{cptData}}
   </div>
 </template>
@@ -39,8 +39,8 @@ export default {
       });
     },
     redirect(){
-      if (this.option.url){
-        window.open(this.option.url)
+      if (this.option.attribute.url){
+        window.open(this.option.attribute.url)
       }
     }
   },

@@ -2,96 +2,96 @@
   <div>
     <el-form label-width="100px" size="mini">
       <el-form-item label="柱类型">
-        <el-select v-model="option.barType">
+        <el-select v-model="attribute.barType">
           <el-option label="普通柱状图" value="bar"/>
           <el-option label="象形柱状图" value="pictorialBar"/>
         </el-select>
       </el-form-item>
-      <el-form-item label="柱体样式" v-show="option.barType === 'pictorialBar'">
-        <el-select v-model="option.barPath">
+      <el-form-item label="柱体样式" v-show="attribute.barType === 'pictorialBar'">
+        <el-select v-model="attribute.barPath">
           <el-option v-for="(item,index) in barPaths" :key="index" :label="item.label" :value="item.value"/>
         </el-select>
       </el-form-item>
       <el-form-item label="标题">
-        <el-input v-model="option.chartTitle"/>
+        <el-input v-model="attribute.chartTitle"/>
       </el-form-item>
       <el-form-item label="标题位置(左)">
-        <el-input v-model="option.titleLeft"/>
+        <el-input v-model="attribute.titleLeft"/>
       </el-form-item>
       <el-form-item label="标题位置(上)">
-        <el-input v-model="option.titleTop"/>
+        <el-input v-model="attribute.titleTop"/>
       </el-form-item>
       <el-form-item label="标题颜色">
-        <el-color-picker v-model="option.titleTextColor" show-alpha/>
+        <el-color-picker v-model="attribute.titleTextColor" show-alpha/>
       </el-form-item>
       <el-form-item label="x轴显示">
-        <el-switch v-model="option.xAxisShow" active-text="开" inactive-text="关"/>
+        <el-switch v-model="attribute.xAxisShow" active-text="开" inactive-text="关"/>
       </el-form-item>
-      <div v-show="option.xAxisShow">
+      <div v-show="attribute.xAxisShow">
         <el-form-item label="x轴字体颜色">
-          <el-color-picker v-model="option.xLabelColor" show-alpha/>
+          <el-color-picker v-model="attribute.xLabelColor" show-alpha/>
         </el-form-item>
         <el-form-item label="x轴字体倾斜">
-          <el-input-number v-model="option.xFontRotate" :min="-180" :max="180"/>
+          <el-input-number v-model="attribute.xFontRotate" :min="-180" :max="180"/>
         </el-form-item>
         <el-form-item label="x轴线颜色">
-          <el-color-picker v-model="option.xLineColor" show-alpha/>
+          <el-color-picker v-model="attribute.xLineColor" show-alpha/>
         </el-form-item>
       </div>
       <el-form-item label="y轴显示">
-        <el-switch v-model="option.yAxisShow" active-text="开" inactive-text="关"/>
+        <el-switch v-model="attribute.yAxisShow" active-text="开" inactive-text="关"/>
       </el-form-item>
-      <div v-show="option.yAxisShow">
+      <div v-show="attribute.yAxisShow">
         <el-form-item label="y轴颜色">
-          <el-color-picker v-model="option.yLineColor" show-alpha/>
+          <el-color-picker v-model="attribute.yLineColor" show-alpha/>
         </el-form-item>
         <el-form-item label="y轴网格线">
-          <el-switch v-model="option.yGridLineShow" active-text="开" inactive-text="关"/>
+          <el-switch v-model="attribute.yGridLineShow" active-text="开" inactive-text="关"/>
         </el-form-item>
         <el-form-item label="y轴刻度线">
-          <el-switch v-model="option.yTickShow" active-text="开" inactive-text="关"/>
+          <el-switch v-model="attribute.yTickShow" active-text="开" inactive-text="关"/>
         </el-form-item>
         <el-form-item label="y轴字体颜色">
-          <el-color-picker v-model="option.yLabelColor" show-alpha/>
+          <el-color-picker v-model="attribute.yLabelColor" show-alpha/>
         </el-form-item>
       </div>
       <el-form-item label="颜色渐变">
-        <el-switch v-model="option.gradualColor" active-text="开" inactive-text="关"/>
+        <el-switch v-model="attribute.gradualColor" active-text="开" inactive-text="关"/>
       </el-form-item>
-      <div v-if="option.gradualColor">
+      <div v-if="attribute.gradualColor">
         <el-form-item label="柱顶颜色">
-          <el-color-picker v-model="option.barColor1" show-alpha/>
+          <el-color-picker v-model="attribute.barColor1" show-alpha/>
         </el-form-item>
         <el-form-item label="柱中颜色">
-          <el-color-picker v-model="option.barColor2" show-alpha/>
+          <el-color-picker v-model="attribute.barColor2" show-alpha/>
         </el-form-item>
         <el-form-item label="柱底颜色">
-          <el-color-picker v-model="option.barColor3" show-alpha/>
+          <el-color-picker v-model="attribute.barColor3" show-alpha/>
         </el-form-item>
       </div>
       <div v-else>
         <el-form-item label="柱体颜色">
-          <el-color-picker v-model="option.barColor" show-alpha/>
+          <el-color-picker v-model="attribute.barColor" show-alpha/>
         </el-form-item>
       </div>
-      <el-form-item label="柱体背景" v-show="option.barType === 'bar'">
-        <el-switch v-model="option.barBgShow" active-text="开" inactive-text="关"/>
+      <el-form-item label="柱体背景" v-show="attribute.barType === 'bar'">
+        <el-switch v-model="attribute.barBgShow" active-text="开" inactive-text="关"/>
       </el-form-item>
-      <el-form-item label="圆角" v-show="option.barType === 'bar'">
-        <el-input-number v-model="option.barBorderRadius" :min="0" :max="50"/>
+      <el-form-item label="圆角" v-show="attribute.barType === 'bar'">
+        <el-input-number v-model="attribute.barBorderRadius" :min="0" :max="50"/>
       </el-form-item>
       <el-form-item label="柱体宽度">
-        <el-input-number v-model="option.barWidth" :min="10" :max="100"/>
+        <el-input-number v-model="attribute.barWidth" :min="10" :max="100"/>
       </el-form-item>
       <el-form-item label="数值显示">
-        <el-switch v-model="option.barLabelShow" active-text="开" inactive-text="关"/>
+        <el-switch v-model="attribute.barLabelShow" active-text="开" inactive-text="关"/>
       </el-form-item>
-      <div v-show="option.barLabelShow">
+      <div v-show="attribute.barLabelShow">
         <el-form-item label="数值字体">
-          <el-input-number v-model="option.barLabelSize" :min="2" :max="100"/>
+          <el-input-number v-model="attribute.barLabelSize" :min="2" :max="100"/>
         </el-form-item>
         <el-form-item label="数值颜色">
-          <el-color-picker v-model="option.barLabelColor" show-alpha/>
+          <el-color-picker v-model="attribute.barLabelColor" show-alpha/>
         </el-form-item>
       </div>
     </el-form>
@@ -102,7 +102,7 @@
 export default {
   name: "cpt-chart-column-option",
   props: {
-    option: Object
+    attribute: Object
   },
   data(){
     return {

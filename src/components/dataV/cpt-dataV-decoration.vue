@@ -1,6 +1,6 @@
 <template>
-  <comment :key="refreshFlagKey" :is="option.decorationType" :style="{width:width+'px',height:height+'px',color: option.textColor}"
-           :color="[option.color1, option.color2]" >{{option.text}}</comment>
+  <comment :key="refreshFlagKey" :is="option.attribute.decorationType" :style="{width:width+'px',height:height+'px',color: option.attribute.textColor}"
+           :color="[option.attribute.color1, option.attribute.color2]" >{{option.attribute.text}}</comment>
 </template>
 
 <script>

@@ -2,13 +2,13 @@
   <div>
     <el-form label-width="80px" size="mini">
       <el-form-item label="切换触发">
-        <el-select v-model="option.trigger" placeholder="请选择触发切换方式">
+        <el-select v-model="attribute.trigger" placeholder="请选择触发切换方式">
           <el-option label="hover" value="hover"/>
           <el-option label="click" value="click"/>
         </el-select>
       </el-form-item>
       <el-form-item label="图片填充">
-        <el-select v-model="option.fit" placeholder="请选择图片填充方式">
+        <el-select v-model="attribute.fit" placeholder="请选择图片填充方式">
           <el-option label="fill" value="fill"/>
           <el-option label="contain" value="contain"/>
           <el-option label="cover" value="cover"/>
@@ -27,7 +27,7 @@
         </el-upload>
       </el-form-item>
       <el-row :gutter="4">
-        <el-col :span="12" v-for="(item,index) in option.imgUrls" :key="index" class="imgBlock">
+        <el-col :span="12" v-for="(item,index) in attribute.imgUrls" :key="index" class="imgBlock">
           <el-image style="width: 100%; height: 100%" :src="item" fit="cover"/>
           <div class="dleMask">
             <div style="width: 24px;margin: 40px auto;" @click="handleRemove(index)">
@@ -46,7 +46,7 @@ import {getToken} from "@/utils/auth";
 
 export default {
   name: "cpt-carousel-option",
-  props: {option: Object},
+  props: {attribute: Object},
   data(){
     return {
       fileUrl:fileUrl,
@@ -67,17 +67,17 @@ export default {
       return isIMG && isLt5M;
     },
     handleRemove(index) {
-      this.option.imgUrls.splice(index, 1);
+      this.attribute.imgUrls.splice(index, 1);
     },
     handleAvatarSuccess(res) {
       if (res.code !== 1){
         this.$message.error(res.msg)
       }
-      this.option.imgUrls.push(fileUrl+'/file/img/'+res.data);
+      this.attribute.imgUrls.push(fileUrl+'/file/img/'+res.data);
     },
     handleError(err, file){
       this.$message.error("图片上传失败，使用本地路径")
-      this.option.imgUrls.push(file.url);
+      this.attribute.imgUrls.push(file.url);
     }
   }
 }

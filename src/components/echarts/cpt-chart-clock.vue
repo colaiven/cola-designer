@@ -27,7 +27,7 @@ export default {
     }
   },
   watch:{
-    option:{
+    'option.attribute':{
       handler(obj,newObj) {
         this.loadChart(newObj);
       },
@@ -43,7 +43,7 @@ export default {
   mounted() {
     const that = this;
     this.chart = this.$echarts.init(document.getElementById(this.uuid));
-    this.loadChart(this.option);
+    this.loadChart(this.option.attribute);
 
 
     setInterval(function () {
@@ -78,7 +78,7 @@ export default {
         series.clockwise = false;
       }
     },
-    loadChart(option) {
+    loadChart(attribute) {
       const that = this;
       that.chartOption = {
         series: [{
@@ -91,7 +91,7 @@ export default {
           splitNumber: 12,
           axisLine: {
             lineStyle: {
-              width: option.axisLineWidth,
+              width: attribute.axisLineWidth,
               color: [
                 [1, 'rgba(0,0,0,0.7)']
               ],
@@ -100,7 +100,7 @@ export default {
             }
           },
           splitLine: {
-            distance: option.splitLineDistance,
+            distance: attribute.splitLineDistance,
             lineStyle: {
               shadowColor: 'rgba(0, 0, 0, 0.3)',
               shadowBlur: 3,
@@ -109,8 +109,8 @@ export default {
             }
           },
           axisLabel: {
-            fontSize: option.axisLabelSize,//表盘字体大小
-            distance: option.axisLabelDistance,
+            fontSize: attribute.axisLabelSize,//表盘字体大小
+            distance: attribute.axisLabelDistance,
             formatter: function (value) {
               if (value === 0) {
                 return '';
@@ -135,7 +135,7 @@ export default {
             length: '55%',
             offsetCenter: [0, '8%'],
             itemStyle: {
-              color: option.hourPointerColor,//'#C0911F'
+              color: attribute.hourPointerColor,//'#C0911F'
               shadowColor: 'rgba(0, 0, 0, 0.3)',
               shadowBlur: 8,
               shadowOffsetX: 2,

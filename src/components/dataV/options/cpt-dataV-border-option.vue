@@ -1,38 +1,38 @@
 <template>
   <el-form label-width="100px" size="mini">
     <el-form-item label="边框样式">
-      <el-select v-model="option.borderType" placeholder="请选择">
+      <el-select v-model="attribute.borderType" placeholder="请选择">
         <el-option v-for="item in borderTypes"
             :key="item.value" :label="item.label" :value="item.value">
         </el-option>
       </el-select>
     </el-form-item>
     <el-form-item label="边框颜色1">
-      <el-color-picker v-model="option.borderColor1" show-alpha/>
+      <el-color-picker v-model="attribute.borderColor1" show-alpha/>
     </el-form-item>
     <el-form-item label="边框颜色2">
-      <el-color-picker v-model="option.borderColor2" show-alpha/>
+      <el-color-picker v-model="attribute.borderColor2" show-alpha/>
     </el-form-item>
     <el-form-item label="背景颜色">
-      <el-color-picker v-model="option.backgroundColor" show-alpha/>
+      <el-color-picker v-model="attribute.backgroundColor" show-alpha/>
     </el-form-item>
-    <div v-if="option.borderType === 'dv-border-box-8'">
+    <div v-if="attribute.borderType === 'dv-border-box-8'">
       <el-form-item label="动画时长">
-        <el-input-number v-model="option.dur" :min="1" :max="60"/>
+        <el-input-number v-model="attribute.dur" :min="1" :max="60"/>
       </el-form-item>
       <el-form-item label="动画方向">
-        <el-select v-model="option.reverse" placeholder="请选择">
+        <el-select v-model="attribute.reverse" placeholder="请选择">
           <el-option label="逆时针" :value="true"/>
           <el-option label="顺时针" :value="false"/>
         </el-select>
       </el-form-item>
     </div>
-    <div v-if="option.borderType === 'dv-border-box-11'">
+    <div v-if="attribute.borderType === 'dv-border-box-11'">
       <el-form-item label="标题">
-        <el-input v-model="option.borderTitle"/>
+        <el-input v-model="attribute.borderTitle"/>
       </el-form-item>
       <el-form-item label="标题宽度">
-        <el-input-number v-model="option.titleWidth" :min="10"/>
+        <el-input-number v-model="attribute.titleWidth" :min="10"/>
       </el-form-item>
     </div>
 
@@ -42,7 +42,7 @@
 <script>
 export default {
   name: "cpt-dataV-border-option",
-  props: { option: Object },
+  props: { attribute: Object },
   data(){
     return {
       borderTypes:[

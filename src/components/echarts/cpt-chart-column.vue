@@ -25,7 +25,7 @@ export default {
     }
   },
   watch:{
-    option:{
+    'option.attribute':{
       handler(obj,newObj) {
         this.loadChart(newObj);
       },
@@ -49,30 +49,30 @@ export default {
     loadData(){
       getDataStr(this.option.cptDataForm).then(res => {
         this.cptData = JSON.parse(res);
-        this.loadChart(this.option);
+        this.loadChart(this.option.attribute);
       });
     },
-    loadChart(option){
+    loadChart(attribute){
       const that = this;
-      let columnColor = option.barColor;
-      if(option.gradualColor) {
+      let columnColor = attribute.barColor;
+      if(attribute.gradualColor) {
         columnColor = new this.$echarts.graphic.LinearGradient(
             0, 0, 0, 1,
             [
-              {offset: 0, color: option.barColor1},
-              {offset: 0.5, color: option.barColor2},
-              {offset: 1, color: option.barColor3}
+              {offset: 0, color: attribute.barColor1},
+              {offset: 0.5, color: attribute.barColor2},
+              {offset: 1, color: attribute.barColor3}
             ])
       }
       that.chartOption = {
         color: columnColor,
         title: {
-          text:option.chartTitle,
+          text:attribute.chartTitle,
           textStyle:{
-            color: option.titleTextColor
+            color: attribute.titleTextColor
           },
-          left:option.titleLeft,
-          top:option.titleTop
+          left:attribute.titleLeft,
+          top:attribute.titleTop
         },
         tooltip: {
           trigger: 'axis',
@@ -81,55 +81,55 @@ export default {
           }
         },
         xAxis: {
-          show: option.xAxisShow,
+          show: attribute.xAxisShow,
           type: 'category',
           data: this.cptData.xData.split(','),
           axisLabel:{
-            color: option.xLabelColor,
-            rotate:option.xFontRotate//倾斜角度-180~180
+            color: attribute.xLabelColor,
+            rotate:attribute.xFontRotate//倾斜角度-180~180
           },
           axisLine:{
             lineStyle:{
-              color: option.xLineColor
+              color: attribute.xLineColor
             }
           }
         },
         yAxis: {
-          show: option.yAxisShow,
+          show: attribute.yAxisShow,
           type: 'value',
           axisLabel:{
-            color: option.yLabelColor
+            color: attribute.yLabelColor
           },
           axisLine:{
             show: true,
             lineStyle:{
-              color: option.yLineColor
+              color: attribute.yLineColor
             }
           },
           axisTick:{//y轴刻度线
-            show: option.yTickShow
+            show: attribute.yTickShow
           },
           splitLine: {//网格线
-            show: option.yGridLineShow
+            show: attribute.yGridLineShow
           }
         },
         series: [{
           data: this.cptData.yData.split(','),
-          type: option.barType,//pictorialBar || bar
-          showBackground: option.barBgShow,
-          symbol: option.barPath,
+          type: attribute.barType,//pictorialBar || bar
+          showBackground: attribute.barBgShow,
+          symbol: attribute.barPath,
           backgroundStyle: {
             color: 'rgba(180, 180, 180, 0.2)'
           },
-          barWidth: option.barWidth,
+          barWidth: attribute.barWidth,
           itemStyle: {
-            borderRadius: option.barBorderRadius
+            borderRadius: attribute.barBorderRadius
           },
           label: {
-            show: option.barLabelShow, //开启显示
+            show: attribute.barLabelShow, //开启显示
             position: 'top', //在上方显示
-            color: option.barLabelColor,
-            fontSize: option.barLabelSize
+            color: attribute.barLabelColor,
+            fontSize: attribute.barLabelSize
           }
         }]
       };

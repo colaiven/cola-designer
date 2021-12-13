@@ -24,7 +24,7 @@ export default {
     }
   },
   watch:{
-    option:{
+    'option.attribute':{
       handler(obj,newObj) {
         this.loadChart(newObj);
       },
@@ -48,10 +48,10 @@ export default {
     loadData(){
       getDataStr(this.option.cptDataForm).then(res => {
         this.cptData = JSON.parse(res);
-        this.loadChart(this.option);
+        this.loadChart(this.option.attribute);
       });
     },
-    loadChart(option) {
+    loadChart(attribute) {
       const that = this;
       const planePath = 'path://M1705.06,1318.313v-89.254l-319.9-221.799l0.073-208.063c0.521-84.662-26.629-121.796-63.961-121.491c-37.332-0.305-64.482,36.829-63.961,121.491l0.073,208.063l-319.9,221.799v89.254l330.343-157.288l12.238,241.308l-134.449,92.931l0.531,42.034l175.125-42.917l175.125,42.917l0.531-42.034l-134.449-92.931l12.238-241.308L1705.06,1318.313z';
       const convertData = function (toData) {
@@ -76,16 +76,16 @@ export default {
 
       that.chartOption = {
         title : {
-          text: option.titleText,
-          subtext: option.subtext,
+          text: attribute.titleText,
+          subtext: attribute.subtext,
           left: 'center',
           textStyle : {
-            color: option.titleColor,
-            fontSize: option.titleFontSize
+            color: attribute.titleColor,
+            fontSize: attribute.titleFontSize
           },
           subtextStyle: {
-            color: option.subTitleColor,
-            fontSize: option.subTitleFontSize
+            color: attribute.subTitleColor,
+            fontSize: attribute.subTitleFontSize
           }
         },
         tooltip : {
@@ -98,14 +98,14 @@ export default {
             color: "#aaa"
           },
           zoom: 1.23,
-          roam: option.roam,//允许缩放
+          roam: attribute.roam,//允许缩放
           itemStyle: {
             areaColor: '#323c48',
             borderColor: '#404a59',
           }
         },
         series: [{
-          name: option.seriesName,
+          name: attribute.seriesName,
           type: 'lines',
           zlevel: 1,
           effect: {
@@ -116,14 +116,14 @@ export default {
             symbolSize: 3
           },
           lineStyle: {
-            color: option.seriesColor,
+            color: attribute.seriesColor,
             width: 0,
             curveness: 0.2
           },
           data: convertData(this.cptData.end)
         },
           {
-            name: option.seriesName,
+            name: attribute.seriesName,
             type: 'lines',
             zlevel: 2,
             effect: {
@@ -134,7 +134,7 @@ export default {
               symbolSize: 15
             },
             lineStyle: {
-              color: option.seriesColor,
+              color: attribute.seriesColor,
               width: 1,
               opacity: 0.4,
               curveness: 0.2
@@ -142,7 +142,7 @@ export default {
             data: convertData(this.cptData.end)
           },
           {
-            name: option.seriesName,
+            name: attribute.seriesName,
             type: 'effectScatter',
             coordinateSystem: 'geo',
             zlevel: 2,
@@ -158,7 +158,7 @@ export default {
               return val[2] / 8;
             },
             itemStyle: {
-              color: option.seriesColor
+              color: attribute.seriesColor
             },
             data: seaData(this.cptData.end)
           }]

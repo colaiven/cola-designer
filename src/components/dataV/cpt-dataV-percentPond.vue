@@ -18,7 +18,7 @@ export default {
     option:Object
   },
   watch: {
-    option: {
+    'option.attribute': {
       handler() {
         this.loadData();
       },
@@ -46,7 +46,7 @@ export default {
     },
     loadData(){
       getDataStr(this.option.cptDataForm).then(res => {
-        let tempConfig = JSON.parse(JSON.stringify(this.option));
+        let tempConfig = JSON.parse(JSON.stringify(this.option.attribute));
         tempConfig.value = res;
         tempConfig.lineDash = [tempConfig.lineWidth, tempConfig.lineSpace]
         this.pondConfig = tempConfig;

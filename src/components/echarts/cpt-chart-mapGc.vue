@@ -25,7 +25,7 @@ export default {
     }
   },
   watch:{
-    option:{
+    'option.attribute':{
       handler(obj,newObj) {
         this.loadChart(newObj);
       },
@@ -49,23 +49,23 @@ export default {
     loadData(){
       getDataStr(this.option.cptDataForm).then(res => {
         this.cptData = JSON.parse(res);
-        this.loadChart(this.option);
+        this.loadChart(this.option.attribute);
       });
     },
-    loadChart(option) {
+    loadChart(attribute) {
       const that = this;
       that.chartOption = {
         title : {
-          text: option.titleText,
-          subtext: option.subtext,
+          text: attribute.titleText,
+          subtext: attribute.subtext,
           left: 'center',
           textStyle : {
-            color: option.titleColor,
-            fontSize: option.titleFontSize
+            color: attribute.titleColor,
+            fontSize: attribute.titleFontSize
           },
           subtextStyle: {
-            color: option.subTitleColor,
-            fontSize: option.subTitleFontSize
+            color: attribute.subTitleColor,
+            fontSize: attribute.subTitleFontSize
           }
         },
         tooltip: {
@@ -85,46 +85,46 @@ export default {
           },
           pieces: [{
             gt: 100,
-            label: option.piecesLabel1,
-            color: option.piecesColor1
+            label: attribute.piecesLabel1,
+            color: attribute.piecesColor1
           }, {
             gte: 10,
             lte: 100,
-            label: option.piecesLabel2,
-            color: option.piecesColor2
+            label: attribute.piecesLabel2,
+            color: attribute.piecesColor2
           }, {
             gte: 1,
             lt: 10,
-            label: option.piecesLabel3,
-            color: option.piecesColor3
+            label: attribute.piecesLabel3,
+            color: attribute.piecesColor3
           }, {
             gt: 0,
             lt: 1,
-            label: option.piecesLabel4,
-            color: option.piecesColor4
+            label: attribute.piecesLabel4,
+            color: attribute.piecesColor4
           }, {
             value: 0,
-            label: option.piecesLabel5,
-            color: option.piecesColor5
+            label: attribute.piecesLabel5,
+            color: attribute.piecesColor5
           }],
           show: !0
         },
         geo: {
           map: "china",
-          roam: option.roam,//允许缩放
+          roam: attribute.roam,//允许缩放
           //scaleLimit: { min: 1, max: 2 },//允许缩放级别
           zoom: 1.23,
           label: {
             show: true,
-            fontSize: option.geoLabelSize,
-            color: option.geoLabelColor
+            fontSize: attribute.geoLabelSize,
+            color: attribute.geoLabelColor
           },
           itemStyle: {
             borderColor: "#777",//边界线颜色
           },
         },
         series: [{
-          name: option.seriesName,
+          name: attribute.seriesName,
           type: "map",
           geoIndex: 0,
           data: this.cptData

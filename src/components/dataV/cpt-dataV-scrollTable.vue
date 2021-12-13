@@ -27,7 +27,7 @@ export default {
     }
   },
   watch: {
-    'option.refresh': function() {
+    'option.attribute': function() {
       this.refreshCptData()
     }
   },
@@ -41,7 +41,7 @@ export default {
     },
     loadData(){
       getDataStr(this.option.cptDataForm).then(res => {
-        this.config = JSON.parse(JSON.stringify(this.option))
+        this.config = JSON.parse(JSON.stringify(this.option.attribute))
         this.config.data = JSON.parse(res);
       });
     }

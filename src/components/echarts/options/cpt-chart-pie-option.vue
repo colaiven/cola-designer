@@ -19,6 +19,9 @@
       <el-form-item label="副标题">
         <el-input v-model="attribute.subtext"/>
       </el-form-item>
+      <el-form-item label="副标题颜色">
+        <el-color-picker v-model="attribute.subtextColor" show-alpha/>
+      </el-form-item>
       <el-form-item label="图例位置(X)">
         <el-input v-model="attribute.legendX"/>
       </el-form-item>

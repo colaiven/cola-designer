@@ -59,30 +59,38 @@ export default {
         title: {
           text: attribute.title,
           subtext: attribute.subtext,
+          left: attribute.titleLeft,
+          top: attribute.titleTop,
           textStyle:{
             color: attribute.titleTextColor
           },
-          subtextStyle: { fontSize: 12, color: '#aaa' }
+          subtextStyle: { fontSize: 12, color: attribute.subtextColor }
         },
         xAxis: {
           type: 'category',
           data: that.cptData.xData.split(','),
           axisLabel:{
+            show: attribute.xLabelShow,
             color: attribute.xLabelColor
           },
           axisLine:{
+            show: attribute.xLineShow,
             lineStyle: {
               color: attribute.xLineColor
             }
-          }
+          },
+          axisTick:{//x轴刻度线
+            show: attribute.xTickShow
+          },
         },
         yAxis: {
           type: 'value',
           axisLabel:{
+            show: attribute.yLabelShow,
             color: attribute.yLabelColor
           },
           axisLine:{
-            show: true,
+            show: attribute.yLineShow,
             lineStyle:{
               color: attribute.yLineColor
             }
@@ -107,13 +115,13 @@ export default {
           areaStyle:{
             color: new that.$echarts.graphic.LinearGradient(0, 0, 0, 1, [{
               offset: 0,
-              color: 'rgba(80,141,255,0.39)'
+              color: attribute.areaColor1
             }, {
               offset: .34,
-              color: 'rgba(56,155,255,0.25)'
+              color: attribute.areaColor2
             },{
               offset: 1,
-              color: 'rgba(38,197,254,0.00)'
+              color: attribute.areaColor3
             }])
           }
         }]

@@ -78,7 +78,8 @@ export default {
         title : {
           text: attribute.titleText,
           subtext: attribute.subtext,
-          left: 'center',
+          left: attribute.titleLeft,
+          top: attribute.titleTop,
           textStyle : {
             color: attribute.titleColor,
             fontSize: attribute.titleFontSize

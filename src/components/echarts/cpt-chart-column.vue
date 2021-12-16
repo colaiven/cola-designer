@@ -89,10 +89,14 @@ export default {
             rotate:attribute.xFontRotate//倾斜角度-180~180
           },
           axisLine:{
+            show: attribute.xLineShow,
             lineStyle:{
               color: attribute.xLineColor
             }
-          }
+          },
+          axisTick:{//x轴刻度线
+            show: attribute.xTickShow
+          },
         },
         yAxis: {
           show: attribute.yAxisShow,
@@ -101,7 +105,7 @@ export default {
             color: attribute.yLabelColor
           },
           axisLine:{
-            show: true,
+            show: attribute.yLineShow,
             lineStyle:{
               color: attribute.yLineColor
             }

@@ -63,7 +63,7 @@ export default {
           top:attribute.titleY,
           textStyle: { fontSize: attribute.titleFontSize, color: attribute.titleTextColor },
           // 副标题文本样式设置
-          subtextStyle: { fontSize: 12, color: '#aaa' }
+          subtextStyle: { fontSize: 12, color: attribute.subtextColor }
         },
         tooltip: {
           trigger: 'item'

@@ -81,9 +81,9 @@ const cptOptions = {
             'cpt-chart-column-option': {
                 attribute:{
                     chartTitle: '标题一', titleLeft: 'center', titleTop: 10, titleTextColor: '#ccc',
-                    xAxisShow: true, yAxisShow: true,
+                    xAxisShow: true, yAxisShow: true, xLineShow: true, yLineShow: true,
                     xLabelColor: '#ccc', xLineColor: '#ccc', yLabelColor: '#0bd124', yLineColor: '#ccc',
-                    yGridLineShow: false, yTickShow: true,
+                    yGridLineShow: false, yTickShow: true, xTickShow:true,
                     barBgShow: false, barBorderRadius: 5,barLabelShow: true,
                     barLabelColor: '#ff0',barLabelSize: 10,
                     gradualColor: true, barColor:'#409eff', barColor1: '#e9a90a',barColor2: '#0bcfcf',barColor3: '#cc0ce6',
@@ -98,7 +98,7 @@ const cptOptions = {
             'cpt-chart-pie-option': {
                 attribute:{
                     theme:'light',chartTitle: '标题一', titleX: 40, titleY: 'top', titleTextColor: '#ccc',
-                    subtext:'纯属虚构',titleFontSize:18, orient: 'horizontal',
+                    subtext:'纯属虚构',subtextColor: '#aaa', titleFontSize:18, orient: 'horizontal',
                     legendTextColor:'#ddd',legendX:'center', legendY:'bottom',
                     pieColor: ['#91cc75', '#fac858', '#ee6666', '#73c0de' , '#5470c6', '#ff8c71'],
                 },
@@ -166,9 +166,13 @@ const cptOptions = {
                     dataText: '{"xData":"Mon,Tue,Wed,Thu,Fri,Sat,Sun","yData": "120,200,150,80,70,110,130"}',
                 },
                 attribute:{
-                    title: '一天用电量分布',subtext:'纯属虚构',yTickShow: true,yGridLineShow:false,
+                    title: '一天用电量分布',subtext:'纯属虚构',titleLeft: 'center', titleTop: 10,
+                    subtextColor: '#aaa',yTickShow: true,yGridLineShow:false,
+                    xLineShow: true, yLineShow: true, xTickShow:true,
+                    xLabelShow: true, yLabelShow: true,
                     lineColor: '#409eff',xLabelColor:'#eee',xLineColor:'#eee',titleTextColor:'#ccc',
-                    yLabelColor:'#eee',yLineColor:'#eee',smooth:false
+                    yLabelColor:'#eee',yLineColor:'#eee',smooth:false,
+                    areaColor1:'rgba(80,141,255,0.39)',areaColor2:'rgba(56,155,255,0.25)',areaColor3:'rgba(38,197,254,0.00)',
                 }
             }
         }
@@ -184,7 +188,7 @@ const cptOptions = {
                     dataText:'[{"name":"南海诸岛","value":0},{"name":"北京","value":54},{"name":"天津","value":13},{"name":"上海","value":40},{"name":"重庆","value":75},{"name":"河北","value":13},{"name":"河南","value":83},{"name":"云南","value":11},{"name":"辽宁","value":19},{"name":"黑龙江","value":15},{"name":"湖南","value":69},{"name":"安徽","value":60},{"name":"山东","value":39},{"name":"新疆","value":4},{"name":"江苏","value":31},{"name":"浙江","value":104},{"name":"江西","value":36},{"name":"湖北","value":1052},{"name":"广西","value":33},{"name":"甘肃","value":7},{"name":"山西","value":9},{"name":"内蒙古","value":7},{"name":"陕西","value":22},{"name":"吉林","value":4},{"name":"福建","value":18},{"name":"贵州","value":5},{"name":"广东","value":98},{"name":"青海","value":1},{"name":"西藏","value":0},{"name":"四川","value":44},{"name":"宁夏","value":4},{"name":"海南","value":22},{"name":"台湾","value":3},{"name":"香港","value":5},{"name":"澳门","value":5}]',
                 },
                 attribute:{
-                    roam:false,titleText:'肺炎地图',
+                    roam:false,titleText:'肺炎地图',titleLeft: 'center', titleTop: 10,
                     subtext:'数据纯属虚构',titleFontSize:20,titleColor: '#ddd',
                     subTitleColor:'#aaa',subTitleFontSize:13,
                     seriesName:'确诊病例',geoLabelColor:'#555',geoLabelSize:14,
@@ -202,7 +206,7 @@ const cptOptions = {
                 },
                 attribute:{
                     titleText:'模拟迁徙',seriesName:'迁徙top10',seriesColor:'#a6c84c',
-                    roam:false,
+                    roam:false,titleLeft: 'center', titleTop: 10,
                     subtext:'数据纯属虚构',titleFontSize:20,titleColor: '#ddd',
                     subTitleColor:'#aaa',subTitleFontSize:13
                 }

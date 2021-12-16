@@ -24,24 +24,33 @@
       <el-form-item label="标题颜色">
         <el-color-picker v-model="attribute.titleTextColor" show-alpha/>
       </el-form-item>
-      <el-form-item label="x轴显示">
+      <el-form-item label="x轴">
         <el-switch v-model="attribute.xAxisShow" active-text="开" inactive-text="关"/>
       </el-form-item>
       <div v-show="attribute.xAxisShow">
+        <el-form-item label="x轴线显示">
+          <el-switch v-model="attribute.xLineShow" active-text="开" inactive-text="关"/>
+        </el-form-item>
+        <el-form-item label="x轴线颜色">
+          <el-color-picker v-model="attribute.xLineColor" show-alpha/>
+        </el-form-item>
+        <el-form-item label="x轴刻度线">
+          <el-switch v-model="attribute.xTickShow" active-text="开" inactive-text="关"/>
+        </el-form-item>
         <el-form-item label="x轴字体颜色">
           <el-color-picker v-model="attribute.xLabelColor" show-alpha/>
         </el-form-item>
         <el-form-item label="x轴字体倾斜">
           <el-input-number v-model="attribute.xFontRotate" :min="-180" :max="180"/>
         </el-form-item>
-        <el-form-item label="x轴线颜色">
-          <el-color-picker v-model="attribute.xLineColor" show-alpha/>
-        </el-form-item>
       </div>
-      <el-form-item label="y轴显示">
+      <el-form-item label="y轴">
         <el-switch v-model="attribute.yAxisShow" active-text="开" inactive-text="关"/>
       </el-form-item>
       <div v-show="attribute.yAxisShow">
+        <el-form-item label="y轴线显示">
+          <el-switch v-model="attribute.yLineShow" active-text="开" inactive-text="关"/>
+        </el-form-item>
         <el-form-item label="y轴颜色">
           <el-color-picker v-model="attribute.yLineColor" show-alpha/>
         </el-form-item>

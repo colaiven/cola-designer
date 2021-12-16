@@ -18,6 +18,12 @@
     <el-form-item label="副标题大小">
       <el-input-number v-model="attribute.subTitleFontSize" :min="4" :max="100"/>
     </el-form-item>
+    <el-form-item label="标题位置(左)">
+      <el-input v-model="attribute.titleLeft"/>
+    </el-form-item>
+    <el-form-item label="标题位置(上)">
+      <el-input v-model="attribute.titleTop"/>
+    </el-form-item>
     <el-form-item label="说明">
       <el-input v-model="attribute.seriesName"/>
     </el-form-item>

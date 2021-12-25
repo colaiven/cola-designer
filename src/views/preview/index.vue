@@ -4,7 +4,7 @@
        style="background-size:cover;overflow: auto">
     <div style="width: 100%;position:relative;overflow: hidden;" :style="{height:conHeight+'px'}">
       <transition-group appear name="bounce">
-        <div v-for="(item,index) in designCache.components" :key="item.cptName+index"
+        <div v-for="(item) in designCache.components" :key="item.keyId"
              style="position: absolute;"
              :style="{width:Math.round(containerScale * item.cptWidth)+'px',
                   height:Math.round(containerScale * item.cptHeight)+'px',

@@ -61,7 +61,7 @@
         <div class="webContainer" :style="{width:conWidth+'px',height:conHeight+'px', backgroundColor: designData.bgColor,
              backgroundImage: designData.bgImg ? 'url('+fileUrl+'/file/img/'+designData.bgImg+')':'none'}"
              @dragover="allowDrop" @drop="drop" ref="webContainer">
-          <div v-for="(item,index) in cacheComponents" :key="item.cptName+index"
+          <div v-for="(item,index) in cacheComponents" :key="item.keyId"
                :class="currentCptIndex === index ? 'focusCptClass' : 'cptDiv'"
                :style="{width:Math.round(containerScale*item.cptWidth)+'px',
                   height:Math.round(containerScale*item.cptHeight)+'px',
@@ -131,6 +131,28 @@ export default {
   },
   created() {
     this.loadCacheData();
+  },
+  mounted() {
+    const that = this;
+    window.addEventListener("keydown",(event)=>{
+      if (that.currentCptIndex !== -1){
+        let key = event.key
+        switch (key) {//方向键移动当前组件
+          case 'ArrowDown':
+            that.currentCpt.cptY += 1;
+            break;
+          case 'ArrowUp':
+            that.currentCpt.cptY -= 1;
+            break;
+          case 'ArrowLeft':
+            that.currentCpt.cptX -= 1
+            break;
+          case 'ArrowRight':
+            that.currentCpt.cptX += 1
+            break;
+        }
+      }
+    })
   },
   methods: {
     initContainerSize(){
@@ -249,7 +271,6 @@ export default {
       this.currentCpt = undefined;
       //this.configBarShow = false;
     },
-
     submitDesign() {//保存
       if ('preview'===env.active){
         this.designData.components = this.cacheComponents;
@@ -296,9 +317,9 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        this.cacheComponents.splice(index, 1);
+        //记录一个bug，v-for key值重复导致页面渲染数据错乱。在丢下组件时实用uuid作为key解决。
         this.currentCpt = undefined;
-
+        this.cacheComponents.splice(index, 1);
         const childId = this.$refs[cpt.cptName+index][0].uuid
         clearCptInterval(childId);
       }).catch(() => {});
@@ -340,7 +361,8 @@ export default {
         cptName: config.name, cptZ: 1, option: undefined,
         cptX: Math.round(e.offsetX / this.containerScale),
         cptY: Math.round(e.offsetY / this.containerScale),
-        cptWidth: config.initWidth, cptHeight: config.initHeight
+        cptWidth: config.initWidth, cptHeight: config.initHeight,
+        keyId: require('uuid').v1()
       }
       const group = cptOptions[config.group];
       if (group && group.options[config.name + '-option']) {
@@ -360,7 +382,7 @@ export default {
     }
   },
   directives: {
-    dragParent(el, binding, vNode) {//页面上的组件挪到位置
+    dragParent(el, binding, vNode) {//页面上的组件拖动位置
       const that = vNode.context;
       el.onmousedown = function (e) {
         const disX = e.clientX - el.parentNode.offsetLeft;
@@ -374,10 +396,10 @@ export default {
         }
         document.onmouseup = function () {
           document.onmousemove = document.onmouseup = null;
-          const cptIndex = el.parentNode.getAttribute('cptIndex')
           //缩放适应不同屏幕，在容器显示时会重新*缩放比例
-          that.cacheComponents[cptIndex].cptX = Math.round(cptX/that.containerScale);
-          that.cacheComponents[cptIndex].cptY = Math.round(cptY/that.containerScale);
+          that.currentCpt.cptX = Math.round(cptX/that.containerScale);
+          that.currentCpt.cptY = Math.round(cptY/that.containerScale);
+          const cptIndex = el.parentNode.getAttribute('cptIndex')
           that.$refs['configBar'].updateData(that.cacheComponents[cptIndex]);//解决组件移动位置配置栏数据不更新问题
         }
         return false;
@@ -401,8 +423,8 @@ export default {
           document.onmousemove = document.onmouseup = null;
           const cptIndex = el.parentNode.getAttribute('cptIndex');
           //拉伸适应不同屏幕，在容器显示时会重新*缩放比例
-          that.cacheComponents[cptIndex].cptWidth = Math.round(cptWidth/that.containerScale);
-          that.cacheComponents[cptIndex].cptHeight = Math.round(cptHeight/that.containerScale);
+          that.currentCpt.cptWidth = Math.round(cptWidth/that.containerScale);
+          that.currentCpt.cptHeight = Math.round(cptHeight/that.containerScale);
           that.$refs['configBar'].updateData(that.cacheComponents[cptIndex]);//解决缩放组件被遮挡时 配置栏数据不更新
         }
         return false;

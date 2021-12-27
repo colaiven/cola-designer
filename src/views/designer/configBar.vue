@@ -183,6 +183,6 @@ export default {
 .cptTitle:hover{cursor: move}
 .closeItem:hover{cursor: pointer;background: #2b3340}
 .customForm{padding: 0 6px 0 4px;height: 350px;overflow: auto}
-.configTs-enter-active,.configTs-leave-active{transition: all .5s;}
+.configTs-enter-active,.configTs-leave-active{transition: all .3s;}
 .configTs-enter,.configTs-leave-to{opacity: 0;transform: scale(.3);transform-origin: right bottom;}
 </style>

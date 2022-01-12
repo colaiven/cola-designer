@@ -19,21 +19,6 @@
         <div style="float: right;margin: 1px 10px;" class="configBtn" @click="showSittingForm">
           <i style="font-size: 22px;" class="el-icon-setting"/>
         </div>
-        <el-popover style="float: right;margin: 1px 10px;"
-                    placement="bottom" title="已选图层" width="200" trigger="click">
-          <div style="overflow: auto" :style="{maxHeight:(conHeight-30)+'px'}">
-            <el-row v-for="(item,index) in cacheComponents" :key="item.cptName+index+'x'" class="selectedItem">
-              <el-col :span="4" style="text-align: center"><i :class="item.icon"/></el-col>
-              <el-col :span="15" @click.native="showConfigBar(item,index)">{{item.cptTitle}}</el-col>
-              <el-col :span="5" style="text-align: center">
-                <i class="el-icon-copy-document" @click="copyCpt(item)"/>
-                <i style="margin-left: 4px;" class="el-icon-delete" @click="delCpt(item,index)"/>
-              </el-col>
-            </el-row>
-          </div>
-
-          <i slot="reference" style="font-size: 22px;" class="el-icon-tickets"/>
-        </el-popover>
         <div style="float: right;margin: 1px 10px;" class="configBtn" @click="clearDesign">
           <i style="font-size: 22px;" class="el-icon-delete"/>
         </div>
@@ -55,7 +40,8 @@
     </el-row>
     <div :style="{height: (windowHeight-45)+'px'}" @click.self="outBlur">
       <div style="float: left;height: 100%;" :style="{width:cptBarWidth+'px'}">
-        <component-bar @dragStart="dragStart"/><!--左侧组件栏-->
+        <component-bar @dragStart="dragStart" :selectedComponents="cacheComponents" :currentCptIndex="currentCptIndex"
+                       @showConfigBar="showConfigBar" @copyCpt="copyCpt" @delCpt="delCpt"/><!--左侧组件栏-->
       </div>
       <div style="float: left;" :style="{width:(windowWidth-cptBarWidth-10)+'px'}" @click.self="outBlur">
         <!--顶部刻度线-->
@@ -69,17 +55,18 @@
             <ScaleMarkY/><!--左侧刻度线-->
           </div>
           <div v-for="(item,index) in cacheComponents" :key="item.keyId"
-               :class="currentCptIndex === index ? 'focusCptClass' : 'cptDiv'"
-               :style="{width:Math.round(containerScale*item.cptWidth)+'px',
+               class="cptDiv" :style="{width:Math.round(containerScale*item.cptWidth)+'px',
                   height:Math.round(containerScale*item.cptHeight)+'px',
                   top:Math.round(containerScale*item.cptY)+'px',left:Math.round(containerScale*item.cptX)+'px',
                   zIndex: currentCptIndex === index ? 1800 : item.cptZ}"
-               @mousedown="showConfigBar(item,index)" :cptIndex="index">
+               @mousedown="showConfigBar(item,index)">
             <div v-show="currentCptIndex === index" style="position: fixed;border-top: 1px dashed #8898AF;"
                  :style="{width:conWidth+'px',left:topLineLeft+'px'}"/><!--顶部辅助线-->
             <div v-show="currentCptIndex === index" style="position: fixed;border-right: 1px dashed #8898AF;"
                  :style="{height:conHeight+'px',top:'55px'}"/><!--左侧辅助线-->
-            <div v-dragParent style="width: 100%;height: 100%;">
+            <!-- 2021-12-28新增iframe组件，防止焦点聚焦在iframe内部，添加此蒙版 -->
+            <div v-resize="'move'" class="activeMask" :style="currentCptIndex === index ? {border:'1px solid #B6BFCE'}:{}"/>
+            <div style="width: 100%;height: 100%;">
               <comment :is="item.cptName" :ref="item.cptName+index" :width="Math.round(containerScale*item.cptWidth)"
                        :height="Math.round(containerScale*item.cptHeight)" :option="item.option"/>
             </div>
@@ -87,7 +74,22 @@
               <i class="el-icon-copy-document" @click.stop="copyCpt(item)"/>
               <i style="margin-left: 4px" class="el-icon-delete" @click.stop="delCpt(item,index)"/>
             </div>
-            <div v-show="currentCptIndex === index" class="resizeTag" v-resize/>
+            <div v-show="currentCptIndex === index" style="top: -3px;left: -3px;cursor: se-resize"
+                 class="resizeTag" v-resize="'lt'"  />
+            <div v-show="currentCptIndex === index" style="top: -3px;left: 48%;cursor: s-resize"
+                 class="resizeTag" v-resize="'t'"  />
+            <div v-show="currentCptIndex === index" style="top: -3px;right: -4px;cursor: ne-resize"
+                 class="resizeTag" v-resize="'rt'"  />
+            <div v-show="currentCptIndex === index" style="top: 48%;right: -4px;cursor: w-resize"
+                 class="resizeTag" v-resize="'r'"  />
+            <div v-show="currentCptIndex === index" style="bottom: -4px;right: -4px;cursor: se-resize"
+                 class="resizeTag" v-resize="'rb'"  />
+            <div v-show="currentCptIndex === index" style="bottom: -4px;left: 48%;cursor: s-resize"
+                 class="resizeTag" v-resize="'b'"  />
+            <div v-show="currentCptIndex === index" style="bottom: -4px;left: -3px;cursor: ne-resize"
+                 class="resizeTag" v-resize="'lb'"  />
+            <div v-show="currentCptIndex === index" style="top: 48%;left: -3px;cursor: w-resize"
+                 class="resizeTag" v-resize="'l'"  />
           </div>
         </div>
       </div>
@@ -117,18 +119,14 @@ export default {
   name: 'design-index',
   components: {ScaleMarkY, ScaleMarkX, SittingForm, ConfigBar, ComponentBar},
   computed:{
-    windowWidth(){
-      return document.documentElement.clientWidth;
-    },
-    windowHeight(){
-      return document.documentElement.clientHeight
-    },
     topLineLeft(){
       return (this.windowWidth - this.conWidth - this.cptBarWidth) / 2 + this.cptBarWidth - 5
     }
   },
   data() {
     return {
+      windowWidth:0,
+      windowHeight:0,
       fileUrl:env.fileUrl,
       cptBarWidth:200,
       conWidth: 0,
@@ -169,9 +167,16 @@ export default {
         }
       }
     })
+    window.onresize = () => {
+      return (() => {
+        that.initContainerSize()
+      })();
+    };
   },
   methods: {
     initContainerSize(){
+      this.windowWidth = document.documentElement.clientWidth
+      this.windowHeight = document.documentElement.clientHeight
       let tempWidth = this.windowWidth - this.cptBarWidth - 40;//40=两边空隙
       let tempHeight = tempWidth / this.designData.scaleX * this.designData.scaleY;
       const maxHeight = this.windowHeight - 70;//70=顶部操作条+顶部刻度线+底部滚动条
@@ -192,6 +197,7 @@ export default {
         })
       }else if(command === 'json'){
         this.designData.components = this.cacheComponents;
+        this.designData.version = env.version;
         const data = JSON.stringify(this.designData)
         let uri = 'data:text/csv;charset=utf-8,\ufeff' + encodeURIComponent(data);//encodeURIComponent解决中文乱码
         fileDownload(uri,this.designData.title+'.cd');
@@ -272,6 +278,7 @@ export default {
       let copyItem = JSON.parse(JSON.stringify(item))
       copyItem.cptX = item.cptX+30//复制的组件向右下偏移
       copyItem.cptY = item.cptY+30
+      copyItem.keyId = require('uuid').v1();
       this.cacheComponents.push(copyItem);
       this.currentCptIndex = this.cacheComponents.length - 1//聚焦到复制的组件
     },
@@ -312,9 +319,9 @@ export default {
           uploadFileApi(that.designData.designImgId,fileFormData).then(res => {//上传预览图
             that.designData.designImgId = res.data
             that.designData.components = JSON.stringify(this.cacheComponents)
-            saveOrUpdateApi(this.designData).then(res => {
+            saveOrUpdateApi(this.designData).then(res2 => {
               loading.close();
-              that.$message.success(res.msg);
+              that.$message.success(res2.msg);
             })
           })
         })
@@ -399,50 +406,79 @@ export default {
     }
   },
   directives: {
-    dragParent(el, binding, vNode) {//页面上的组件拖动位置
+    resize(el, binding, vNode) {//组件拉伸，移动位置
       const that = vNode.context;
       el.onmousedown = function (e) {
+        const rbX = e.clientX - el.parentNode.offsetWidth;
+        const rbY = e.clientY - el.parentNode.offsetHeight;
+        const ltX = e.clientX + el.parentNode.offsetWidth;
+        const ltY = e.clientY + el.parentNode.offsetHeight;
         const disX = e.clientX - el.parentNode.offsetLeft;
         const disY = e.clientY - el.parentNode.offsetTop;
-        let cptX = e.clientX - disX, cptY = e.clientY - disY;
+        let cptWidth, cptHeight, cptX, cptY;
         document.onmousemove = function (me) {
-          cptX = me.clientX - disX;
-          cptY = me.clientY - disY;
-          el.parentNode.style.left = cptX + 'px';
-          el.parentNode.style.top = cptY + 'px';
+          if (binding.value === 'move'){
+            cptX = me.clientX - disX;
+            cptY = me.clientY - disY;
+            el.parentNode.style.left = cptX + 'px';
+            el.parentNode.style.top = cptY + 'px';
+          }else{
+            switch (binding.value) {
+              case 'lt':
+                cptWidth = ltX - me.clientX;
+                cptHeight = ltY - me.clientY;
+                cptX = me.clientX - disX;
+                cptY = me.clientY - disY;
+                el.parentNode.style.left = cptX + 'px';
+                el.parentNode.style.top = cptY + 'px';
+                break;
+              case 't':
+                cptHeight = ltY - me.clientY;
+                cptY = me.clientY - disY;
+                el.parentNode.style.top = cptY + 'px';
+                break;
+              case 'rt':
+                cptWidth = me.clientX - rbX;
+                cptHeight = ltY - me.clientY;
+                cptY = me.clientY - disY;
+                el.parentNode.style.top = cptY + 'px';
+                break;
+              case 'r':
+                cptWidth = me.clientX - rbX;
+                break;
+              case 'rb':
+                cptWidth = me.clientX - rbX;
+                cptHeight = me.clientY - rbY;
+                break;
+              case 'b':
+                cptHeight = me.clientY - rbY;
+                break;
+              case 'lb':
+                cptWidth = ltX - me.clientX;
+                cptHeight = me.clientY - rbY;
+                cptX = me.clientX - disX;
+                el.parentNode.style.left = cptX + 'px';
+                break;
+              case 'l':
+                cptWidth = ltX - me.clientX;
+                cptX = me.clientX - disX;
+                el.parentNode.style.left = cptX + 'px';
+                break;
+            }
+            cptWidth = cptWidth < 40 ? 40:cptWidth;//限制最小缩放
+            cptHeight = cptHeight < 20 ? 20:cptHeight;
+            el.parentNode.style.width = cptWidth + 'px';
+            el.parentNode.style.height = cptHeight+ 'px';
+          }
         }
         document.onmouseup = function () {
           document.onmousemove = document.onmouseup = null;
-          //缩放适应不同屏幕，在容器显示时会重新*缩放比例
-          that.currentCpt.cptX = Math.round(cptX/that.containerScale);
-          that.currentCpt.cptY = Math.round(cptY/that.containerScale);
-          const cptIndex = el.parentNode.getAttribute('cptIndex')
-          that.$refs['configBar'].updateData(that.cacheComponents[cptIndex]);//解决组件移动位置配置栏数据不更新问题
-        }
-        return false;
-      }
-    },
-    resize(el, binding, vNode) {//组件拉伸
-      const that = vNode.context;
-      el.onmousedown = function (e) {
-        const disX = e.clientX - el.parentNode.offsetWidth;
-        const disY = e.clientY - el.parentNode.offsetHeight;
-        let cptWidth,cptHeight;
-        document.onmousemove = function (me) {
-          cptWidth = me.clientX - disX;
-          cptHeight = me.clientY - disY;
-          cptWidth = cptWidth < 40 ? 40:cptWidth;//限制最小缩放
-          cptHeight = cptHeight < 20 ? 20:cptHeight;
-          el.parentNode.style.width = cptWidth + 'px';
-          el.parentNode.style.height = cptHeight+ 'px';
-        }
-        document.onmouseup = function () {
-          document.onmousemove = document.onmouseup = null;
-          const cptIndex = el.parentNode.getAttribute('cptIndex');
           //拉伸适应不同屏幕，在容器显示时会重新*缩放比例
-          that.currentCpt.cptWidth = Math.round(cptWidth/that.containerScale);
-          that.currentCpt.cptHeight = Math.round(cptHeight/that.containerScale);
-          that.$refs['configBar'].updateData(that.cacheComponents[cptIndex]);//解决缩放组件被遮挡时 配置栏数据不更新
+          if (cptWidth) that.currentCpt.cptWidth = Math.round(cptWidth/that.containerScale);
+          if (cptHeight) that.currentCpt.cptHeight = Math.round(cptHeight/that.containerScale);
+          if (cptX) that.currentCpt.cptX = Math.round(cptX/that.containerScale);
+          if (cptY) that.currentCpt.cptY = Math.round(cptY/that.containerScale);
+          that.$refs['configBar'].updateData(that.currentCpt);//解决缩放组件被遮挡时 配置栏数据不更新
         }
         return false;
       }
@@ -452,24 +488,16 @@ export default {
 </script>
 
 <style scoped>
-.top {height: 45px;box-shadow: 0 2px 5px #222 inset;color: #fff;overflow: hidden;
-  margin: 0;font-size: 18px;line-height: 48px;background: #353F50}
-.webContainer {position: relative;margin: 0 auto;background-size:cover;}
-.cptDiv {position: absolute;}
-.focusCptClass {
-  position: absolute;
-  /*border: 1px dashed rgba(102, 177, 205, 0.6);*/
-  background-color: rgba(140, 197, 255, 0.4)
-}
+.top {height: 45px;box-shadow: 0 2px 5px #2b3340 inset;color: #fff;overflow: hidden;
+  margin: 0;font-size: 18px;line-height: 45px;background: #353F50}
+.webContainer {position: relative;margin: 0 auto;background-size:100% 100%;}
 .delTag {width: 45px;height: 22px;background: rgba(43, 51, 64, 0.8);border-radius: 2px;color: #ccc;z-index: 2000;
   position: absolute;top: 0;right: 0;text-align: center;display: none;cursor: pointer
 }
+.activeMask{width: 100%;height: 100%;position: absolute;z-index: 1801}
+.cptDiv{position: absolute;}
 .cptDiv:hover .delTag {display: block}
-.focusCptClass:hover .delTag {display: block}
-.resizeTag{width: 8px;height: 8px;position: absolute;bottom: -4px;right: -4px;background-color: #697E9B;z-index: 2000;border-radius: 50%}
-.resizeTag:hover{cursor: nwse-resize}
+.resizeTag{width: 6px;height: 6px;position: absolute;background-color: #B6BFCE;z-index: 2000;border-radius: 50%;}
 .configBtn:hover{cursor: pointer;color: #B6BFCE}
-.selectedItem{margin-top: 2px;line-height: 35px;border-radius: 4px;}
-.selectedItem:hover{cursor: pointer;background: #ddd}
 .el-dropdown-link { cursor: pointer; color: #fff;}
 </style>

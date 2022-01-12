@@ -1,3 +1,13 @@
+import axios from 'axios'
+
+const loadFile = async function (path) {
+    let text;
+    await axios.get(path).then(res => {
+        text = res;
+    })
+    return text
+}
+
 /**
  *  文件下载
  * @param downloadUrl   文件
@@ -24,4 +34,4 @@ const base64toFile = function (base64, fileName) {
     }
     return new File([u8arr], fileName,{ type: mime });
 }
-export {fileDownload, base64toFile}
+export {fileDownload, base64toFile, loadFile}

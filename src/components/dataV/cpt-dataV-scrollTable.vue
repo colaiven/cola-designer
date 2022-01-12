@@ -27,9 +27,12 @@ export default {
     }
   },
   watch: {
-    'option.attribute': function() {
-      this.refreshCptData()
-    }
+    'option.attribute': {
+      handler() {
+        this.loadData();
+      },
+      deep: true//深度监听
+    },
   },
   created() {
     this.uuid = require('uuid').v1();

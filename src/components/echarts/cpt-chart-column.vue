@@ -14,6 +14,7 @@ export default {
   group: 'chart',
   props:{
     width:Number,
+    height:Number,
     option:Object
   },
   data(){
@@ -32,6 +33,9 @@ export default {
       deep: true//深度监听
     },
     width(){
+      this.chart.resize();
+    },
+    height(){
       this.chart.resize();
     }
   },
@@ -79,6 +83,10 @@ export default {
           axisPointer: {            // 坐标轴指示器，坐标轴触发有效
             type: 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
           }
+        },
+        grid: {
+          x:10,y:30,x2:10,y2:10,
+          containLabel: true
         },
         xAxis: {
           show: attribute.xAxisShow,

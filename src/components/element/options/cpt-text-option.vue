@@ -7,7 +7,7 @@
         </el-select>
       </el-form-item>
       <el-form-item label="颜色">
-        <el-color-picker v-model="attribute.textColor" show-alpha></el-color-picker>
+        <el-color-picker v-model="attribute.textColor" show-alpha/>
       </el-form-item>
       <el-form-item label="加粗">
         <el-select v-model="attribute.fontWeight">
@@ -23,6 +23,9 @@
           <el-option label="斜体" value="italic"/>
           <el-option label="倾斜" value="oblique"/>
         </el-select>
+      </el-form-item>
+      <el-form-item label="背景色">
+        <el-color-picker v-model="attribute.bgColor" show-alpha/>
       </el-form-item>
       <el-form-item label="文字大小">
         <el-input-number :min="13" :max="200" v-model="attribute.textSize" style="width: 100%"/>

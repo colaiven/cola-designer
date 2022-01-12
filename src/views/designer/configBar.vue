@@ -39,8 +39,7 @@
               </div>
             </el-tab-pane>
             <el-tab-pane label="属性" name="custom">
-              <div v-show="!customOptionShow" style="text-align: center">未注册自定义组件属性</div>
-              <div v-if="customOptionShow" class="customForm">
+              <div class="customForm" v-if="currentCpt && currentCpt.option">
                 <comment :is="currentCpt.cptName+'-option'" :attribute="currentCpt.option.attribute"></comment>
               </div>
             </el-tab-pane>
@@ -78,7 +77,6 @@
 </template>
 
 <script>
-import listOptions from '@/components/registerOption'
 export default {
   name: "configBar",
   props:{
@@ -87,23 +85,14 @@ export default {
   watch:{
     currentCpt(newVal) {
       this.cptDataFormShow = false
-      if(!newVal){
-        this.customOptionShow = false;
+      if(!newVal){//清空时
         this.configBarShow = false
       }else{
-        for (let i = 0; i < listOptions.length; i++) {//此处有待优化
-          if(newVal.cptName+'-option' === listOptions[i]){
-            this.customOptionShow = true;
-            if(this.currentCpt.option.cptDataForm){
-              this.cptDataFormShow = true
-            }else{
-              this.configTab = 'custom'//解決上一組件沒有数据表单导致tab栏未选中bug
-            }
-            return;
-          }
+        if(this.currentCpt.option.cptDataForm){
+          this.cptDataFormShow = true
+        }else{
+          this.configTab = 'custom'//解決上一組件沒有数据表单导致tab栏未选中bug
         }
-        this.$message.warning('组件属性表单未注册')
-        this.customOptionShow = false;
       }
     },
   },
@@ -127,7 +116,6 @@ export default {
   },
   data(){
     return{
-      customOptionShow:false,
       cptDataFormShow:false,
       configTab: 'custom',
       currentPosition:{

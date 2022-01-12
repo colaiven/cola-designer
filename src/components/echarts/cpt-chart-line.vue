@@ -14,6 +14,7 @@ export default {
   group: 'chart',
   props:{
     width:Number,
+    height:Number,
     option:Object
   },
   data(){
@@ -32,6 +33,9 @@ export default {
       deep: true//深度监听
     },
     width(){
+      this.chart.resize();
+    },
+    height(){
       this.chart.resize();
     }
   },
@@ -65,6 +69,10 @@ export default {
             color: attribute.titleTextColor
           },
           subtextStyle: { fontSize: 12, color: attribute.subtextColor }
+        },
+        grid: {
+          x:10,y:30,x2:10,y2:10,
+          containLabel: true
         },
         xAxis: {
           type: 'category',

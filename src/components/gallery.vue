@@ -90,7 +90,7 @@ export default {
       if (!this.checkedItem || !this.checkedItem.id){
         this.$message.error('请选择图片')
       }else {
-        this.$emit('confirmCheck', this.imgUrl+this.checkedItem.fileId);
+        this.$emit('confirmCheck', this.imgUrl+this.checkedItem.fileId,this.checkedItem.fileId);
         this.modelShow = false
       }
     },

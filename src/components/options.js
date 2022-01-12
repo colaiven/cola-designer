@@ -23,9 +23,9 @@ const cptOptions = {
                 cptDataForm:{dataText:'普通文本',dataSource: 1, pollTime: 0},
                 attribute:{
                     url: '', textColor: '#4BB344', textSize: 16,
-                    fontWeight: 'bold', textLineHeight: 30,
+                    fontWeight: 'normal', textLineHeight: 30,
                     textFamily: '微软雅黑', textAlign: 'center',
-                    fontStyle:'normal', textDecoration:'none'
+                    fontStyle:'normal', textDecoration:'none',bgColor:'rgba(255, 255, 255, 0)'
                 }
             },
             'cpt-input-option': {
@@ -70,6 +70,11 @@ const cptOptions = {
                     lineWidth: 3,lineSpace: 2, localGradient: true,
                     colors: ['#01c4f9', '#c135ff'],
                 }
+            },
+            'cpt-iframe-option':{
+                attribute:{
+                    url: 'https://www.rainy.pub/'
+                }
             }
         }
     },
@@ -95,11 +100,27 @@ const cptOptions = {
                     dataSource: 1, pollTime: 0
                 },
             },
+            'cpt-chart-tdColumn-option': {
+                attribute:{
+                    chartTitle: '标题一', titleLeft: 'center', titleTop: 10, titleTextColor: '#ccc',
+                    xAxisShow: true, yAxisShow: true, xLineShow: true, yLineShow: true,
+                    xLabelColor: '#ccc', xLineColor: '#ccc', yLabelColor: '#0bd124', yLineColor: '#ccc',
+                    yGridLineShow: false, yTickShow: true, xTickShow:true, barBgShow: false,
+                    gradualColor: true, barColor:'#017ebb', barColor1: '#017ebb',barColor2: '#06fbfe',barColor3: '#06fbfe',
+                    barWidth: 18, xFontRotate:0
+                },
+                cptDataForm:{
+                    dataText:'{"xData":"Mon,Tue,Wed,Thu,Fri,Sat,Sun","yData":"320,302,120,100,540,123,345","yData2":"120,102,90,150,120,123,145","yData3": "320,302,120,100,540,123,345","yData4": "440,404,210,250,660,246,490"}',
+                    dataSource: 1, pollTime: 0
+                },
+            },
             'cpt-chart-pie-option': {
                 attribute:{
                     theme:'light',chartTitle: '标题一', titleX: 40, titleY: 'top', titleTextColor: '#ccc',
                     subtext:'纯属虚构',subtextColor: '#aaa', titleFontSize:18, orient: 'horizontal',
                     legendTextColor:'#ddd',legendX:'center', legendY:'bottom',
+                    radiusInside:0,radiusOutside:60,roseType:'false',legendShow:true,
+                    labelFontSize:13,labelColor:'#ddd',legendFontSize:12,
                     pieColor: ['#91cc75', '#fac858', '#ee6666', '#73c0de' , '#5470c6', '#ff8c71'],
                 },
                 cptDataForm:{dataText: '[{"value":1048,"name":"搜索引擎"},{"value":735,"name":"直接访问"},{"value":580,"name":"邮件营销"},{"value":484,"name":"联盟广告"},{"value":300,"name":"视频广告"}]',dataSource: 1, pollTime: 0},
@@ -174,6 +195,26 @@ const cptOptions = {
                     yLabelColor:'#eee',yLineColor:'#eee',smooth:false,
                     areaColor1:'rgba(80,141,255,0.39)',areaColor2:'rgba(56,155,255,0.25)',areaColor3:'rgba(38,197,254,0.00)',
                 }
+            },
+            'cpt-dataV-activeRing-option':{
+                cptDataForm:{
+                    dataSource: 1, pollTime: 0,
+                    dataText: '[{"name": "周口","value": 55},{"name": "南阳","value": 120},{"name": "西峡","value": 78},{"name": "驻马店","value": 66}]',
+                },
+                attribute:{
+                    lineWidth: 10,radius:80,activeRadius:60,showOriginValue:false,
+                    color: ['#91cc75', '#fac858', '#ee6666', '#73c0de' , '#5470c6', '#ff8c71']
+                }
+            },
+            'cpt-chart-gauge-option':{
+                cptDataForm:{
+                    dataSource: 1, pollTime: 0,
+                    dataText: '22',
+                },
+                attribute:{
+                    title:'速度',
+                    lineWidth:3,color1:'#67e0e3',color2:'#37a2da',color3:'#fd666d',itemColor:'#6ADA13'
+                }
             }
         }
     },
@@ -212,6 +253,18 @@ const cptOptions = {
                 }
             }
         }
-    }
+    },
+    /*threeD:{
+        name:'3D',
+        icon:'',
+        opened:true,
+        options:{
+            'cpt-threeJs-dom-option':{
+                attribute:{
+                    cameraX:5,cameraY:2,cameraZ:8,bgColor:'#1f245a',bgAlpha:0.5
+                }
+            }
+        }
+    }*/
 }
 export default cptOptions

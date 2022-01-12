@@ -1,6 +1,7 @@
 <template>
-  <div :style="{textAlign:option.attribute.textAlign,color:option.attribute.textColor,fontSize: option.attribute.textSize+'px',
+  <div style="width: 100%;height: 100%" :style="{textAlign:option.attribute.textAlign,color:option.attribute.textColor,fontSize: option.attribute.textSize+'px',
     fontStyle:option.attribute.fontStyle, fontWeight:option.attribute.fontWeight,lineHeight:option.attribute.textLineHeight+'px',
+    backgroundColor:option.attribute.bgColor,
     fontFamily:option.attribute.textFamily, textDecoration:option.attribute.textDecoration}" @click="redirect">
     {{cptData}}
   </div>

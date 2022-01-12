@@ -14,28 +14,49 @@
         <el-input-number v-model="attribute.titleFontSize" :min="10" :max="50"/>
       </el-form-item>
       <el-form-item label="标题颜色">
-        <el-color-picker v-model="attribute.titleTextColor" show-alpha/>
+        <el-color-picker v-model="attribute.titleTextColor"/>
       </el-form-item>
       <el-form-item label="副标题">
         <el-input v-model="attribute.subtext"/>
       </el-form-item>
       <el-form-item label="副标题颜色">
-        <el-color-picker v-model="attribute.subtextColor" show-alpha/>
+        <el-color-picker v-model="attribute.subtextColor"/>
       </el-form-item>
-      <el-form-item label="图例位置(X)">
-        <el-input v-model="attribute.legendX"/>
+      <el-form-item label="图例显示">
+        <el-switch v-model="attribute.legendShow" active-text="开" inactive-text="关"/>
       </el-form-item>
-      <el-form-item label="图例位置(Y)">
-        <el-input v-model="attribute.legendY"/>
-      </el-form-item>
-      <el-form-item label="图例布局方式">
-        <el-select v-model="attribute.orient">
-          <el-option label="纵向" value="vertical"/>
-          <el-option label="横向" value="horizontal"/>
+      <div v-show="attribute.legendShow">
+        <el-form-item label="图例位置(X)">
+          <el-input v-model="attribute.legendX"/>
+        </el-form-item>
+        <el-form-item label="图例位置(Y)">
+          <el-input v-model="attribute.legendY"/>
+        </el-form-item>
+        <el-form-item label="图例布局方式">
+          <el-select v-model="attribute.orient">
+            <el-option label="纵向" value="vertical"/>
+            <el-option label="横向" value="horizontal"/>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="图例字体">
+          <el-input-number v-model="attribute.legendFontSize" :min="2" :max="120"/>
+        </el-form-item>
+        <el-form-item label="图例文字颜色">
+          <el-color-picker v-model="attribute.legendTextColor"/>
+        </el-form-item>
+      </div>
+      <el-form-item label="南丁格尔图">
+        <el-select v-model="attribute.roseType">
+          <el-option label="不展示" value="false"/>
+          <el-option label="圆心角" value="radius"/>
+          <el-option label="扇区" value="area"/>
         </el-select>
       </el-form-item>
-      <el-form-item label="图例文字颜色">
-        <el-color-picker v-model="attribute.legendTextColor" show-alpha/>
+      <el-form-item label="外环大小%">
+        <el-input-number v-model="attribute.radiusOutside" :min="2" :max="120"/>
+      </el-form-item>
+      <el-form-item label="内环大小%">
+        <el-input-number v-model="attribute.radiusInside" :min="0" :max="100"/>
       </el-form-item>
       <el-form-item label="大饼颜色">
         <div>
@@ -46,6 +67,12 @@
           </div>
           <el-color-picker v-model="tempColor" show-alpha @change="addColor"/>
         </div>
+      </el-form-item>
+      <el-form-item label="label字体">
+        <el-input-number v-model="attribute.labelFontSize" :min="2" :max="120"/>
+      </el-form-item>
+      <el-form-item label="label颜色">
+        <el-color-picker v-model="attribute.labelColor"/>
       </el-form-item>
     </el-form>
   </div>

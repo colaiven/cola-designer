@@ -17,7 +17,15 @@
           <el-color-picker v-model="formData.bgColor" show-alpha/>
         </el-form-item>
         <el-form-item label="背景图片">
-          <el-upload
+          <div v-if="formData.bgImg" style="width: 100%;height: 100%;position: relative">
+            <img :src="fileUrl+'/file/img/'+formData.bgImg" style="width: 100%;height: 100%;"/>
+            <i style="position: absolute;z-index: 6;right: 0;font-size: 20px;color: #FFCCCC"
+               class="el-icon-delete" @click.stop="handleRemove"></i>
+          </div>
+          <div v-else class="uploadItem" @click="showGallery">
+            <i style="font-size: 40px;color: #aaa" class="el-icon-plus"></i>
+          </div>
+<!--          <el-upload
               :action="fileUrl+'/file/upload?dir=imgPool'"
               :show-file-list="false"
               :headers="uploadHeaders"
@@ -25,13 +33,7 @@
               :on-success="handleBgImgSuccess"
               :on-remove="handleRemove"
               :before-upload="beforeBgImgUpload">
-            <div v-if="formData.bgImg" style="width: 100%;height: 100%;position: relative">
-              <img :src="fileUrl+'/file/img/'+formData.bgImg" style="width: 100%;height: 100%;"/>
-              <i style="position: absolute;z-index: 6;right: 0"
-                 class="el-icon-delete" @click.stop="handleRemove"></i>
-            </div>
-            <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-          </el-upload>
+          </el-upload>-->
         </el-form-item>
         <el-form-item label="个性链接">
           <el-input disabled v-model="formData.id" autocomplete="off"/>
@@ -45,14 +47,17 @@
         <el-button style="background: #2B3340;color: #eee" @click="save" size="small">确 定</el-button>
       </div>
     </el-dialog>
+    <gallery ref="gallery" @confirmCheck="confirmCheck"/>
   </div>
 </template>
 
 <script>
 import {fileUrl} from "/env";
 import {getToken} from "@/utils/auth";
+import Gallery from "@/components/gallery";
 export default {
   name: "configForm",
+  components: {Gallery},
   props:{
     formData:Object
   },
@@ -93,10 +98,16 @@ export default {
       this.formData.scaleY = split[1]
       this.$emit('updateScale');
     },
+    showGallery(){
+      this.$refs.gallery.opened();
+    },
+    confirmCheck(fileUrl, fileId){
+      this.formData.bgImg = fileId;
+    },
     handleRemove(){
       this.formData.bgImg = ''
     },
-    handleBgImgSuccess(res){
+    /*handleBgImgSuccess(res){
       if (res.code !== 1){
         this.$message.error(res.msg)
       }
@@ -112,11 +123,11 @@ export default {
         this.$message.error('上传图片大小不能超过 25MB!');
       }
       return isIMG && isLt5M;
-    },
+    },*/
   }
 }
 </script>
 
 <style scoped>
-
+.uploadItem{width: 120px;height: 120px;text-align: center;line-height: 120px;border: 1px solid #ddd;cursor: pointer}
 </style>

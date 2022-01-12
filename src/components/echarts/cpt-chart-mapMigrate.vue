@@ -14,6 +14,7 @@ export default {
   group: 'map',
   props:{
     width:Number,
+    height:Number,
     option:Object
   },
   data(){
@@ -31,6 +32,9 @@ export default {
       deep: true//深度监听
     },
     width(){
+      this.chart.resize();
+    },
+    height(){
       this.chart.resize();
     }
   },

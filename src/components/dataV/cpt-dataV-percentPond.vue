@@ -25,7 +25,10 @@ export default {
       deep: true//深度监听
     },
     width(){
-      this.loadData();
+      this.refreshFlagKey = require('uuid').v1();
+    },
+    height(){
+      this.refreshFlagKey = require('uuid').v1();
     }
   },
   data() {

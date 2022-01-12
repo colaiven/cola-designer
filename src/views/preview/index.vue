@@ -1,7 +1,7 @@
 <template>
   <div :style="{width: windowWidth+'px',height: windowHeight+'px',backgroundColor: designCache.bgColor,
        backgroundImage: designCache.bgImg ? 'url('+fileUrl+'/file/img/'+designCache.bgImg+')':'none'}"
-       style="background-size:cover;overflow: auto">
+       style="background-size:100% 100%;overflow: auto">
     <div style="width: 100%;position:relative;overflow: hidden;" :style="{height:conHeight+'px'}">
       <transition-group appear name="bounce">
         <div v-for="(item) in designCache.components" :key="item.keyId"
@@ -36,6 +36,7 @@
 <script>
 import {authViewCodeApi, getByIdApi} from "@/api/DesignerApi";
 import {fileUrl} from "/env";
+import {loadFile} from "@/utils/FileUtil";
 
 export default {
   name: "preview_index",
@@ -64,11 +65,18 @@ export default {
     loadCacheData(){
       const path = this.$route.path;
       const that = this;
+      const id = this.$route.query.id;
       if (path === '/preview'){
-        let designCache = JSON.parse(localStorage.getItem('designCache'));
-        this.loadDesign(designCache,false);
+        if (!id){
+          let designCache = JSON.parse(localStorage.getItem('designCache'));
+          this.loadDesign(designCache,false);
+        }else{//演示环境用
+          loadFile('/cola-designer/designData/'+id+'.cd').then(text => {
+            let designCache = text.data
+            this.loadDesign(designCache,false);
+          });
+        }
       }else if(path === '/view'){
-        const id = this.$route.query.id;
         if (!id){
           this.$message.error('id错');
           return;

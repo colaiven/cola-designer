@@ -9,8 +9,6 @@ export default {
   name: "cpt-chart-line",
   title: "折线图",
   icon: 'el-icon-data-line',
-  initWidth: 256,
-  initHeight: 191,
   group: 'chart',
   props:{
     width:Number,

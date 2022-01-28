@@ -29,6 +29,6 @@ export default {
 </script>
 
 <style scoped>
-.rightBorder{border-right: 1px solid #2b3340;}
-.bothBorder{border-left: 1px solid #2b3340;border-right: 1px solid #2b3340;}
+.rightBorder{border-right: 1px solid #aaa;}
+.bothBorder{border-left: 1px solid #aaa;border-right: 1px solid #aaa;}
 </style>

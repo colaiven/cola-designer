@@ -9,8 +9,6 @@ export default {
   name: "cpt-chart-column",
   title: "柱状图",
   icon: 'el-icon-s-data',
-  initWidth: 256,
-  initHeight: 191,
   group: 'chart',
   props:{
     width:Number,

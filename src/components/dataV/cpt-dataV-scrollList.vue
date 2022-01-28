@@ -9,8 +9,6 @@ export default {
   name: "cpt-dataV-scrollList",
   title: "滚动列表",
   icon: 'el-icon-finished',
-  initWidth: 300,
-  initHeight: 150,
   group: 'chart',
   props:{
     width:Number,

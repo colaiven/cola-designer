@@ -1,19 +1,20 @@
 <template>
-  <div :style="{width: windowWidth+'px',height: windowHeight+'px',backgroundColor: designCache.bgColor,
-       backgroundImage: designCache.bgImg ? 'url('+fileUrl+'/file/img/'+designCache.bgImg+')':'none'}"
-       style="background-size:100% 100%;overflow: auto">
-    <div style="width: 100%;position:relative;overflow: hidden;" :style="{height:conHeight+'px'}">
+  <div :style="{width:windowWidth+'px',height:conHeight+'px',backgroundColor: designCache.bgColor,
+  backgroundImage: designCache.bgImg ? 'url('+fileUrl+'/file/img/'+designCache.bgImg+')':'none'}"
+       style="background-size:100% 100%;background-color: #2b3340;overflow: hidden">
+    <div style="position:relative;transform-origin:0 0;"
+         :style="{width:windowWidth+'px',height:conHeight+'px',transform: 'scale('+containerScale+')'}">
       <transition-group appear name="bounce">
         <div v-for="(item) in designCache.components" :key="item.keyId"
              style="position: absolute;"
-             :style="{width:Math.round(containerScale * item.cptWidth)+'px',
-                  height:Math.round(containerScale * item.cptHeight)+'px',
-                  top:Math.round(containerScale*item.cptY)+'px',
-                  left:Math.round(containerScale*item.cptX)+'px',
+             :style="{width:Math.round(item.cptWidth)+'px',
+                  height:Math.round(item.cptHeight)+'px',
+                  top:Math.round(item.cptY)+'px',
+                  left:Math.round(item.cptX)+'px',
                   zIndex:item.cptZ}">
 
-          <comment :is="item.cptName" :width="Math.round(containerScale * item.cptWidth)"
-                   :height="Math.round(containerScale * item.cptHeight)"
+          <comment :is="item.cptName" :width="Math.round(item.cptWidth)"
+                   :height="Math.round(item.cptHeight)" @reload="loadCacheData"
                    :option="item.option"/>
         </div>
       </transition-group>
@@ -114,11 +115,10 @@ export default {
     loadSize(){
       this.windowWidth = document.documentElement.clientWidth;
       this.windowHeight = document.documentElement.clientHeight;
-      if(this.designCache){
-        this.conHeight = Math.round(this.windowWidth / this.designCache.scaleX * this.designCache.scaleY);
-        this.containerScale = this.windowWidth / 1024
-      }else{
-        this.conHeight = this.windowHeight;
+      this.containerScale = Math.round(this.windowWidth / 1920 * 100) / 100//原始比例1920
+      this.conHeight = this.windowWidth /this.designCache.scaleX * this.designCache.scaleY
+      if(this.conHeight<this.windowHeight){
+        this.conHeight=this.windowHeight
       }
     }
   }

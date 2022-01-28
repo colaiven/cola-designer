@@ -9,8 +9,6 @@ export default {
   name: "cpt-chart-tdColumn",
   title: "立体柱图",
   icon: 'el-icon-s-data',
-  initWidth: 256,
-  initHeight: 191,
   group: 'chart',
   props:{
     width:Number,
@@ -150,10 +148,8 @@ export default {
             symbolSize: [attribute.barWidth, 10],
             symbolRotate: 0,
             itemStyle: {
-              normal: {
-                borderWidth: 0,
-                color: '#10e6ff'
-              }
+              borderWidth: 0,
+              color: '#10e6ff'
             },
             data: this.cptData.yData3.split(',')
           },{
@@ -164,10 +160,8 @@ export default {
             symbolOffset: [0, '-50%'],
             symbolSize: [attribute.barWidth, 10],
             itemStyle: {
-              normal: {
-                borderWidth: 0,
-                color: '#ffcf90'
-              }
+              borderWidth: 0,
+              color: '#ffcf90'
             },
             data: this.cptData.yData4.split(',')
           }

@@ -4,10 +4,10 @@
       <el-input-number v-model="attribute.lineWidth" :min="1" :max="100"/>
     </el-form-item>
     <el-form-item label="半径">
-      <el-input-number v-model="attribute.radius" :min="1" :max="100"/>
+      <el-input-number v-model="attribute.radius" :min="1" :max="500"/>
     </el-form-item>
     <el-form-item label="动态半径">
-      <el-input-number v-model="attribute.activeRadius" :min="1" :max="110"/>
+      <el-input-number v-model="attribute.activeRadius" :min="1" :max="510"/>
     </el-form-item>
     <el-form-item label="显示百分比">
       <el-switch v-model="attribute.showOriginValue" active-text="数值" inactive-text="百分比"/>

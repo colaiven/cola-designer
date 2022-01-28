@@ -9,8 +9,6 @@ export default {
   name: "cpt-chart-pie",
   title: "饼图",
   icon: 'el-icon-pie-chart',
-  initWidth: 256,
-  initHeight: 191,
   group: 'chart',
   props:{
     width:Number,
@@ -89,8 +87,12 @@ export default {
             roseType: attribute.roseType==='false' ? false:attribute.roseType,
             radius: [attribute.radiusInside+'%',attribute.radiusOutside+'%'],
             label: {
+              position: attribute.labelPosition,
               fontSize: attribute.labelFontSize,
               color: attribute.labelColor
+            },
+            itemStyle: {
+              borderRadius: attribute.borderRadius
             },
             data: this.cptData,
             emphasis: {

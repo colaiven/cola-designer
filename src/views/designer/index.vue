@@ -5,14 +5,14 @@
         <el-image style="width: 40px; height: 40px;padding: 0;margin: 0" :src="require('/src/assets/logo.png')"
                   fit="fill"/>
       </el-col>
-      <el-col :span="3">
+      <el-col :span="6">
         <span class="el-icon-magic-stick lg" style="width: 30px"/>
         <span>Cola Designer</span>
         <a style="margin: 0 4px;" href='https://gitee.com/colaiven/cola-designer' target="_blank">
           <el-image style="width: 50px; height: 16px;padding: 0;margin: 0" src='https://gitee.com/colaiven/cola-designer/badge/star.svg?theme=dark' alt='star'/>
         </a>
       </el-col>
-      <el-col :span="19" @click.self.native="outBlur">
+      <el-col :span="16" @click.self.native="outBlur">
         <el-button size="mini" @click="preview" style="margin: 10px 10px;
             background: #49586e;color: #fff;float: right">预览</el-button>
         <el-button size="mini" @click="submitDesign" style="margin: 10px 5px;background: #d5d9e2;float: right">保存</el-button>
@@ -38,37 +38,34 @@
         </div>
       </el-col>
     </el-row>
-    <div :style="{height: (windowHeight-45)+'px'}" @click.self="outBlur">
+    <div :style="{height: (windowHeight-45)+'px',background: 'url('+require('@/assets/port.png')+') repeat'}" @click.self="outBlur">
       <div style="float: left;height: 100%;" :style="{width:cptBarWidth+'px'}">
         <component-bar @dragStart="dragStart" :selectedComponents="cacheComponents" :currentCptIndex="currentCptIndex"
                        @showConfigBar="showConfigBar" @copyCpt="copyCpt" @delCpt="delCpt"/><!--左侧组件栏-->
       </div>
-      <div style="float: left;" :style="{width:(windowWidth-cptBarWidth-10)+'px'}" @click.self="outBlur">
-        <!--顶部刻度线-->
-        <div style="height: 10px;margin: 0 auto" :style="{width:conWidth+'px'}">
-          <ScaleMarkX/>
+      <div style="float: right;position: relative;overflow: auto;height: 100%" :style="{width:(windowWidth-cptBarWidth-4)+'px'}" @click.self="outBlur">
+        <div style="height: 10px;margin-left: 10px" :style="{width:1920*containerScale+'px'}">
+          <ScaleMarkX/><!--顶部刻度线-->
         </div>
-        <div class="webContainer" :style="{width:conWidth+'px',height:conHeight+'px', backgroundColor: designData.bgColor,
-             backgroundImage: designData.bgImg ? 'url('+fileUrl+'/file/img/'+designData.bgImg+')':'none'}"
-             @dragover="allowDrop" @drop="drop" ref="webContainer">
-          <div style="position: absolute;width: 10px;height: 100%;margin-left: -10px;">
-            <ScaleMarkY/><!--左侧刻度线-->
-          </div>
+        <div style="position: absolute;width: 10px;" :style="{height:1920*containerScale / designData.scaleX * designData.scaleY+'px'}">
+          <ScaleMarkY/><!--左侧刻度线-->
+        </div>
+        <div class="webContainer" :style="{width:'1920px',height:1920 / designData.scaleX * designData.scaleY+'px', backgroundColor: designData.bgColor,
+             backgroundImage: designData.bgImg ? 'url('+fileUrl+'/file/img/'+designData.bgImg+')':'none',transform: 'scale('+containerScale+')' }"
+             @dragover="allowDrop" @drop="drop" ref="webContainer"  @click.self="outBlur">
           <div v-for="(item,index) in cacheComponents" :key="item.keyId"
-               class="cptDiv" :style="{width:Math.round(containerScale*item.cptWidth)+'px',
-                  height:Math.round(containerScale*item.cptHeight)+'px',
-                  top:Math.round(containerScale*item.cptY)+'px',left:Math.round(containerScale*item.cptX)+'px',
+               class="cptDiv" :style="{width:Math.round(item.cptWidth)+'px',
+                  height:Math.round(item.cptHeight)+'px',
+                  top:Math.round(item.cptY)+'px',left:Math.round(item.cptX)+'px',
                   zIndex: currentCptIndex === index ? 1800 : item.cptZ}"
                @mousedown="showConfigBar(item,index)">
-            <div v-show="currentCptIndex === index" style="position: fixed;border-top: 1px dashed #8898AF;"
-                 :style="{width:conWidth+'px',left:topLineLeft+'px'}"/><!--顶部辅助线-->
-            <div v-show="currentCptIndex === index" style="position: fixed;border-right: 1px dashed #8898AF;"
-                 :style="{height:conHeight+'px',top:'55px'}"/><!--左侧辅助线-->
+            <div v-show="currentCptIndex === index" style="position: fixed;border-top: 1px dashed #8A8A8A;width: 100%;left:0"/><!--顶部辅助线-->
+            <div v-show="currentCptIndex === index" style="position: fixed;border-right: 1px dashed #8A8A8A;height:100%;top:0"/><!--左侧辅助线-->
             <!-- 2021-12-28新增iframe组件，防止焦点聚焦在iframe内部，添加此蒙版 -->
             <div v-resize="'move'" class="activeMask" :style="currentCptIndex === index ? {border:'1px solid #B6BFCE'}:{}"/>
             <div style="width: 100%;height: 100%;">
-              <comment :is="item.cptName" :ref="item.cptName+index" :width="Math.round(containerScale*item.cptWidth)"
-                       :height="Math.round(containerScale*item.cptHeight)" :option="item.option"/>
+              <comment :is="item.cptName" :ref="item.cptName+index" :width="Math.round(item.cptWidth)"
+                       :height="Math.round(item.cptHeight)" :option="item.option"/>
             </div>
             <div class="delTag">
               <i class="el-icon-copy-document" @click.stop="copyCpt(item)"/>
@@ -118,11 +115,6 @@ import ScaleMarkY from "@/views/designer/scaleMark/ScaleMarkY";
 export default {
   name: 'design-index',
   components: {ScaleMarkY, ScaleMarkX, SittingForm, ConfigBar, ComponentBar},
-  computed:{
-    topLineLeft(){
-      return (this.windowWidth - this.conWidth - this.cptBarWidth) / 2 + this.cptBarWidth - 5
-    }
-  },
   data() {
     return {
       windowWidth:0,
@@ -181,13 +173,10 @@ export default {
       let tempHeight = tempWidth / this.designData.scaleX * this.designData.scaleY;
       const maxHeight = this.windowHeight - 70;//70=顶部操作条+顶部刻度线+底部滚动条
       if (tempHeight > maxHeight){
-        tempHeight = maxHeight;
-        tempWidth = tempHeight / this.designData.scaleY * this.designData.scaleX
+        tempWidth = maxHeight / this.designData.scaleY * this.designData.scaleX
       }
-      this.conWidth = tempWidth;
-      this.conHeight = tempHeight;
-      //缩放思路：组件尺寸始终保持1024为基准，保证在每台电脑上的尺寸一致，设计实时缩放，需同步更新配置栏数据
-      this.containerScale = tempWidth / 1024//原始比例1024:576
+      //缩放思路：组件尺寸始终保持1920为基准，保证在每台电脑上的尺寸一致，设计实时缩放
+      this.containerScale = Math.round(tempWidth / 1920 * 100) / 100//原始比例1920
     },
     exportCommand(command) {
       if(command === 'img'){
@@ -383,8 +372,8 @@ export default {
       let cpt = {
         groupTag: config.group, cptTitle:config.title, icon: config.icon,
         cptName: config.name, cptZ: 1, option: undefined,
-        cptX: Math.round(e.offsetX / this.containerScale),
-        cptY: Math.round(e.offsetY / this.containerScale),
+        cptX: Math.round(e.offsetX),
+        cptY: Math.round(e.offsetY),
         cptWidth: config.initWidth, cptHeight: config.initHeight,
         keyId: require('uuid').v1()
       }
@@ -409,59 +398,63 @@ export default {
     resize(el, binding, vNode) {//组件拉伸，移动位置
       const that = vNode.context;
       el.onmousedown = function (e) {
-        const rbX = e.clientX - el.parentNode.offsetWidth;
-        const rbY = e.clientY - el.parentNode.offsetHeight;
-        const ltX = e.clientX + el.parentNode.offsetWidth;
-        const ltY = e.clientY + el.parentNode.offsetHeight;
-        const disX = e.clientX - el.parentNode.offsetLeft;
-        const disY = e.clientY - el.parentNode.offsetTop;
+        const scaleClientX = e.clientX / that.containerScale;
+        const scaleClientY = e.clientY / that.containerScale;
+        const rbX = scaleClientX - el.parentNode.offsetWidth;
+        const rbY = scaleClientY - el.parentNode.offsetHeight;
+        const ltX = scaleClientX + el.parentNode.offsetWidth;
+        const ltY = scaleClientY + el.parentNode.offsetHeight;
+        const disX = scaleClientX - el.parentNode.offsetLeft;
+        const disY = scaleClientY - el.parentNode.offsetTop;
         let cptWidth, cptHeight, cptX, cptY;
         document.onmousemove = function (me) {
+          const meScaleClientX = me.clientX/that.containerScale
+          const meScaleClientY = me.clientY/that.containerScale
           if (binding.value === 'move'){
-            cptX = me.clientX - disX;
-            cptY = me.clientY - disY;
+            cptX = meScaleClientX - disX;
+            cptY = meScaleClientY - disY;
             el.parentNode.style.left = cptX + 'px';
             el.parentNode.style.top = cptY + 'px';
           }else{
             switch (binding.value) {
               case 'lt':
-                cptWidth = ltX - me.clientX;
-                cptHeight = ltY - me.clientY;
-                cptX = me.clientX - disX;
-                cptY = me.clientY - disY;
+                cptWidth = ltX - meScaleClientX;
+                cptHeight = ltY - meScaleClientY;
+                cptX = meScaleClientX - disX;
+                cptY = meScaleClientY - disY;
                 el.parentNode.style.left = cptX + 'px';
                 el.parentNode.style.top = cptY + 'px';
                 break;
               case 't':
-                cptHeight = ltY - me.clientY;
-                cptY = me.clientY - disY;
+                cptHeight = ltY - meScaleClientY;
+                cptY = meScaleClientY - disY;
                 el.parentNode.style.top = cptY + 'px';
                 break;
               case 'rt':
-                cptWidth = me.clientX - rbX;
-                cptHeight = ltY - me.clientY;
-                cptY = me.clientY - disY;
+                cptWidth = meScaleClientX - rbX;
+                cptHeight = ltY - meScaleClientY;
+                cptY = meScaleClientY - disY;
                 el.parentNode.style.top = cptY + 'px';
                 break;
               case 'r':
-                cptWidth = me.clientX - rbX;
+                cptWidth = meScaleClientX - rbX;
                 break;
               case 'rb':
-                cptWidth = me.clientX - rbX;
-                cptHeight = me.clientY - rbY;
+                cptWidth = meScaleClientX - rbX;
+                cptHeight = meScaleClientY - rbY;
                 break;
               case 'b':
-                cptHeight = me.clientY - rbY;
+                cptHeight = meScaleClientY - rbY;
                 break;
               case 'lb':
-                cptWidth = ltX - me.clientX;
-                cptHeight = me.clientY - rbY;
-                cptX = me.clientX - disX;
+                cptWidth = ltX - meScaleClientX;
+                cptHeight = meScaleClientY - rbY;
+                cptX = meScaleClientX - disX;
                 el.parentNode.style.left = cptX + 'px';
                 break;
               case 'l':
-                cptWidth = ltX - me.clientX;
-                cptX = me.clientX - disX;
+                cptWidth = ltX - meScaleClientX;
+                cptX = meScaleClientX - disX;
                 el.parentNode.style.left = cptX + 'px';
                 break;
             }
@@ -474,10 +467,10 @@ export default {
         document.onmouseup = function () {
           document.onmousemove = document.onmouseup = null;
           //拉伸适应不同屏幕，在容器显示时会重新*缩放比例
-          if (cptWidth) that.currentCpt.cptWidth = Math.round(cptWidth/that.containerScale);
-          if (cptHeight) that.currentCpt.cptHeight = Math.round(cptHeight/that.containerScale);
-          if (cptX) that.currentCpt.cptX = Math.round(cptX/that.containerScale);
-          if (cptY) that.currentCpt.cptY = Math.round(cptY/that.containerScale);
+          if (cptWidth) that.currentCpt.cptWidth = Math.round(cptWidth);
+          if (cptHeight) that.currentCpt.cptHeight = Math.round(cptHeight);
+          if (cptX) that.currentCpt.cptX = Math.round(cptX);
+          if (cptY) that.currentCpt.cptY = Math.round(cptY);
           that.$refs['configBar'].updateData(that.currentCpt);//解决缩放组件被遮挡时 配置栏数据不更新
         }
         return false;
@@ -490,7 +483,7 @@ export default {
 <style scoped>
 .top {height: 45px;box-shadow: 0 2px 5px #2b3340 inset;color: #fff;overflow: hidden;
   margin: 0;font-size: 18px;line-height: 45px;background: #353F50}
-.webContainer {position: relative;margin: 0 auto;background-size:100% 100%;}
+.webContainer {position: relative;margin: 0 10px;background-size:100% 100%;transform-origin:0 0}
 .delTag {width: 45px;height: 22px;background: rgba(43, 51, 64, 0.8);border-radius: 2px;color: #ccc;z-index: 2000;
   position: absolute;top: 0;right: 0;text-align: center;display: none;cursor: pointer
 }

@@ -30,6 +30,7 @@ export const manageMenus = [
 
 // 创建 router 实例，然后传 `routes` 配置
 export default new VueRouter({
+    //mode: 'history',
     routes: [
         {
             path: '/login',

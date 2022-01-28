@@ -9,8 +9,8 @@ export default {
   name: "cpt-dataV-percentPond",
   title: "进度池",
   icon: 'el-icon-film',
-  initWidth: 256,
-  initHeight: 191,
+  initWidth: 300,
+  initHeight: 100,
   group: 'basic',
   props:{
     width:Number,

@@ -1,10 +1,10 @@
 <template>
   <div style="height: 100%">
-    <el-button style="width: 100%;height: 100%" @click="redirect()"
+    <button style="width: 100%;height: 100%;border: none" @click="redirect()"
           :style="{background:option.attribute.bgColor,color:option.attribute.textColor,
               borderRadius:option.attribute.radius+'px'}">
       {{cptData}}
-    </el-button>
+    </button>
   </div>
 </template>
 
@@ -15,8 +15,8 @@ export default {
   name: "cpt-button",
   title: "按钮",
   icon: 'el-icon-thumb',
-  initWidth: 100,
-  initHeight: 30,
+  initWidth: 150,
+  initHeight: 50,
   group:'basic',
   props:{option:Object},
   data() {
@@ -39,8 +39,13 @@ export default {
       });
     },
     redirect(){
-      if(this.option.attribute.url){
-        window.open(this.option.attribute.url)
+      if (this.option.attribute.url){
+        if (this.option.attribute.url.startsWith("view")){
+          this.$router.push(this.option.attribute.url)
+          this.$emit("reload")
+        }else{
+          window.open(this.option.attribute.url)
+        }
       }
     }
   }

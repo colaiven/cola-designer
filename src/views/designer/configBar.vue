@@ -6,7 +6,7 @@
     <transition appear name="configTs">
       <div v-show="configBarShow">
         <el-row style="position: fixed;width: 260px;height:450px;z-index: 1802;
-      bottom: 84px;right: 30px;border-radius: 6px;background: rgba(228,230,236,.8);border: 1px solid #3F4B5F">
+      bottom: 84px;right: 30px;border-radius: 6px;background: rgba(228,230,236,.9);border: 1px solid #3F4B5F">
           <el-row v-drag class="cptTitle">
             <el-col :span="21"><div>组件属性</div></el-col>
             <el-col :span="3">

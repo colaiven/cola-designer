@@ -9,8 +9,6 @@ export default {
   name: "cpt-dataV-activeRing",
   title: "动态环图",
   icon: 'el-icon-help',
-  initWidth: 256,
-  initHeight: 191,
   group: 'chart',
   props:{
     width:Number,

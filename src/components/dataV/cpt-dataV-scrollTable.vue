@@ -12,8 +12,6 @@ export default {
   name: "cpt-dataV-scrollTable",
   title: "滚动表格",
   icon: 'el-icon-s-grid',
-  initWidth: 300,
-  initHeight: 150,
   group: 'chart',
   props:{
     width:Number,

@@ -11,8 +11,6 @@ export default {
   name: "cpt-dataV-border",
   title: "边框",
   icon: 'el-icon-help',
-  initWidth: 256,
-  initHeight: 191,
   group: 'basic',
   props:{
     width:Number,

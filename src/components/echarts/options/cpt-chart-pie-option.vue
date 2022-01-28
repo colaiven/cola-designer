@@ -58,6 +58,9 @@
       <el-form-item label="内环大小%">
         <el-input-number v-model="attribute.radiusInside" :min="0" :max="100"/>
       </el-form-item>
+      <el-form-item label="圆角">
+        <el-slider v-model="attribute.borderRadius" :min="0" :max="120"/>
+      </el-form-item>
       <el-form-item label="大饼颜色">
         <div>
           <div v-for="(item,index) in attribute.pieColor" :key="index" class="colorBlock" :style="{backgroundColor:item}">
@@ -67,6 +70,13 @@
           </div>
           <el-color-picker v-model="tempColor" show-alpha @change="addColor"/>
         </div>
+      </el-form-item>
+      <el-form-item label="label位置">
+        <el-select v-model="attribute.labelPosition">
+          <el-option label="内部" value="inside"/>
+          <el-option label="外侧" value="outside"/>
+          <el-option label="中心" value="center"/>
+        </el-select>
       </el-form-item>
       <el-form-item label="label字体">
         <el-input-number v-model="attribute.labelFontSize" :min="2" :max="120"/>

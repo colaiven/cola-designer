@@ -9,8 +9,6 @@ export default {
   name: "cpt-chart-mapMigrate",
   title: "迁徙地图",
   icon: 'el-icon-map-location',
-  initWidth: 350,
-  initHeight: 310,
   group: 'map',
   props:{
     width:Number,

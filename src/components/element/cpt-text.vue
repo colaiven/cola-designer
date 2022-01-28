@@ -15,7 +15,7 @@ export default {
   title: '文字框',
   icon: 'el-icon-chat-line-square',
   initWidth: 150,
-  initHeight: 30,
+  initHeight: 40,
   group:'basic',
   props: {
     option: Object
@@ -41,7 +41,12 @@ export default {
     },
     redirect(){
       if (this.option.attribute.url){
-        window.open(this.option.attribute.url)
+        if (this.option.attribute.url.startsWith("view")){
+          this.$router.push(this.option.attribute.url)
+          this.$emit("reload")
+        }else{
+          window.open(this.option.attribute.url)
+        }
       }
     }
   },

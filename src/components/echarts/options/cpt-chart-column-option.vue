@@ -41,7 +41,7 @@
           <el-color-picker v-model="attribute.xLabelColor" show-alpha/>
         </el-form-item>
         <el-form-item label="x轴字体倾斜">
-          <el-input-number v-model="attribute.xFontRotate" :min="-180" :max="180"/>
+          <el-slider v-model="attribute.xFontRotate" :min="-180" :max="180"/>
         </el-form-item>
       </div>
       <el-form-item label="y轴">
@@ -90,7 +90,7 @@
         <el-input-number v-model="attribute.barBorderRadius" :min="0" :max="50"/>
       </el-form-item>
       <el-form-item label="柱体宽度">
-        <el-input-number v-model="attribute.barWidth" :min="10" :max="100"/>
+        <el-input-number v-model="attribute.barWidth" :min="1" :max="100"/>
       </el-form-item>
       <el-form-item label="数值显示">
         <el-switch v-model="attribute.barLabelShow" active-text="开" inactive-text="关"/>

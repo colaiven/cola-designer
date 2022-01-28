@@ -27,6 +27,6 @@ export default {
 </script>
 
 <style scoped>
-.bothBorder{border-bottom: 1px solid #2b3340;border-top: 1px solid #2b3340;}
-.bottomBorder{border-bottom: 1px solid #2b3340;}
+.bothBorder{border-bottom: 1px solid #aaa;border-top: 1px solid #aaa;}
+.bottomBorder{border-bottom: 1px solid #aaa;}
 </style>

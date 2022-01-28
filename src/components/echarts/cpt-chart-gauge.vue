@@ -9,8 +9,8 @@ export default {
   name: "cpt-chart-gauge",
   title: "仪表盘",
   icon: 'el-icon-stopwatch',
-  initWidth: 256,
-  initHeight: 191,
+  initWidth: 300,
+  initHeight: 200,
   group: 'chart',
   props:{
     width:Number,
@@ -67,7 +67,29 @@ export default {
           {
             name: 'Pressure',
             type: 'gauge',
+            startAngle: attribute.startAngle,
+            endAngle: attribute.endAngle,
             radius : '100%',
+            min: attribute.min,
+            max: attribute.max,
+            axisLabel: {
+              distance: attribute.labelDistance,
+              color: '#999',
+              fontSize: attribute.labelSize
+            },
+            axisTick: {
+              show: true,
+              length: attribute.tickLength,
+              distance: attribute.lineDistance,
+            },
+            splitLine: {
+              distance: attribute.lineDistance,
+              length: attribute.tickLength * 1.5,
+              lineStyle: {
+                width: 2,
+                color: '#999'
+              }
+            },
             axisLine: {
               lineStyle: {
                 width: attribute.lineWidth,
@@ -82,12 +104,23 @@ export default {
               show: true,
               width: attribute.lineWidth,
             },
+            pointer: {
+              length: attribute.pointerLength+'%',
+              width: attribute.pointerWidth,
+            },
             itemStyle:{
               color: attribute.itemColor
             },
+            title: {
+              show: true,
+              fontSize:attribute.titleSize,
+              color:attribute.titleColor
+            },
             detail: {
               valueAnimation: true,
-              formatter: '{value}'
+              formatter: '{value}',
+              color:attribute.detailColor,
+              fontSize: attribute.detailSize,
             },
             data: [
               {

@@ -56,7 +56,6 @@ export default {
         { value: 'dv-border-box-8', label: '样式8' },
         { value: 'dv-border-box-9', label: '样式9' },
         { value: 'dv-border-box-10', label: '样式10' },
-        { value: 'dv-border-box-11', label: '样式11' },
         { value: 'dv-border-box-12', label: '样式12' },
         { value: 'dv-border-box-13', label: '样式13' }
       ]

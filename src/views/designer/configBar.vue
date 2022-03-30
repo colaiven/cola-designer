@@ -48,20 +48,22 @@
               <div class="customForm">
                 <el-form size="mini" label-position="top">
                   <el-form-item label="数据类型">
-                    <el-radio-group v-model="currentCpt.option.cptDataForm.dataSource">
+                    <el-radio-group v-model="currentCpt.option.cptDataForm.dataSource" @change="changeDataSource">
                       <el-radio :label="1">静态数据</el-radio>
                       <el-radio :label="2">接口</el-radio>
                       <el-radio :label="3">sql</el-radio>
                     </el-radio-group>
                   </el-form-item>
-                  <el-form-item label="轮询">
+                  <el-form-item label="轮询" v-show="currentCpt.option.cptDataForm.dataSource !== 1">
                     <el-switch v-model="dataPollEnable" active-text="开启" inactive-text="关闭"/>
                   </el-form-item>
                   <el-form-item label="轮询时间(s)" v-show="dataPollEnable">
                     <el-input-number v-model="currentCpt.option.cptDataForm.pollTime" :min="0" :max="100" label="描述文字"/>
                   </el-form-item>
                   <el-form-item :label="dataLabels[currentCpt.option.cptDataForm.dataSource-1]">
-                    <el-input type="textarea" :rows="5" v-model="currentCpt.option.cptDataForm.dataText"/>
+                    <el-input v-show="currentCpt.option.cptDataForm.dataSource === 1" type="textarea" :rows="5" v-model="currentCpt.option.cptDataForm.dataText"/>
+                    <el-input v-show="currentCpt.option.cptDataForm.dataSource === 2" type="textarea" :rows="5" v-model="currentCpt.option.cptDataForm.apiUrl"/>
+                    <el-input v-show="currentCpt.option.cptDataForm.dataSource === 3" type="textarea" :rows="5" v-model="currentCpt.option.cptDataForm.sql"/>
                   </el-form-item>
                   <el-form-item>
                     <el-button type="primary" style="width: 100%" @click="refreshCptData">刷新数据</el-button>
@@ -126,6 +128,11 @@ export default {
     }
   },
   methods:{
+    changeDataSource(val){//静态数据不显示轮询按钮
+      if(val === 1){
+        this.currentCpt.option.cptDataForm.pollTime = 0
+      }
+    },
     // 刷新数据，调用父组件(index)中refreshCptData方法
     // 在父组件中再调用选中图层中的refreshCptData方法
     // 图层中的refreshCptData方法再自行调后端接口渲染数据，文本框的内容和数据类型组装在option.cptDataForm中

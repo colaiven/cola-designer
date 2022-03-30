@@ -4,10 +4,11 @@ import {executeSelectApi} from "@/api/sqlExecuteApi";
 
 export async function getDataStr(cptDataForm){
     let resStr = '{}';//防止JSON解析报错
-    const iptStr = cptDataForm.dataText;
+    let iptStr = cptDataForm.dataText;
     if (cptDataForm.dataSource === 1){
         resStr = iptStr;
     }else if(cptDataForm.dataSource === 2){//调接口
+        iptStr = cptDataForm.apiUrl
         if (iptStr){
             await httpUtil.doRequest(iptStr,'get').then(res => {
                 resStr = res.data;
@@ -16,6 +17,7 @@ export async function getDataStr(cptDataForm){
             Message.error("接口地址不能为空");
         }
     }else if(cptDataForm.dataSource === 3){
+        iptStr = cptDataForm.sql
         if (iptStr){
             await executeSelectApi({sql:iptStr}).then(res => {
                 resStr = res.data;

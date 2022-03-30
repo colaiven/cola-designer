@@ -371,7 +371,7 @@ export default {
       let config = JSON.parse(this.copyDom.getAttribute('config'));
       let cpt = {
         groupTag: config.group, cptTitle:config.title, icon: config.icon,
-        cptName: config.name, cptZ: 1, option: undefined,
+        cptName: config.name, cptZ: 100, option: undefined,
         cptX: Math.round(e.offsetX),
         cptY: Math.round(e.offsetY),
         cptWidth: config.initWidth, cptHeight: config.initHeight,
@@ -380,6 +380,14 @@ export default {
       const group = cptOptions[config.group];
       if (group && group.options[config.name + '-option']) {
         const option = group.options[config.name + '-option']
+        if(option.cptDataForm){//将静态数据、api、sql用三个字段存储，配置项未填写apiUrl字段和sql字段在此处赋默认值
+          if (!option.cptDataForm.apiUrl){
+            option.cptDataForm.apiUrl = '/design/test'
+          }
+          if(!option.cptDataForm.sql){
+            option.cptDataForm.sql = 'select username from sys_user limit 1'
+          }
+        }
         cpt.option = JSON.parse(JSON.stringify(option))
       }else {
         this.$message.error("未再options.js中查找到"+config.group+"."+config.name+"-option的自定义属性")

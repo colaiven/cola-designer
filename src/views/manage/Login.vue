@@ -1,9 +1,12 @@
 <template>
   <div class="login-container">
+<!--    <div style="position: absolute;top: 10px;left: 10px;">
+      <img style="width: 180px;height: 60px;" :src="require('@/assets/logo2.png')">
+    </div>-->
     <el-form ref="loginForm" :model="loginForm" size="small" :rules="loginRules"
              class="login-form" auto-complete="on" label-position="left">
       <div style="position: relative;">
-        <h3 class="title">ColaDesigner</h3>
+        <h3 class="title">cola-designer</h3>
       </div>
       <el-form-item prop="username">
         <div class="formDiv">

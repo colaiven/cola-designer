@@ -23,6 +23,9 @@ import cpt_chart_tdColumn_option from '@/components/echarts/options/cpt-chart-td
 import cpt_dataV_activeRing_option from '@/components/dataV/options/cpt-dataV-activeRing-option'
 import cpt_chart_gauge_option from '@/components/echarts/options/cpt-chart-gauge-option'
 import cpt_threeJs_dom_option from '@/components/threeD/options/cpt-threeJs-dom-option'
+import cpt_num_option from '@/components/element/options/cpt-num-option'
+import cpt_rect_num_option from '@/components/element/options/cpt-rect-num-option'
+// import sg_icon_table_option from '@/components/element/options/sg-icon-table-option'
 
 let cptOptionsList = [
     cpt_button_option, cpt_text_option, cpt_image_option,
@@ -31,7 +34,8 @@ let cptOptionsList = [
     cpt_chart_mapGc_option,cpt_chart_mapMigrate_option,cpt_dataV_waterLevel_option,
     cpt_dataV_decoration_option,cpt_chart_line_option,cpt_dataV_digitalFlop_option,
     cpt_dataV_percentPond_option,cpt_iframe_option,cpt_chart_tdColumn_option,
-    cpt_dataV_activeRing_option,cpt_chart_gauge_option,cpt_threeJs_dom_option
+    cpt_dataV_activeRing_option,cpt_chart_gauge_option,cpt_threeJs_dom_option,
+    cpt_num_option,cpt_rect_num_option
 ]
 
 export function registerOption(){

@@ -13,7 +13,7 @@
     </el-form>
     <el-row :gutter="24">
       <el-col :span="6" v-for="item in tableData" :key="item.id">
-        <div class="designItem" :style="{backgroundImage: item.designImgId ? 'url('+imgUrl+item.designImgId+')':'none'}">
+        <div class="designItem" :style="{backgroundImage: item.designImgPath ? 'url('+imgUrl+item.designImgPath+')':'none'}">
           <div style="text-indent: 1em;position: absolute;">{{item.title}}</div>
           <div class="editMask">
             <div style="text-align: center;line-height: 45px;">
@@ -52,7 +52,7 @@ export default {
   components: {DesignerForm},
   data() {
     return {
-      imgUrl: fileUrl+'/file/img/',
+      imgUrl: fileUrl,
       searchForm:{groupName:""},
       pageConfig:{
         pageNo:1,

@@ -1,5 +1,5 @@
 import request from '@/utils/HttpUtil'
-import { baseUrl,fileUrl } from '/env'
+import { baseUrl } from '/env'
 
 export function getByIdApi(id,mode,viewCode) {
     return request({
@@ -16,10 +16,10 @@ export function authViewCodeApi(params) {
     })
 }
 
-export function uploadFileApi(oldId, data) {
+export function uploadFileApi(fileName, data) {
     return request({
         headers: {'Content-Type':'multipart/form-data'},
-        url: fileUrl+'/file/upload?dir=design&oldId='+oldId,
+        url: baseUrl+'/file/upload?dir=design&fileName='+fileName,
         method: 'post',
         data: data
     })

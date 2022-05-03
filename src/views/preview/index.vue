@@ -1,6 +1,6 @@
 <template>
   <div :style="{width:windowWidth+'px',height:conHeight+'px',backgroundColor: designCache.bgColor,
-  backgroundImage: designCache.bgImg ? 'url('+fileUrl+'/file/img/'+designCache.bgImg+')':'none'}"
+  backgroundImage: designCache.bgImg ? 'url('+fileUrl+designCache.bgImg+')':'none'}"
        style="background-size:100% 100%;background-color: #2b3340;overflow: hidden">
     <div style="position:relative;transform-origin:0 0;"
          :style="{width:windowWidth+'px',height:conHeight+'px',transform: 'scale('+containerScale+')'}">
@@ -37,7 +37,6 @@
 <script>
 import {authViewCodeApi, getByIdApi} from "@/api/DesignerApi";
 import {fileUrl} from "/env";
-import {loadFile} from "@/utils/FileUtil";
 
 export default {
   name: "preview_index",
@@ -68,15 +67,8 @@ export default {
       const that = this;
       const id = this.$route.query.id;
       if (path === '/preview'){
-        if (!id){
-          let designCache = JSON.parse(localStorage.getItem('designCache'));
-          this.loadDesign(designCache,false);
-        }else{//演示环境用
-          loadFile('/cola-designer/designData/'+id+'.cd').then(text => {
-            let designCache = text.data
-            this.loadDesign(designCache,false);
-          });
-        }
+        let designCache = JSON.parse(localStorage.getItem('designCache'));
+        this.loadDesign(designCache,false);
       }else if(path === '/view'){
         if (!id){
           this.$message.error('id错');
@@ -115,12 +107,10 @@ export default {
     loadSize(){
       this.windowWidth = document.documentElement.clientWidth;
       this.windowHeight = document.documentElement.clientHeight;
-      this.containerScale = Math.round(this.windowWidth / 1920 * 100) / 100//原始比例1920
-      this.conHeight = this.windowWidth /this.designCache.scaleX * this.designCache.scaleY
-      if(this.conHeight<this.windowHeight){
-        this.conHeight=this.windowHeight
-      }
-    }
+      this.containerScale = Math.round(this.windowWidth / this.designCache.scaleX * 100) / 100
+      this.conHeight = this.designCache.scaleY
+      console.log(this.windowWidth,this.containerScale)
+    },
   }
 }
 </script>

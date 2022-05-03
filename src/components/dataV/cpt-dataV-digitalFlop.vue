@@ -3,7 +3,7 @@
 </template>
 
 <script>
-import {getDataStr, pollingRefresh} from "@/utils/refreshCptData";
+import {getDataJson, pollingRefresh} from "@/utils/refreshCptData";
 
 export default {
   name: "cpt-dataV-digitalFlop",
@@ -43,9 +43,9 @@ export default {
       pollingRefresh(this.uuid, this.option.cptDataForm, this.loadData)
     },
     loadData(){
-      getDataStr(this.option.cptDataForm).then(res => {
+      getDataJson(this.option.cptDataForm).then(res => {
         this.flopConfig = {
-          number: res.split(',').map(Number),
+          number: res.value.split(',').map(Number),
           content: this.option.attribute.content,
           toFixed: this.option.attribute.toFixedNum,
           textAlign: this.option.attribute.textAlign,

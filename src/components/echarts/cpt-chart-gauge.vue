@@ -3,7 +3,7 @@
 </template>
 
 <script>
-import {getDataStr, pollingRefresh} from "@/utils/refreshCptData";
+import {getDataJson, pollingRefresh} from "@/utils/refreshCptData";
 
 export default {
   name: "cpt-chart-gauge",
@@ -36,7 +36,7 @@ export default {
       uuid:'',
       chartOption:{},
       chart:null,
-      cptData:0
+      cptData:{}
     }
   },
   created() {
@@ -51,8 +51,8 @@ export default {
       pollingRefresh(this.uuid, this.option.cptDataForm, this.loadData)
     },
     loadData(){
-      getDataStr(this.option.cptDataForm).then(res => {
-        this.cptData = parseFloat(res);
+      getDataJson(this.option.cptDataForm).then(res => {
+        this.cptData = res;
         this.loadChart(this.option.attribute);
       });
     },
@@ -124,7 +124,7 @@ export default {
             },
             data: [
               {
-                value: that.cptData,
+                value: that.cptData.value,
                 name: attribute.title
               }
             ]

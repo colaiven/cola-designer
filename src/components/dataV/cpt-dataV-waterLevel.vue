@@ -3,7 +3,7 @@
 </template>
 
 <script>
-import {getDataStr, pollingRefresh} from "@/utils/refreshCptData";
+import {getDataJson, pollingRefresh} from "@/utils/refreshCptData";
 export default {
   name: "cpt-dataV-waterLevel",
   title: "水位图",
@@ -48,9 +48,9 @@ export default {
       this.refreshFlagKey = require('uuid').v1();
     },
     loadData(){
-      getDataStr(this.option.cptDataForm).then(res => {
+      getDataJson(this.option.cptDataForm).then(res => {
         this.config = JSON.parse(JSON.stringify(this.option.attribute))
-        this.config.data = JSON.parse(res);
+        this.config.data = res;
       });
     }
   }

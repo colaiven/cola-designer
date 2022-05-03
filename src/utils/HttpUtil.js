@@ -21,7 +21,7 @@ httpUtil.interceptors.request.use(
 httpUtil.interceptors.response.use(
     response => {
         const res = response.data
-        if (res.code !== 1) {
+        if (res.code && res.code !== 1) {
             if(res.code === 301 || res.code === 302) {
                 MessageBox.confirm('登录状态失效，请退出重新登录', '确认退出', {
                     confirmButtonText: '重新登录',
@@ -34,9 +34,8 @@ httpUtil.interceptors.response.use(
             }
             Message.error(res.msg)
             return Promise.reject(new Error(res.msg || 'Error'))
-        }else {
-            return res
         }
+        return res;
     }, error => {
         console.log('err', error)
         Message.error(error.message)

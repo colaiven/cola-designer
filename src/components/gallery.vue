@@ -7,7 +7,7 @@
           <el-row :gutter="6">
             <el-col :span="4" v-for="item2 in imgData" :key="item2.id" @click.native="checkImg(item2)">
               <div style="height: 150px;" :style="checkedItem.id === item2.id ? 'border: 2px solid #409eff;':'border: 1px solid #ccc;'">
-                <el-image style="width: 100%; height: 100%" :src="imgUrl + item2.fileId" fit="fill"/>
+                <el-image style="width: 100%; height: 100%" :src="imgUrl + item2.filePath" fit="fill"/>
               </div>
               <div style="height: 20px;margin-bottom: 6px;overflow: hidden">{{ item2.imgName }}</div>
             </el-col>
@@ -55,7 +55,7 @@ export default {
   name: "gallery",
   data(){
     return {
-      imgUrl: fileUrl+'/file/img/',
+      imgUrl: fileUrl,
       groupPanes:[],
       imgData:[],
       modelShow:false,
@@ -90,7 +90,7 @@ export default {
       if (!this.checkedItem || !this.checkedItem.id){
         this.$message.error('请选择图片')
       }else {
-        this.$emit('confirmCheck', this.imgUrl+this.checkedItem.fileId,this.checkedItem.fileId);
+        this.$emit('confirmCheck', this.checkedItem.filePath);
         this.modelShow = false
       }
     },
@@ -98,12 +98,10 @@ export default {
       this.checkedItem = item
     },
     removeTab(targetName) {//询问处理、当前选中项处理、刷新处理
-      console.log(targetName)
       this.groupPanes = this.groupPanes.filter(tab => tab.id !== targetName);
       this.activeGroup = this.groupPanes[0].id
     },
     tabClick() {
-      //console.log(tab);
       this.pageConfig.pageNo = 1;
       this.loadData();
     },

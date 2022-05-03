@@ -4,7 +4,7 @@
 
 <script>
 import cityPosition from '@/assets/map/cityPosition.json'
-import {getDataStr, pollingRefresh} from "@/utils/refreshCptData";
+import {getDataJson, pollingRefresh} from "@/utils/refreshCptData";
 export default {
   name: "cpt-chart-mapMigrate",
   title: "迁徙地图",
@@ -18,6 +18,7 @@ export default {
   data(){
     return {
       uuid:'',
+      cptData:{},
       chartOption:{},
       chart:undefined,
     }
@@ -48,8 +49,8 @@ export default {
       pollingRefresh(this.uuid, this.option.cptDataForm, this.loadData)
     },
     loadData(){
-      getDataStr(this.option.cptDataForm).then(res => {
-        this.cptData = JSON.parse(res);
+      getDataJson(this.option.cptDataForm).then(res => {
+        this.cptData = res;
         this.loadChart(this.option.attribute);
       });
     },

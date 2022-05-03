@@ -15,7 +15,7 @@
       <el-table-column prop="imgName" label="资源名" align="center"/>
       <el-table-column label="图片" align="center">
         <template slot-scope="scope">
-          <el-image style="width: 80px;height: 80px" :src="imgUrl+scope.row.fileId" :preview-src-list="[imgUrl+scope.row.fileId]"></el-image>
+          <el-image style="width: 80px;height: 80px" :src="imgUrl+scope.row.filePath" :preview-src-list="[imgUrl+scope.row.filePath]"></el-image>
         </template>
       </el-table-column>
       <el-table-column prop="groupName" label="分组" align="center"/>
@@ -48,7 +48,7 @@ export default {
   components: {ImgPoolForm},
   data() {
     return {
-      imgUrl: fileUrl+'/file/img/',
+      imgUrl: fileUrl,
       searchForm:{groupName:""},
       pageConfig:{
         pageNo:1,

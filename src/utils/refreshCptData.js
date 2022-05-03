@@ -2,16 +2,16 @@ import httpUtil from "@/utils/HttpUtil";
 import {Message} from "element-ui";
 import {executeSelectApi} from "@/api/sqlExecuteApi";
 
-export async function getDataStr(cptDataForm){
+export async function getDataJson(cptDataForm){
     let resStr = '{}';//防止JSON解析报错
     let iptStr = cptDataForm.dataText;
     if (cptDataForm.dataSource === 1){
-        resStr = iptStr;
+        resStr = JSON.parse(iptStr);
     }else if(cptDataForm.dataSource === 2){//调接口
         iptStr = cptDataForm.apiUrl
         if (iptStr){
             await httpUtil.doRequest(iptStr,'get').then(res => {
-                resStr = res.data;
+                resStr = res.data?res.data:res;
             })
         }else{
             Message.error("接口地址不能为空");

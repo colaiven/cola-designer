@@ -3,12 +3,12 @@
     fontStyle:option.attribute.fontStyle, fontWeight:option.attribute.fontWeight,lineHeight:option.attribute.textLineHeight+'px',
     backgroundColor:option.attribute.bgColor,
     fontFamily:option.attribute.textFamily, textDecoration:option.attribute.textDecoration}" @click="redirect">
-    {{cptData}}
+    {{cptData.value}}
   </div>
 </template>
 
 <script>
-import {getDataStr, pollingRefresh} from "@/utils/refreshCptData";
+import {getDataJson, pollingRefresh} from "@/utils/refreshCptData";
 
 export default {
   name: "cpt-text",
@@ -22,7 +22,7 @@ export default {
   },
   data() {
     return {
-      cptData: '',
+      cptData: {},
       uuid: null
     }
   },
@@ -35,7 +35,7 @@ export default {
       pollingRefresh(this.uuid, this.option.cptDataForm, this.loadData)
     },
     loadData(){
-      getDataStr(this.option.cptDataForm).then(res => {
+      getDataJson(this.option.cptDataForm).then(res => {
         this.cptData = res;
       });
     },

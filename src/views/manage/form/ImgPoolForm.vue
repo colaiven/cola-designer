@@ -9,13 +9,13 @@
       </el-form-item>
       <el-form-item label="文件">
         <el-upload
-          :action="fileUrl+'/file/upload?dir=imgPool'"
+          :action="baseUrl+'/file/upload?dir=imgPool'"
           :show-file-list="false"
           :headers="uploadHeaders"
           list-type="picture-card"
           :on-success="handleAvatarSuccess"
           :before-upload="beforeAvatarUpload">
-          <el-image v-if="fileId" style="width: 100%;height: 100%" :src="fileUrl+'/file/img/'+fileId"/>
+          <el-image v-if="filePath" style="width: 100%;height: 100%" :src="fileUrl+filePath"/>
           <i v-else class="el-icon-plus avatar-uploader-icon"></i>
         </el-upload>
       </el-form-item>
@@ -33,7 +33,7 @@
 <script>
 import {saveOrUpdateApi} from "@/api/ImgPool";
 import {listGroupAllApi} from "@/api/ImgGroupApi";
-import {fileUrl} from "/env";
+import {baseUrl,fileUrl} from "/env";
 import {getToken} from "@/utils/auth";
 
 export default {
@@ -42,7 +42,8 @@ export default {
     return {
       uploadHeaders:{'X-Token':getToken()},
       fileUrl:fileUrl,
-      fileId:'',
+      baseUrl,
+      filePath:'',
       formData:{},
       modelShow:false,
       formRules:{
@@ -59,20 +60,20 @@ export default {
         this.groups = res.data
       })
       this.formData = {};
-      this.fileId = '';
+      this.filePath = '';
       if (isEdit){
         this.formData = row;
-        this.fileId = this.formData.fileId
+        this.filePath = this.formData.filePath
       }
       this.modelShow = true;
     },
     submitForm(){
       this.$refs['modelForm'].validate((valid) => {
         if (valid) {
-          if (!this.fileId){
+          if (!this.filePath){
             this.$message.error('请上传图片')
           }
-          this.formData.fileId = this.fileId
+          this.formData.filePath = this.filePath
           saveOrUpdateApi(this.formData).then(() => {
             this.modelShow = false
             this.$emit('refreshTable');
@@ -84,7 +85,7 @@ export default {
       if (res.code !== 1){
         this.$message.error(res.msg)
       }
-      this.fileId = res.data;
+      this.filePath = res.data;
       this.formData.imgName = file.name.substr(0,file.name.lastIndexOf('.'));
     },
     beforeAvatarUpload(file) {

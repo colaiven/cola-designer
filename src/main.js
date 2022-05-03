@@ -7,10 +7,8 @@ import router from './router'
 import dataV from '@jiaminghi/data-view'
 import '@/permission' // permission control
 import {registerOption} from '@/components/registerOption'
-
-//注册echarts地图
-import chinaGeoJson from '@/assets/map/china.json'
-echarts.registerMap('china', chinaGeoJson);
+import '@/assets/font/custom-font.css'
+import '@/utils/RegisterMap'
 
 Vue.prototype.$echarts = echarts
 Vue.config.productionTip = false

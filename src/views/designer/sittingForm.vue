@@ -8,17 +8,18 @@
         <el-form-item label="网站描述">
           <el-input type="textarea" v-model="formData.simpleDesc"></el-input>
         </el-form-item>
-        <el-form-item label="屏幕比例">
-          <el-select v-model="scale" placeholder="请选择" style="width: 100%" @change="scaleChange">
-            <el-option v-for="item in scaleOptions" :key="item.value" :label="item.label" :value="item.value"/>
-          </el-select>
+        <el-form-item label="分辨率X">
+          <el-input-number v-model="formData.scaleX" :min="640" :max="10240" style="width: 100%"/>
+        </el-form-item>
+        <el-form-item label="分辨率Y">
+          <el-input-number v-model="formData.scaleY" :min="320" :max="10240" style="width: 100%"/>
         </el-form-item>
         <el-form-item label="背景颜色">
           <el-color-picker v-model="formData.bgColor" show-alpha/>
         </el-form-item>
         <el-form-item label="背景图片">
           <div v-if="formData.bgImg" style="width: 100%;height: 100%;position: relative">
-            <img :src="fileUrl+'/file/img/'+formData.bgImg" style="width: 100%;height: 100%;"/>
+            <img :src="fileUrl+formData.bgImg" style="width: 100%;height: 100%;"/>
             <i style="position: absolute;z-index: 6;right: 0;font-size: 20px;color: #FFCCCC"
                class="el-icon-delete" @click.stop="handleRemove"></i>
           </div>
@@ -66,22 +67,10 @@ export default {
       fileUrl:fileUrl,
       uploadHeaders:{'X-Token':getToken()},
       dialogVisible:false,
-      scale:'',
-      scaleOptions: [
-          { value: '21*9', label: '21 : 9'},
-          { value: '18*9', label: '18 : 9'},
-          { value: '16*10', label: '16 : 10'},
-          { value: '16*9', label: '16 : 9'},
-          { value: '5*4', label: '5 : 4'},
-          { value: '4*3', label: '4 : 3'},
-          { value: '3*2', label: '3 : 2'},
-          { value: '1*1', label: '1 : 1'}
-      ]
     }
   },
   methods:{
     opened(){
-      this.scale = this.formData.scaleX + '*' + this.formData.scaleY
       this.dialogVisible = true;
     },
     close(){
@@ -92,17 +81,11 @@ export default {
       this.$emit('saveSittingForm',JSON.parse(JSON.stringify(this.formData)));
       this.dialogVisible = false
     },
-    scaleChange(value){//关闭时待优化
-      let split = value.split('*');
-      this.formData.scaleX = split[0]
-      this.formData.scaleY = split[1]
-      this.$emit('updateScale');
-    },
     showGallery(){
       this.$refs.gallery.opened();
     },
-    confirmCheck(fileUrl, fileId){
-      this.formData.bgImg = fileId;
+    confirmCheck(fileUrl){
+      this.formData.bgImg = fileUrl;
     },
     handleRemove(){
       this.formData.bgImg = ''

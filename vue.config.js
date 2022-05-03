@@ -18,13 +18,10 @@ module.exports = {
                     '/design': ''
                 }
             },
-            '/fileUrl': {
-                target: 'http://127.0.0.1:6882',
+            '/file': {
+                target: 'http://127.0.0.1/',
                 ws: false,
                 changeOrigin: true,
-                pathRewrite: {
-                    '/fileUrl': ''
-                }
             },
         }
     },

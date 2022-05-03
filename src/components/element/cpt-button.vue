@@ -3,13 +3,13 @@
     <button style="width: 100%;height: 100%;border: none" @click="redirect()"
           :style="{background:option.attribute.bgColor,color:option.attribute.textColor,
               borderRadius:option.attribute.radius+'px'}">
-      {{cptData}}
+      {{cptData.value}}
     </button>
   </div>
 </template>
 
 <script>
-import {getDataStr, pollingRefresh} from "@/utils/refreshCptData";
+import {getDataJson, pollingRefresh} from "@/utils/refreshCptData";
 
 export default {
   name: "cpt-button",
@@ -21,7 +21,7 @@ export default {
   props:{option:Object},
   data() {
     return {
-      cptData: '',
+      cptData: {},
       uuid: null
     }
   },
@@ -34,7 +34,7 @@ export default {
       pollingRefresh(this.uuid, this.option.cptDataForm, this.loadData)
     },
     loadData(){
-      getDataStr(this.option.cptDataForm).then(res => {
+      getDataJson(this.option.cptDataForm).then(res => {
         this.cptData = res;
       });
     },

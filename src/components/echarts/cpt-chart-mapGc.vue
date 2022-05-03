@@ -3,7 +3,7 @@
 </template>
 
 <script>
-import {getDataStr, pollingRefresh} from "@/utils/refreshCptData";
+import {getDataJson, pollingRefresh} from "@/utils/refreshCptData";
 
 export default {
   name: "cpt-chart-mapGc",
@@ -49,8 +49,8 @@ export default {
       pollingRefresh(this.uuid, this.option.cptDataForm, this.loadData)
     },
     loadData(){
-      getDataStr(this.option.cptDataForm).then(res => {
-        this.cptData = JSON.parse(res);
+      getDataJson(this.option.cptDataForm).then(res => {
+        this.cptData = res;
         this.loadChart(this.option.attribute);
       });
     },
@@ -113,7 +113,7 @@ export default {
           show: !0
         },
         geo: {
-          map: "china",
+          map: attribute.map,
           roam: attribute.roam,//允许缩放
           //scaleLimit: { min: 1, max: 2 },//允许缩放级别
           zoom: 1.23,

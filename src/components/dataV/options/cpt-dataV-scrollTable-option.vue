@@ -28,6 +28,9 @@
           <el-option label="全表滚动" value="page"/>
         </el-select>
       </el-form-item>
+      <el-form-item label="表头">
+        <el-input type="textarea" v-model="attribute.columns" :rows="10"/>
+      </el-form-item>
     </el-form>
   </div>
 </template>

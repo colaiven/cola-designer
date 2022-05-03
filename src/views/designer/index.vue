@@ -51,7 +51,7 @@
           <ScaleMarkY/><!--左侧刻度线-->
         </div>
         <div class="webContainer" :style="{width:'1920px',height:1920 / designData.scaleX * designData.scaleY+'px', backgroundColor: designData.bgColor,
-             backgroundImage: designData.bgImg ? 'url('+fileUrl+'/file/img/'+designData.bgImg+')':'none',transform: 'scale('+containerScale+')' }"
+             backgroundImage: designData.bgImg ? 'url('+fileUrl+designData.bgImg+')':'none',transform: 'scale('+containerScale+')' }"
              @dragover="allowDrop" @drop="drop" ref="webContainer"  @click.self="outBlur">
           <div v-for="(item,index) in cacheComponents" :key="item.keyId"
                class="cptDiv" :style="{width:Math.round(item.cptWidth)+'px',
@@ -71,21 +71,21 @@
               <i class="el-icon-copy-document" @click.stop="copyCpt(item)"/>
               <i style="margin-left: 4px" class="el-icon-delete" @click.stop="delCpt(item,index)"/>
             </div>
-            <div v-show="currentCptIndex === index" style="top: -3px;left: -3px;cursor: se-resize"
+            <div v-show="currentCptIndex === index" style="top: 0;left: 0;cursor: se-resize;transform: translate(-50%, -50%)"
                  class="resizeTag" v-resize="'lt'"  />
-            <div v-show="currentCptIndex === index" style="top: -3px;left: 48%;cursor: s-resize"
+            <div v-show="currentCptIndex === index" style="top: 0;left: 50%;cursor: s-resize;transform: translate(-50%, -50%)"
                  class="resizeTag" v-resize="'t'"  />
-            <div v-show="currentCptIndex === index" style="top: -3px;right: -4px;cursor: ne-resize"
+            <div v-show="currentCptIndex === index" style="top: 0;right: 0;cursor: ne-resize;transform: translate(50%, -50%)"
                  class="resizeTag" v-resize="'rt'"  />
-            <div v-show="currentCptIndex === index" style="top: 48%;right: -4px;cursor: w-resize"
+            <div v-show="currentCptIndex === index" style="top: 50%;right: 0;cursor: w-resize;transform: translate(50%, -50%)"
                  class="resizeTag" v-resize="'r'"  />
-            <div v-show="currentCptIndex === index" style="bottom: -4px;right: -4px;cursor: se-resize"
+            <div v-show="currentCptIndex === index" style="bottom: 0;right: 0;cursor: se-resize;transform: translate(50%, 50%)"
                  class="resizeTag" v-resize="'rb'"  />
-            <div v-show="currentCptIndex === index" style="bottom: -4px;left: 48%;cursor: s-resize"
+            <div v-show="currentCptIndex === index" style="bottom: 0;left: 50%;cursor: s-resize;transform: translate(-50%, 50%)"
                  class="resizeTag" v-resize="'b'"  />
-            <div v-show="currentCptIndex === index" style="bottom: -4px;left: -3px;cursor: ne-resize"
+            <div v-show="currentCptIndex === index" style="bottom: 0;left: 0;cursor: ne-resize;transform: translate(-50%, 50%)"
                  class="resizeTag" v-resize="'lb'"  />
-            <div v-show="currentCptIndex === index" style="top: 48%;left: -3px;cursor: w-resize"
+            <div v-show="currentCptIndex === index" style="top: 50%;left: 0;cursor: w-resize;transform: translate(-50%, -50%)"
                  class="resizeTag" v-resize="'l'"  />
           </div>
         </div>
@@ -125,7 +125,7 @@ export default {
       conHeight: 0,
       copyDom: '',
       designData:{
-        id:'',title:'我的大屏', scaleX:16, scaleY:9, version:'',
+        id:'',title:'我的大屏', scaleX:1920, scaleY:1080, version:'',
         bgColor:'#2B3340',simpleDesc:'',bgImg:'',viewCode:'',components:[]
       },
       oldDesignData:'',//大屏参数表单未保存时还原
@@ -169,14 +169,8 @@ export default {
     initContainerSize(){
       this.windowWidth = document.documentElement.clientWidth
       this.windowHeight = document.documentElement.clientHeight
-      let tempWidth = this.windowWidth - this.cptBarWidth - 40;//40=两边空隙
-      let tempHeight = tempWidth / this.designData.scaleX * this.designData.scaleY;
-      const maxHeight = this.windowHeight - 70;//70=顶部操作条+顶部刻度线+底部滚动条
-      if (tempHeight > maxHeight){
-        tempWidth = maxHeight / this.designData.scaleY * this.designData.scaleX
-      }
-      //缩放思路：组件尺寸始终保持1920为基准，保证在每台电脑上的尺寸一致，设计实时缩放
-      this.containerScale = Math.round(tempWidth / 1920 * 100) / 100//原始比例1920
+      let tempWidth = this.windowWidth - this.cptBarWidth - 140;//40=两边空隙
+      this.containerScale = Math.round(tempWidth / this.designData.scaleX * 100) / 100
     },
     exportCommand(command) {
       if(command === 'img'){
@@ -305,14 +299,15 @@ export default {
           let file = base64toFile(canvasData,that.designData.title+'.png');
           let fileFormData = new FormData()
           fileFormData.append('file',file)
-          uploadFileApi(that.designData.designImgId,fileFormData).then(res => {//上传预览图
-            that.designData.designImgId = res.data
+          uploadFileApi(that.designData.id+'.png',fileFormData).then(res => {//上传预览图
+            that.designData.designImgPath = res.data
             that.designData.components = JSON.stringify(this.cacheComponents)
             saveOrUpdateApi(this.designData).then(res2 => {
               loading.close();
               that.$message.success(res2.msg);
             })
           })
+          loading.close();
         })
       }
     },

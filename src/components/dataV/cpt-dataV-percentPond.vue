@@ -3,7 +3,7 @@
 </template>
 
 <script>
-import {getDataStr, pollingRefresh} from "@/utils/refreshCptData";
+import {getDataJson, pollingRefresh} from "@/utils/refreshCptData";
 
 export default {
   name: "cpt-dataV-percentPond",
@@ -48,9 +48,9 @@ export default {
       pollingRefresh(this.uuid, this.option.cptDataForm, this.loadData)
     },
     loadData(){
-      getDataStr(this.option.cptDataForm).then(res => {
+      getDataJson(this.option.cptDataForm).then(res => {
         let tempConfig = JSON.parse(JSON.stringify(this.option.attribute));
-        tempConfig.value = res;
+        tempConfig.value = res.value;
         tempConfig.lineDash = [tempConfig.lineWidth, tempConfig.lineSpace]
         this.pondConfig = tempConfig;
         this.refreshFlagKey = require('uuid').v1(); //强制刷新视图 报错为dataV组件内部bug

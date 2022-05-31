@@ -8,7 +8,7 @@ import {getDataJson, pollingRefresh} from "@/utils/refreshCptData";
 export default {
   name: "cpt-chart-line",
   title: "折线图",
-  icon: 'el-icon-data-line',
+  icon: 'line',
   group: 'chart',
   props:{
     width:Number,

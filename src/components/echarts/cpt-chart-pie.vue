@@ -8,7 +8,7 @@ import {getDataJson, pollingRefresh} from "@/utils/refreshCptData";
 export default {
   name: "cpt-chart-pie",
   title: "饼图",
-  icon: 'el-icon-pie-chart',
+  icon: 'pie',
   group: 'chart',
   props:{
     width:Number,

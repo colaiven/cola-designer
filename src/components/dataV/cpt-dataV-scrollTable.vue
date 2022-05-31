@@ -11,7 +11,7 @@ import {getDataJson, pollingRefresh} from "@/utils/refreshCptData";
 export default {
   name: "cpt-dataV-scrollTable",
   title: "滚动表格",
-  icon: 'el-icon-s-grid',
+  icon: 'scroll-table',
   group: 'chart',
   props:{
     width:Number,

@@ -8,7 +8,7 @@ import {getDataJson, pollingRefresh} from "@/utils/refreshCptData";
 export default {
   name: "cpt-chart-mapMigrate",
   title: "迁徙地图",
-  icon: 'el-icon-map-location',
+  icon: 'map-migrate',
   group: 'map',
   props:{
     width:Number,

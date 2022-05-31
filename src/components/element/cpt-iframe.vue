@@ -6,7 +6,7 @@
 export default {
   name: "cpt-iframe",
   title: 'iframe',
-  icon: 'el-icon-s-promotion',
+  icon: 'iframe',
   group:'basic',
   props: {
     option: Object

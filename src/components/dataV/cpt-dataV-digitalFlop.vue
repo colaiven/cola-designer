@@ -8,7 +8,7 @@ import {getDataJson, pollingRefresh} from "@/utils/refreshCptData";
 export default {
   name: "cpt-dataV-digitalFlop",
   title: "数字翻牌器",
-  icon: 'el-icon-data-analysis',
+  icon: 'digital-flop',
   initWidth: 256,
   initHeight: 80,
   group: 'basic',

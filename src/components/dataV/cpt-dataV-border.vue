@@ -10,7 +10,7 @@
 export default {
   name: "cpt-dataV-border",
   title: "边框",
-  icon: 'el-icon-help',
+  icon: 'border',
   group: 'basic',
   props:{
     width:Number,

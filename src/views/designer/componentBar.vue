@@ -20,7 +20,9 @@
         <el-col :span="12" v-for="(item,index) in cptGroups[group.key]" :key="item.title+'c'+index">
           <div draggable="true" :config="JSON.stringify(item)" @dragstart="dragStart"
                style="background-color: #3F4B5F;height: 70px;text-align: center;margin-top: 2px;">
-            <div style="font-size: 20px;line-height: 40px;"><i :class="item.icon?item.icon:'el-icon-question'"></i>
+            <div style="line-height: 40px;">
+              <embed v-if="item.icon" style="width: 20px;" :src="require('@/assets/icon/'+item.icon+'.svg')" type="image/svg+xml" />
+              <i v-else style="font-size: 20px;" class="el-icon-question"></i>
             </div>
             <div style="font-size: 13px">{{ item.title }}</div>
           </div>
@@ -34,7 +36,7 @@
       <el-row v-for="(item,index) in selectedComponents" :key="item.keyId" class="selectedItem"
               :style="{background: currentCptIndex === index ? '#3F4B5F':'#353f50'}">
         <el-col :span="4" style="text-align: center"><i :class="item.icon"/></el-col>
-        <el-col :span="15" @click.native="showConfigBar(item,index)">{{item.cptTitle}}</el-col>
+        <el-col :span="15" @click.native="showConfigBar($event,item,index)">{{item.cptTitle}}</el-col>
         <el-col :span="5" style="text-align: center">
           <i class="el-icon-copy-document" @click="copyCpt(item)"/>
           <i style="margin-left: 4px;" class="el-icon-delete" @click="delCpt(item,index)"/>
@@ -76,8 +78,8 @@ export default {
       let copyDom = e.currentTarget.cloneNode(true);
       this.$emit('dragStart', copyDom);
     },
-    showConfigBar(item,index){
-      this.$emit('showConfigBar', item, index);
+    showConfigBar(e,item,index){
+      this.$emit('showConfigBar', e, item, index);
     },
     copyCpt(item){
       this.$emit('copyCpt', item);

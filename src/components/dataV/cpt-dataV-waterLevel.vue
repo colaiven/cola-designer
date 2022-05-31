@@ -7,7 +7,7 @@ import {getDataJson, pollingRefresh} from "@/utils/refreshCptData";
 export default {
   name: "cpt-dataV-waterLevel",
   title: "水位图",
-  icon: 'el-icon-goblet-square-full',
+  icon: 'water-level',
   initWidth: 120,
   initHeight: 100,
   group: 'chart',

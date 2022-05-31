@@ -7,7 +7,7 @@
 export default {
   name: "cpt-dataV-decoration",
   title: "炫酷装饰",
-  icon: 'el-icon-magic-stick',
+  icon: 'decoration',
   initWidth: 256,
   initHeight: 191,
   group: 'basic',

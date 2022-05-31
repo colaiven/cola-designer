@@ -8,7 +8,7 @@ import {getDataJson, pollingRefresh} from "@/utils/refreshCptData";
 export default {
   name: "cpt-chart-tdColumn",
   title: "立体柱图",
-  icon: 'el-icon-s-data',
+  icon: 'td-column',
   group: 'chart',
   props:{
     width:Number,

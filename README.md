@@ -29,9 +29,8 @@ Cola-Designer 是一个 基于VUE，实现拖拽 + 配置方式生成数据大�
 
 注意事项：项目默认使用接口模式，完整功能需要连接后端程序，若只想体验设计器部分可将env.js中active改为preview（本地缓存模式），然后访问http://localhost:8009/#/design  ，本地缓存模式暂时不能使用图片上传
 
-PS:由于种种原因，本人将不再提交开源版本新功能代码，有兴趣加入协同开发贡献代码的大佬可以滴滴我，定制化需求请联系：    
-<img src="src/assets/readme/QQ.jpg"  width="240px" />
-
+PS:由于种种原因，本人将不再提交开源版本新功能代码，有兴趣加入协同开发贡献代码的大佬可以滴滴我，QQ群：    
+<img src="src/assets/readme/82b643cfe31b4fa93844df3b8fe5e5c.jpg"  width="240px" />
 
 
 --- 劳烦路过的大佬点个star吧 ---

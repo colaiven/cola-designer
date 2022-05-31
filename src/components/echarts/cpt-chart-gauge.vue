@@ -8,7 +8,7 @@ import {getDataJson, pollingRefresh} from "@/utils/refreshCptData";
 export default {
   name: "cpt-chart-gauge",
   title: "仪表盘",
-  icon: 'el-icon-stopwatch',
+  icon: 'gauge',
   initWidth: 300,
   initHeight: 200,
   group: 'chart',

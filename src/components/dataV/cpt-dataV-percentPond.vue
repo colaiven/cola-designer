@@ -8,7 +8,7 @@ import {getDataJson, pollingRefresh} from "@/utils/refreshCptData";
 export default {
   name: "cpt-dataV-percentPond",
   title: "进度池",
-  icon: 'el-icon-film',
+  icon: 'percent-pond',
   initWidth: 300,
   initHeight: 100,
   group: 'basic',

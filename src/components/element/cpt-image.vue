@@ -12,7 +12,7 @@ import {fileUrl} from "/env";
 export default {
   name: "cpt-image",
   title: '图片',
-  icon: 'el-icon-picture-outline',
+  icon: 'image',
   group:'basic',
   props: {option: Object},
   data() {

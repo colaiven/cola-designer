@@ -8,7 +8,7 @@ import {getDataJson, pollingRefresh} from "@/utils/refreshCptData";
 export default {
   name: "cpt-chart-mapGc",
   title: "渐变地图",
-  icon: 'el-icon-map-location',
+  icon: 'map-gc',
   group: 'map',
   props:{
     width:Number,

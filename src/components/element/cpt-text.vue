@@ -13,7 +13,7 @@ import {getDataJson, pollingRefresh} from "@/utils/refreshCptData";
 export default {
   name: "cpt-text",
   title: '文字框',
-  icon: 'el-icon-chat-line-square',
+  icon: 'text',
   initWidth: 150,
   initHeight: 40,
   group:'basic',

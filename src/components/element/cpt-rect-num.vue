@@ -21,7 +21,7 @@ import {getDataJson, pollingRefresh} from "@/utils/refreshCptData";
 export default {
   name: "cpt-rect-num",
   title: '数值框',
-  icon: 'el-icon-chat-line-square',
+  icon: 'rect-num',
   initWidth: 350,
   initHeight: 100,
   group:'basic',

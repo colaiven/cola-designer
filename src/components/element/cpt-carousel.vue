@@ -11,8 +11,8 @@
 <script>
 export default {
   name: "cpt-carousel",
-  title: '走马灯',
-  icon: 'el-icon-money',
+  title: '轮播图',
+  icon: 'carousel',
   group:'basic',
   props:{
     height:{type:Number,default:168},

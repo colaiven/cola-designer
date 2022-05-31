@@ -11,7 +11,7 @@ let timeUpdatedStatus = {
 export default {
   name: "cpt-chart-clock",
   title: "时钟",
-  icon: 'el-icon-time',
+  icon: 'clock',
   initWidth: 256,
   initHeight: 191,
   group: 'chart',

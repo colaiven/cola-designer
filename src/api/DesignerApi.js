@@ -19,7 +19,7 @@ export function authViewCodeApi(params) {
 export function uploadFileApi(fileName, data) {
     return request({
         headers: {'Content-Type':'multipart/form-data'},
-        url: baseUrl+'/file/upload?dir=design&fileName='+fileName,
+        url: baseUrl+'/file/upload?dir=pre&fileName='+fileName,
         method: 'post',
         data: data
     })

@@ -24,12 +24,12 @@ import cpt_chart_gauge from '@/components/echarts/cpt-chart-gauge'
 //import cpt_threeJs_dom from '@/components/threeD/cpt-threeJs-dom'
 import cpt_num from '@/components/element/cpt-num'
 import cpt_rect_num from '@/components/element/cpt-rect-num'
-// import sg_icon_table from '@/components/element/sg-icon-table'
+import cpt_scroll_table from '@/components/element/cpt-scroll-table'
 
 let cptList = [
     cpt_dataV_border,cpt_text,cpt_carousel,cpt_button,cpt_image,
     cpt_chart_column,cpt_chart_tdColumn,cpt_chart_pie,cpt_chart_clock,cpt_dataV_scrollTable,
-    cpt_dataV_scrollList,cpt_chart_mapGc,cpt_chart_mapMigrate,
+    cpt_scroll_table,cpt_dataV_scrollList,cpt_chart_mapGc,cpt_chart_mapMigrate,
     cpt_dataV_waterLevel,cpt_dataV_decoration,cpt_chart_line,
     cpt_dataV_digitalFlop,cpt_dataV_percentPond,cpt_iframe,
     cpt_dataV_activeRing,cpt_chart_gauge,cpt_num,

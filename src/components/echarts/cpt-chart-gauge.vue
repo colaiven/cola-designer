@@ -19,7 +19,7 @@ export default {
   },
   watch:{
     'option.attribute':{
-      handler(obj,newObj) {
+      handler(newObj) {
         this.loadChart(newObj);
       },
       deep: true//深度监听

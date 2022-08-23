@@ -26,7 +26,7 @@
           </el-tab-pane>
           <el-tab-pane label="属性" name="custom">
             <div class="customForm" :style="{height:(height-140)+'px'}" v-if="currentCpt && currentCpt.option">
-              <comment :is="currentCpt.cptName + '-option'" :attribute="currentCpt.option.attribute"/>
+              <component :is="currentCpt.cptName + '-option'" :attribute="currentCpt.option.attribute"/>
             </div>
           </el-tab-pane>
           <!--      展示数据表单需在option.js初始化cptDataForm-->

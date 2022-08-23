@@ -1,5 +1,5 @@
 <template>
-  <comment :is="option.attribute.borderType" :style="{width:width+'px',height:height+'px'}"
+  <component :is="option.attribute.borderType" :style="{width:width+'px',height:height+'px'}"
            :color="[option.attribute.borderColor1, option.attribute.borderColor2]" :backgroundColor="option.attribute.backgroundColor"
            :title="option.attribute.borderTitle" :titleWidth="option.attribute.titleWidth"
            :dur="option.attribute.dur" :reverse="option.attribute.reverse"/>

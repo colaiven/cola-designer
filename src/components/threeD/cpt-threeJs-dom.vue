@@ -23,7 +23,7 @@ export default {
   },
   watch:{
     'option.attribute':{
-      handler(obj,newObj) {
+      handler(newObj) {
         this.reloadOption(newObj);
       },
       deep: true//深度监听

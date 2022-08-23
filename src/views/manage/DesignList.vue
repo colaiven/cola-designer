@@ -83,7 +83,7 @@ export default {
       }).catch(() => {});
     },
     toShare(item){
-      let text = window.location.host+'/#/view?id='+item.id
+      let text = window.location.host+'/view?id='+item.id
       this.$alert(text, '分享链接').catch(() => {});
     },
     onSearch(){

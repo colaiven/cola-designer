@@ -13,7 +13,7 @@
                   left:Math.round(item.cptX)+'px',
                   zIndex:item.cptZ}">
 
-          <comment :is="item.cptName" :width="Math.round(item.cptWidth)"
+          <component :is="item.cptName" :width="Math.round(item.cptWidth)"
                    :height="Math.round(item.cptHeight)" @reload="loadCacheData"
                    :option="item.option"/>
         </div>

@@ -60,7 +60,7 @@
             <!-- 2021-12-28新增iframe组件，防止焦点聚焦在iframe内部，添加此蒙版 -->
             <div v-resize="'move'" class="activeMask" :style="cacheChoices[item.keyId] ? {border:'1px solid #B6BFCE'}:{}"/>
             <div style="width: 100%;height: 100%;">
-              <comment :is="item.cptName" :ref="item.cptName+index" :width="Math.round(item.cptWidth)"
+              <component :is="item.cptName" :ref="item.cptName+index" :width="Math.round(item.cptWidth)"
                        :height="Math.round(item.cptHeight)" :option="item.option"/>
             </div>
             <div class="delTag">
@@ -196,6 +196,7 @@ export default {
         if (!fileJson.version || fileJson.version !== env.version){
           that.$message.error('导入失败，与当前版本不一致');
         }else{
+          fileJson.id = that.designData.id
           that.designData = fileJson;
           that.cacheComponents = fileJson.components;
           that.designData.components = [];

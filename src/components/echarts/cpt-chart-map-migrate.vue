@@ -6,10 +6,7 @@
 import cityPosition from '@/assets/map/cityPosition.json'
 import {getDataJson, pollingRefresh} from "@/utils/refreshCptData";
 export default {
-  name: "cpt-chart-mapMigrate",
-  title: "迁徙地图",
-  icon: 'map-migrate',
-  group: 'map',
+  name: "cpt-chart-map-migrate",
   props:{
     width:Number,
     height:Number,

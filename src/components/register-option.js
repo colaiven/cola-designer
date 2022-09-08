@@ -11,18 +11,18 @@ import cpt_chart_clock_option from '@/components/echarts/options/cpt-chart-clock
 import cpt_dataV_border_option from '@/components/dataV/options/cpt-dataV-border-option'
 import cpt_dataV_scrollTable_option from '@/components/dataV/options/cpt-dataV-scrollTable-option'
 import cpt_dataV_scrollList_option from '@/components/dataV/options/cpt-dataV-scrollList-option'
-import cpt_chart_mapGc_option from '@/components/echarts/options/cpt-chart-mapGc-option'
-import cpt_chart_mapMigrate_option from '@/components/echarts/options/cpt-chart-mapMigrate-option'
+import cpt_chart_mapGc_option from '@/components/echarts/options/cpt-chart-map-gc-option'
+import cpt_chart_mapMigrate_option from '@/components/echarts/options/cpt-chart-map-migrate-option'
 import cpt_dataV_waterLevel_option from '@/components/dataV/options/cpt-dataV-waterLevel-option'
 import cpt_dataV_decoration_option from '@/components/dataV/options/cpt-dataV-decoration-option'
 import cpt_chart_line_option from '@/components/echarts/options/cpt-chart-line-option'
 import cpt_dataV_digitalFlop_option from '@/components/dataV/options/cpt-dataV-digitalFlop-option'
 import cpt_dataV_percentPond_option from '@/components/dataV/options/cpt-dataV-percentPond-option'
 import cpt_iframe_option from '@/components/element/options/cpt-iframe-option'
-import cpt_chart_tdColumn_option from '@/components/echarts/options/cpt-chart-tdColumn-option'
+import cpt_chart_tdColumn_option from '@/components/echarts/options/cpt-chart-td-column-option'
 import cpt_dataV_activeRing_option from '@/components/dataV/options/cpt-dataV-activeRing-option'
 import cpt_chart_gauge_option from '@/components/echarts/options/cpt-chart-gauge-option'
-import cpt_threeJs_dom_option from '@/components/threeD/options/cpt-threeJs-dom-option'
+import cpt_threeJs_dom_option from '@/components/three/options/cpt-threeJs-dom-option'
 import cpt_num_option from '@/components/element/options/cpt-num-option'
 import cpt_rect_num_option from '@/components/element/options/cpt-rect-num-option'
 import cpt_scroll_table_option from '@/components/element/options/cpt-scroll-table-option'
@@ -38,8 +38,6 @@ let cptOptionsList = [
     cpt_num_option,cpt_rect_num_option,cpt_scroll_table_option
 ]
 
-export function registerOption(){
-    cptOptionsList.forEach(ele => {
-        Vue.component(ele.name, ele);
-    })
-}
+cptOptionsList.forEach(ele => {
+    Vue.component(ele.name, ele);
+})

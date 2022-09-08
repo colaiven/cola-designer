@@ -5,9 +5,6 @@
 <script>
 export default {
   name: "cpt-iframe",
-  title: 'iframe',
-  icon: 'iframe',
-  group:'basic',
   props: {
     option: Object
   },

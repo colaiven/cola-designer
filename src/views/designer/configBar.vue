@@ -25,8 +25,8 @@
             </div>
           </el-tab-pane>
           <el-tab-pane label="属性" name="custom">
-            <div class="customForm" :style="{height:(height-140)+'px'}" v-if="currentCpt && currentCpt.option">
-              <component :is="currentCpt.cptName + '-option'" :attribute="currentCpt.option.attribute"/>
+            <div class="customForm" :style="{height:(height-140)+'px'}" v-if="currentCpt && currentCpt.cptOption">
+              <component :is="currentCpt.cptOptionKey?currentCpt.cptOptionKey: + currentCpt.cptKey+'-option'" :attribute="currentCpt.cptOption.attribute"/>
             </div>
           </el-tab-pane>
           <!--      展示数据表单需在option.js初始化cptDataForm-->
@@ -34,26 +34,26 @@
             <div class="customForm" :style="{height:(height-140)+'px'}">
               <el-form size="mini" label-position="top">
                 <el-form-item label="数据类型">
-                  <el-radio-group v-model="currentCpt.option.cptDataForm.dataSource" @change="changeDataSource">
+                  <el-radio-group v-model="currentCpt.cptOption.cptDataForm.dataSource" @change="changeDataSource">
                     <el-radio :label="1">静态数据</el-radio>
                     <el-radio :label="2">接口</el-radio>
                     <el-radio :label="3">sql</el-radio>
                   </el-radio-group>
                 </el-form-item>
-                <el-form-item label="轮询" v-show="currentCpt.option.cptDataForm.dataSource !== 1">
+                <el-form-item label="轮询" v-show="currentCpt.cptOption.cptDataForm.dataSource !== 1">
                   <el-switch v-model="dataPollEnable" active-text="开启" inactive-text="关闭"/>
                 </el-form-item>
                 <el-form-item label="轮询时间(s)" v-show="dataPollEnable">
-                  <el-input-number v-model="currentCpt.option.cptDataForm.pollTime" :min="0" :max="100" label="描述文字"/>
+                  <el-input-number v-model="currentCpt.cptOption.cptDataForm.pollTime" :min="0" :max="100" label="描述文字"/>
                 </el-form-item>
-                <el-form-item :label="dataLabels[currentCpt.option.cptDataForm.dataSource - 1]">
+                <el-form-item :label="dataLabels[currentCpt.cptOption.cptDataForm.dataSource - 1]">
                   <vue-json-editor
-                      v-show="currentCpt.option.cptDataForm.dataSource === 1"
+                      v-show="currentCpt.cptOption.cptDataForm.dataSource === 1"
                       v-model="dataJson" :show-btns="false" :expandedOnStart="true" :mode="'code'"/>
-                  <el-input v-show="currentCpt.option.cptDataForm.dataSource === 2"
-                      type="textarea" :rows="5" v-model="currentCpt.option.cptDataForm.apiUrl"/>
-                  <codemirror class="code" v-show="currentCpt.option.cptDataForm.dataSource === 3"
-                      v-model="currentCpt.option.cptDataForm.sql" :options="cmOptions"/>
+                  <el-input v-show="currentCpt.cptOption.cptDataForm.dataSource === 2"
+                      type="textarea" :rows="5" v-model="currentCpt.cptOption.cptDataForm.apiUrl"/>
+                  <codemirror class="code" v-show="currentCpt.cptOption.cptDataForm.dataSource === 3"
+                      v-model="currentCpt.cptOption.cptDataForm.sql" :options="cmOptions"/>
                 </el-form-item>
                 <el-form-item>
                   <el-button type="primary" style="width: 100%" @click="refreshCptData">刷新数据</el-button>
@@ -129,10 +129,10 @@ export default {
   watch: {
     currentCpt(newVal) {
       this.cptDataFormShow = false;
-      if (!newVal || !newVal.option) {
+      if (!newVal || !newVal.cptOption) {
         this.configBarShow = false;//清空时
       } else {
-        if (this.currentCpt.option.cptDataForm) {
+        if (this.currentCpt.cptOption.cptDataForm) {
           this.cptDataFormShow = true;
         } else {
           this.configTab = 'basic'; //解決上一組件沒有数据表单导致tab栏未选中bug
@@ -144,16 +144,16 @@ export default {
     dataPollEnable: {
       get() {
         return !!(
-          this.currentCpt.option.cptDataForm &&
-          this.currentCpt.option.cptDataForm.pollTime &&
-          this.currentCpt.option.cptDataForm.pollTime !== 0
+          this.currentCpt.cptOption.cptDataForm &&
+          this.currentCpt.cptOption.cptDataForm.pollTime &&
+          this.currentCpt.cptOption.cptDataForm.pollTime !== 0
         );
       },
       set(newValue) {
         if (newValue) {
-          this.currentCpt.option.cptDataForm.pollTime = 8;
+          this.currentCpt.cptOption.cptDataForm.pollTime = 8;
         } else {
-          this.currentCpt.option.cptDataForm.pollTime = 0;
+          this.currentCpt.cptOption.cptDataForm.pollTime = 0;
           this.refreshCptData(); //清除定时器
         }
         return newValue;
@@ -161,14 +161,14 @@ export default {
     },
     dataJson: {
       get() {
-        if (isJSON(this.currentCpt.option.cptDataForm.dataText)) {
-          return JSON.parse(this.currentCpt.option.cptDataForm.dataText);
+        if (isJSON(this.currentCpt.cptOption.cptDataForm.dataText)) {
+          return JSON.parse(this.currentCpt.cptOption.cptDataForm.dataText);
         } else {
           return {};
         }
       },
       set(newValue) {
-        this.currentCpt.option.cptDataForm.dataText = JSON.stringify(newValue);
+        this.currentCpt.cptOption.cptDataForm.dataText = JSON.stringify(newValue);
       },
     },
   },
@@ -214,7 +214,7 @@ export default {
     changeDataSource(val) {
       //静态数据不显示轮询按钮
       if (val === 1) {
-        this.currentCpt.option.cptDataForm.pollTime = 0;
+        this.currentCpt.cptOption.cptDataForm.pollTime = 0;
       }
     },
     // 刷新数据，调用父组件(index)中refreshCptData方法

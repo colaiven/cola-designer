@@ -34,9 +34,6 @@ import {getDataJson, pollingRefresh} from "@/utils/refreshCptData";
 import {fileUrl} from '/env'
 export default {
   name: "cpt-scroll-table",
-  title: '滚动表格2',
-  icon: 'scroll-table',
-  group:'chart',
   props: {
     option: Object,
     width: Number,

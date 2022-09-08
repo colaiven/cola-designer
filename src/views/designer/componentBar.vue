@@ -9,7 +9,7 @@
       </el-col>
     </el-row>
     <div style="height: 45px;"></div>
-    <div v-show="currentTab === 0" v-for="group in cptGroupKeys" :key="group.key">
+    <div v-show="currentTab === 0" v-for="group in options" :key="group.name">
       <div style="line-height: 45px;cursor: pointer;box-shadow: 0 1px 2px #2B3340;" @click="group.opened = !group.opened">
         <div style="display: inline-block;text-indent: 1em;width: 170px;">{{group.name}}</div>
         <div style="display: inline-block;">
@@ -17,14 +17,14 @@
         </div>
       </div>
       <el-row :gutter="2" v-show="group.opened">
-        <el-col :span="12" v-for="(item,index) in cptGroups[group.key]" :key="item.title+'c'+index">
+        <el-col :span="12" v-for="(item,index) in group.children" :key="item.name+index">
           <div draggable="true" :config="JSON.stringify(item)" @dragstart="dragStart"
                style="background-color: #3F4B5F;height: 70px;text-align: center;margin-top: 2px;">
             <div style="line-height: 40px;">
               <embed v-if="item.icon" style="width: 20px;" :src="require('@/assets/icon/'+item.icon+'.svg')" type="image/svg+xml" />
               <i v-else style="font-size: 20px;" class="el-icon-question"></i>
             </div>
-            <div style="font-size: 13px">{{ item.title }}</div>
+            <div style="font-size: 13px">{{ item.name }}</div>
           </div>
         </el-col>
       </el-row>
@@ -47,14 +47,13 @@
 </template>
 
 <script>
-import cptGroups from '@/components/registerCpt'
-import cptOptions from "@/components/options"//重复引入待优化
+import options from '@/components/options'
 
 export default {
   name: "componentBar",
   data() {
     return {
-      cptGroups,cptOptions,
+      options,
       cptGroupKeys:[],
       currentTab:0//0组件，1图层
     }
@@ -62,16 +61,6 @@ export default {
   props:{
     selectedComponents:Array,
     currentCptIndex:Number
-  },
-  created() {
-    for (let key in cptGroups) {
-      this.cptGroupKeys.push({
-        key:key,
-        name:cptOptions[key].name,
-        icon:cptOptions[key].icon,
-        opened:cptOptions[key].opened
-      })
-    }
   },
   methods: {
     dragStart(e) {

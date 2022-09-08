@@ -13,11 +13,6 @@ import {getDataJson, pollingRefresh} from "@/utils/refreshCptData";
 
 export default {
   name: "cpt-num",
-  title: '数值文本',
-  icon: 'num',
-  initWidth: 200,
-  initHeight: 80,
-  group:'basic',
   props: {
     option: Object
   },

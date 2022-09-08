@@ -11,9 +11,6 @@ import {fileUrl} from "/env";
 
 export default {
   name: "cpt-image",
-  title: '图片',
-  icon: 'image',
-  group:'basic',
   props: {option: Object},
   data() {
     return {

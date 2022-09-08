@@ -84,7 +84,7 @@
 
 <script>
 export default {
-  name: "cpt-chart-tdColumn-option",
+  name: "cpt-chart-td-column-option",
   props: {
     attribute: Object
   },

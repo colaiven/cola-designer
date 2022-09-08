@@ -50,18 +50,18 @@
         <div class="webContainer" :style="{width:designData.scaleX+'px',height: designData.scaleY+'px', backgroundColor: designData.bgColor,
              backgroundImage: designData.bgImg ? 'url('+fileUrl+designData.bgImg+')':'none',transform: 'scale('+containerScale+')' }"
              @dragover="allowDrop" @drop="drop" ref="webContainer"  @click.self="outBlur">
-          <div v-for="(item,index) in cacheComponents" :key="item.keyId"
+          <div v-for="(item,index) in cacheComponents" :key="item.id"
                class="cptDiv" :style="{width:Math.round(item.cptWidth)+'px', height:Math.round(item.cptHeight)+'px',
                   top:Math.round(item.cptY)+'px',left:Math.round(item.cptX)+'px',
-                  zIndex: currentCptIndex === index ? 1800 : item.cptZ}" :ref="'div'+item.cptName+index"
+                  zIndex: currentCptIndex === index ? 1800 : item.cptZ}" :ref="'div'+item.cptKey+index"
                @mousedown="showConfigBar($event,item,index)" tabindex="0">
             <div v-show="currentCptIndex === index" style="position: fixed;border-top: 1px dashed #8A8A8A;width: 100%;left:0"/><!--顶部辅助线-->
             <div v-show="currentCptIndex === index" style="position: fixed;border-right: 1px dashed #8A8A8A;height:100%;top:0"/><!--左侧辅助线-->
             <!-- 2021-12-28新增iframe组件，防止焦点聚焦在iframe内部，添加此蒙版 -->
-            <div v-resize="'move'" class="activeMask" :style="cacheChoices[item.keyId] ? {border:'1px solid #B6BFCE'}:{}"/>
+            <div v-resize="'move'" class="activeMask" :style="cacheChoices[item.id] ? {border:'1px solid #B6BFCE'}:{}"/>
             <div style="width: 100%;height: 100%;">
-              <component :is="item.cptName" :ref="item.cptName+index" :width="Math.round(item.cptWidth)"
-                       :height="Math.round(item.cptHeight)" :option="item.option"/>
+              <component :is="item.cptKey" :ref="item.cptKey+index" :width="Math.round(item.cptWidth)"
+                       :height="Math.round(item.cptHeight)" :option="item.cptOption"/>
             </div>
             <div class="delTag">
               <i class="el-icon-copy-document" @click.stop="copyCpt(item)"/>
@@ -100,7 +100,6 @@
 <script>
 import ComponentBar from "@/views/designer/componentBar";
 import ConfigBar from "@/views/designer/configBar";
-import cptOptions from "@/components/options"
 import html2canvas from 'html2canvas';
 import {fileDownload, base64toFile} from '@/utils/FileUtil'
 import env from "/env";
@@ -126,7 +125,7 @@ export default {
       },
       cacheComponents:[],
       currentCptIndex: -1,
-      currentCpt: {option: undefined},
+      currentCpt: {cptOption: undefined},
       containerScale:1,
       cacheChoices:{},
       cacheChoicesFixed:{}//记录移动前选中组件的位置 自定义事件内部无法处理，放在了外面。
@@ -259,12 +258,12 @@ export default {
       let copyItem = JSON.parse(JSON.stringify(item))
       copyItem.cptX = item.cptX+30//复制的组件向右下偏移
       copyItem.cptY = item.cptY+30
-      copyItem.keyId = require('uuid').v1();
+      copyItem.id = require('uuid').v1();
       this.cacheComponents.push(copyItem);
       this.currentCptIndex = this.cacheComponents.length - 1//聚焦到复制的组件
     },
     refreshCptData(){
-      const refName = this.currentCpt.cptName + this.currentCptIndex;
+      const refName = this.currentCpt.cptKey + this.currentCptIndex;
       if(!this.$refs[refName][0].refreshCptData){
         this.$message.warning('当前图层还未实现refreshCptData方法')
       }else {
@@ -326,22 +325,22 @@ export default {
         //记录一个bug，v-for key值重复导致页面渲染数据错乱。在丢下组件时实用uuid作为key解决。
         this.currentCpt = {};
         this.cacheComponents.splice(index, 1);
-        const childId = this.$refs[cpt.cptName+index][0].uuid
+        const childId = this.$refs[cpt.cptKey+index][0].uuid
         clearCptInterval(childId);
       }).catch(() => {});
     },
     showConfigBar(e, item, index) {//刷新属性栏数据，页面上拖动的组件执行click事件来更新组件的属性栏
       this.currentCpt = item;
       this.currentCptIndex = index;
-      if(this.$refs['div'+item.cptName+index]){
-        this.$refs['div'+item.cptName+index][0].focus();//聚焦 用于多选移动
+      if(this.$refs['div'+item.cptKey+index]){
+        this.$refs['div'+item.cptKey+index][0].focus();//聚焦 用于多选移动
       }
       if(!e.ctrlKey){//未按住ctrl键
         this.cacheChoices = {}
       }
       this.$refs['configBar'].showCptConfig(item);
-      this.cacheChoices[item.keyId]=item
-      this.cacheChoicesFixed[item.keyId]=JSON.parse(JSON.stringify(item))
+      this.cacheChoices[item.id]=item
+      this.cacheChoicesFixed[item.id]=JSON.parse(JSON.stringify(item))
     },
     dragStart(copyDom) {//从组件栏拿起组件
       this.copyDom = copyDom;
@@ -350,29 +349,26 @@ export default {
     allowDrop(e) {e.preventDefault()},
     drop(e) {//从组件栏丢下组件
       let config = JSON.parse(this.copyDom.getAttribute('config'));
+      if(config.option.cptDataForm){//2022-01-24：将静态数据、api、sql用三个字段存储，配置项未填写apiUrl字段和sql字段在此处赋默认值
+        if (!config.option.cptDataForm.apiUrl){
+          config.option.cptDataForm.apiUrl = '/design/test'
+        }
+        if(!config.option.cptDataForm.sql){
+          config.option.cptDataForm.sql = 'select username from sys_user limit 1'
+        }
+      }
       let cpt = {
-        groupTag: config.group, cptTitle:config.title, icon: config.icon,
-        cptName: config.name, cptZ: 100, option: undefined,
+        cptTitle:config.name,
+        icon: config.icon,
+        cptKey: config.cptKey,
+        cptOptionKey:config.cptOptionKey ? config.cptOptionKey : config.cptKey+'-option',
+        cptOption: config.option,
         cptX: Math.round(e.offsetX),
         cptY: Math.round(e.offsetY),
-        cptWidth: config.initWidth, cptHeight: config.initHeight,
-        keyId: require('uuid').v1()
-      }
-      const group = cptOptions[config.group];
-      if (group && group.options[config.name + '-option']) {
-        const option = group.options[config.name + '-option']
-        if(option.cptDataForm){//将静态数据、api、sql用三个字段存储，配置项未填写apiUrl字段和sql字段在此处赋默认值
-          if (!option.cptDataForm.apiUrl){
-            option.cptDataForm.apiUrl = '/design/test'
-          }
-          if(!option.cptDataForm.sql){
-            option.cptDataForm.sql = 'select username from sys_user limit 1'
-          }
-        }
-        cpt.option = JSON.parse(JSON.stringify(option))
-      }else {
-        this.$message.error("未再options.js中查找到"+config.group+"."+config.name+"-option的自定义属性")
-        return;
+        cptZ: 100,
+        cptWidth: config.width ? config.width:400,
+        cptHeight: config.height ? config.height : 300,
+        id: require('uuid').v1(),
       }
       this.cacheComponents.push(cpt);
       this.cacheChoices = {}//多选清空

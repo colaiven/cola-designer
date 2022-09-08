@@ -11,9 +11,6 @@
 <script>
 export default {
   name: "cpt-carousel",
-  title: '轮播图',
-  icon: 'carousel',
-  group:'basic',
   props:{
     height:{type:Number,default:168},
     option:Object

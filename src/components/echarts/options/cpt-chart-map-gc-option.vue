@@ -77,7 +77,7 @@
 
 <script>
 export default {
-  name: "cpt-chart-mapGc-option",
+  name: "cpt-chart-map-gc-option",
   props: {attribute: Object},
 }
 </script>

@@ -6,11 +6,6 @@
 <script>
 export default {
   name: "cpt-dataV-decoration",
-  title: "炫酷装饰",
-  icon: 'decoration',
-  initWidth: 256,
-  initHeight: 191,
-  group: 'basic',
   props:{
     width:Number,
     height:Number,

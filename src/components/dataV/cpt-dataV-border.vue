@@ -9,9 +9,6 @@
 <script>
 export default {
   name: "cpt-dataV-border",
-  title: "边框",
-  icon: 'border',
-  group: 'basic',
   props:{
     width:Number,
     height:Number,

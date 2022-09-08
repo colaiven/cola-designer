@@ -39,7 +39,7 @@
 
 <script>
 export default {
-  name: "cpt-chart-mapMigrate-option",
+  name: "cpt-chart-map-migrate-option",
   props: {attribute: Object},
 }
 </script>

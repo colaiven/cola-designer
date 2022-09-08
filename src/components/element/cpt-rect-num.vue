@@ -20,11 +20,6 @@ import {getDataJson, pollingRefresh} from "@/utils/refreshCptData";
 
 export default {
   name: "cpt-rect-num",
-  title: '数值框',
-  icon: 'rect-num',
-  initWidth: 350,
-  initHeight: 100,
-  group:'basic',
   props: {
     option: Object,
     height:Number

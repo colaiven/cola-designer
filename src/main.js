@@ -6,7 +6,8 @@ import * as echarts from 'echarts';
 import router from './router';
 import dataV from '@jiaminghi/data-view';
 import '@/permission'; // permission control
-import { registerOption } from '@/components/registerOption';
+import '@/components/register-option'
+import '@/components/register-cpt'
 import '@/assets/font/custom-font.css';
 import '@/utils/RegisterMap';
 
@@ -14,7 +15,6 @@ Vue.prototype.$echarts = echarts;
 Vue.config.productionTip = false;
 Vue.use(ElementUI);
 Vue.use(dataV);
-registerOption();
 
 new Vue({
     router,

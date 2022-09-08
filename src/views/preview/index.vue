@@ -5,7 +5,7 @@
     <div style="position:relative;transform-origin:0 0;"
          :style="{width:windowWidth+'px',height:conHeight+'px',transform: 'scale('+containerScale+')'}">
       <transition-group appear name="bounce">
-        <div v-for="(item) in designCache.components" :key="item.keyId"
+        <div v-for="item in designCache.components" :key="item.id"
              style="position: absolute;"
              :style="{width:Math.round(item.cptWidth)+'px',
                   height:Math.round(item.cptHeight)+'px',
@@ -13,9 +13,9 @@
                   left:Math.round(item.cptX)+'px',
                   zIndex:item.cptZ}">
 
-          <component :is="item.cptName" :width="Math.round(item.cptWidth)"
+          <component :is="item.cptKey" :width="Math.round(item.cptWidth)"
                    :height="Math.round(item.cptHeight)" @reload="loadCacheData"
-                   :option="item.option"/>
+                   :option="item.cptOption"/>
         </div>
       </transition-group>
     </div>

@@ -11,11 +11,6 @@
 <script>
 export default {
   name: "cpt-input",
-  title: '输入框',
-  icon: 'el-icon-edit-outline',
-  initWidth: 200,
-  initHeight: 50,
-  group:'basic',
   props: {
     option: Object
   },

@@ -13,11 +13,6 @@ import {getDataJson, pollingRefresh} from "@/utils/refreshCptData";
 
 export default {
   name: "cpt-button",
-  title: "按钮",
-  icon: 'button',
-  initWidth: 150,
-  initHeight: 50,
-  group:'basic',
   props:{option:Object},
   data() {
     return {

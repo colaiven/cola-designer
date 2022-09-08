@@ -7,9 +7,6 @@ import {getDataJson, pollingRefresh} from "@/utils/refreshCptData";
 
 export default {
   name: "cpt-dataV-activeRing",
-  title: "动态环图",
-  icon: 'active-ring',
-  group: 'chart',
   props:{
     width:Number,
     height:Number,

@@ -7,9 +7,6 @@ import {getDataJson, pollingRefresh} from "@/utils/refreshCptData";
 
 export default {
   name: "cpt-dataV-scrollList",
-  title: "滚动列表",
-  icon: 'scroll-list',
-  group: 'chart',
   props:{
     width:Number,
     height:Number,

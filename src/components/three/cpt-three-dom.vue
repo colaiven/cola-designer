@@ -10,12 +10,7 @@ import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader.js';
 import { RoomEnvironment } from 'three/examples/jsm/environments/RoomEnvironment.js';
 
 export default {
-  name: "cpt-threeJs-dom",
-  title: "模型",
-  icon: 'el-icon-office-building',
-  initWidth: 400,
-  initHeight: 300,
-  group: 'threeD',
+  name: "cpt-three-dom",
   props:{
     width:Number,
     height:Number,

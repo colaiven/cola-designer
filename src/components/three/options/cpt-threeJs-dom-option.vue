@@ -20,7 +20,7 @@
 
 <script>
 export default {
-  name: "cpt-threeJs-dom-option",
+  name: "cpt-three-dom-option",
   props: {
     attribute: Object
   },

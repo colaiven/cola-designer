@@ -12,11 +12,6 @@ import {getDataJson, pollingRefresh} from "@/utils/refreshCptData";
 
 export default {
   name: "cpt-text",
-  title: '文字框',
-  icon: 'text',
-  initWidth: 150,
-  initHeight: 40,
-  group:'basic',
   props: {
     option: Object
   },

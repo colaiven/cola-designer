@@ -2,6 +2,14 @@
 Cola-Designer 是一个 基于VUE，实现拖拽 + 配置方式生成数据大屏，为简化开发、提高效率而生。
 ![](src/assets/logo.svg)
 
+AD：现已推出商业版，在线体验链接：http://cola.icelery.fun/
+
+用户名：demo
+
+密码：123456
+
+#
+
 在线体验地址：<a href="http://colaiven.gitee.io/cola-designer/#/design" target="_blank">cola-designer/#/design</a>   
 （没钱买服务器暂时只能体验前端，联合后端可自行拉取代码运行体验）   
 

@@ -36,7 +36,7 @@
       </el-col>
     </el-row>
     <div :style="{height: (windowHeight-45)+'px',background: 'url('+require('@/assets/port.png')+') repeat'}" @click.self="outBlur">
-      <div style="float: left;height: 100%;overflow: hidden;" :style="{width:cptBarWidth+'px'}">
+      <div style="float: left;height: 100%;overflow: auto;" :style="{width:cptBarWidth+'px'}">
         <component-bar @dragStart="dragStart" :selectedComponents="cacheComponents" :currentCptIndex="currentCptIndex"
                        @showConfigBar="showConfigBar" @copyCpt="copyCpt" @delCpt="delCpt"/><!--左侧组件栏-->
       </div>

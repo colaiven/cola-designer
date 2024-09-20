@@ -197,7 +197,7 @@ const cptOptions = [
                     },
                     attribute:{
                         showIndex: false,theadHeight:80,theadBg:['#00478F', '#0061C2'],theadColor:'#ff8c71',
-                        theadSize: 14,tbodyColor:'#ddd',tbodySize:13,oddRowBg:'#7192ff',evenRowBg:'#436eff',showLine:4,
+                        theadSize: 14,tbodyColor:'#ddd',tbodySize:13,oddRowBg:'#7192ff',evenRowBg:'#436eff',showLine:3,
                         columns:[
                             {colKey: 'name', title: '姓名',type:'text',width:0},
                             {colKey: 'age', title: '年龄',type:'text',width:0},

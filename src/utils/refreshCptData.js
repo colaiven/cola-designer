@@ -19,7 +19,9 @@ export async function getDataJson(cptDataForm){
     }else if(cptDataForm.dataSource === 3){
         iptStr = cptDataForm.sql
         if (iptStr){
-            await executeSelectApi({sql:iptStr}).then(res => {
+            let staticData = JSON.parse(cptDataForm.dataText);
+            const isArray = Array.isArray(staticData);
+            await executeSelectApi({sql:iptStr, isArray}).then(res => {
                 resStr = res.data;
             })
         }else{

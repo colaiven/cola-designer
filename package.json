@@ -3,12 +3,13 @@
     "version": "0.1.0",
     "private": true,
     "scripts": {
+        "dev": "vue-cli-service serve",
         "serve": "vue-cli-service serve",
         "build": "vue-cli-service build"
     },
     "dependencies": {
         "@jiaminghi/data-view": "^2.10.0",
-        "axios": "^0.21.4",
+        "axios": "1.6.0",
         "core-js": "^3.6.5",
         "echarts": "^5.0.1",
         "element-ui": "^2.15.0",
@@ -16,19 +17,14 @@
         "js-base64": "^3.7.2",
         "three": "^0.136.0",
         "uuid": "^8.3.2",
-        "vue": "^2.6.11",
+        "vue": "^2.7.16",
         "vue-codemirror": "^4.0.6",
         "vue-json-editor": "^1.4.3",
         "vue-router": "^3.5.2"
     },
     "devDependencies": {
-        "@vue/cli-plugin-babel": "~4.5.0",
-        "@vue/cli-service": "~4.5.0",
-        "vue-template-compiler": "^2.6.11"
-    },
-    "browserslist": [
-        "> 1%",
-        "last 2 versions",
-        "not dead"
-    ]
+        "@vue/cli-plugin-babel": "~5.0.0",
+        "@vue/cli-plugin-router": "~5.0.0",
+        "@vue/cli-service": "~5.0.0"
+    }
 }

@@ -33,15 +33,16 @@
       <div v-show="selectedComponents.length === 0" style="text-align: center;line-height: 50px;">
         无图层
       </div>
-      <el-row v-for="(item,index) in selectedComponents" :key="item.keyId" class="selectedItem"
-              :style="{background: currentCptIndex === index ? '#3F4B5F':'#353f50'}">
-        <el-col :span="4" style="text-align: center"><i :class="item.icon"/></el-col>
-        <el-col :span="15" @click.native="showConfigBar($event,item,index)">{{item.cptTitle}}</el-col>
-        <el-col :span="5" style="text-align: center">
+      <div v-for="(item,index) in selectedComponents" :key="item.keyId" class="selectedItem"
+              :style="{background: currentCptIndex === index ? '#3F4B5F':'#353f50'}"
+           :draggable="true" @dragstart="layerDragStart(index)" @dragover.prevent @drop="layerOnDrop(index)"
+           @mousedown="showConfigBar($event,item,index)">
+        {{item.cptTitle}}
+        <div style="position: absolute;height: 100%;right: 0;top:0">
           <i class="el-icon-copy-document" @click="copyCpt(item)"/>
           <i style="margin-left: 4px;" class="el-icon-delete" @click="delCpt(item,index)"/>
-        </el-col>
-      </el-row>
+        </div>
+      </div>
     </div>
   </el-row>
 </template>
@@ -55,7 +56,8 @@ export default {
     return {
       options,
       cptGroupKeys:[],
-      currentTab:0//0组件，1图层
+      currentTab:0,//0组件，1图层
+      draggedIndex:null
     }
   },
   props:{
@@ -75,7 +77,14 @@ export default {
     },
     delCpt(item,index){
       this.$emit('delCpt', item, index);
-    }
+    },
+    layerDragStart(index){
+      this.draggedIndex = index;
+    },
+    layerOnDrop(index){
+      this.$emit('layerOnDrop',this.draggedIndex, index);
+      this.draggedIndex = null;
+    },
   },
 }
 </script>
@@ -86,5 +95,5 @@ export default {
 .topTab{width:200px;height: 45px;text-align: center;line-height: 45px;cursor: pointer;
   position: fixed;z-index: 7;background: #353f50;box-shadow: 0 1px 3px #2b3340;}
 .focusTab{background: #3F4B5F}
-.selectedItem{line-height: 45px;cursor: pointer;box-shadow: 0 1px 3px #2b3340 inset;}
+.selectedItem{line-height: 45px;cursor: move;box-shadow: 0 1px 3px #2b3340 inset;display: flex;position: relative;padding-left: 10px}
 </style>

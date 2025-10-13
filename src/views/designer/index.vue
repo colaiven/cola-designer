@@ -16,9 +16,7 @@
         <el-button size="mini" @click="preview" style="margin: 10px 10px;
             background: #49586e;color: #fff;float: right">预览</el-button>
         <el-button size="mini" @click="submitDesign" style="margin: 10px 5px;background: #d5d9e2;float: right">保存</el-button>
-        <div style="float: right;margin: 1px 10px;" class="configBtn" @click="clearDesign">
-          <i style="font-size: 22px;" class="el-icon-delete"/>
-        </div>
+        <el-button size="mini" @click="clearDesign" type="text" style="margin: 10px 6px;float: right;color: #fff;font-size: 14px">清空</el-button>
         <div style="float: right;margin: 0 10px;">
           <el-dropdown @command="exportCommand">
             <span class="el-dropdown-link">
@@ -38,7 +36,7 @@
     <div :style="{height: (windowHeight-45)+'px',background: 'url('+require('@/assets/port.png')+') repeat'}" @click.self="outBlur">
       <div style="float: left;height: 100%;overflow: hidden;" :style="{width:cptBarWidth+'px'}">
         <component-bar @dragStart="dragStart" :selectedComponents="cacheComponents" :currentCptIndex="currentCptIndex"
-                       @showConfigBar="showConfigBar" @copyCpt="copyCpt" @delCpt="delCpt"/><!--左侧组件栏-->
+                       @showConfigBar="showConfigBar" @copyCpt="copyCpt" @delCpt="delCpt" @layerOnDrop="layerOnDrop"/><!--左侧组件栏-->
       </div>
       <div style="float: left;position: relative;overflow: auto;height: 100%" :style="{width:(windowWidth-cptBarWidth-configBarWidth)+'px'}" @click.self="outBlur">
         <div style="height: 10px;margin-left: 10px" :style="{width:1920*containerScale+'px'}">
@@ -53,7 +51,7 @@
           <div v-for="(item,index) in cacheComponents" :key="item.id"
                class="cptDiv" :style="{width:Math.round(item.cptWidth)+'px', height:Math.round(item.cptHeight)+'px',
                   top:Math.round(item.cptY)+'px',left:Math.round(item.cptX)+'px',
-                  zIndex: currentCptIndex === index ? 1800 : item.cptZ}" :ref="'div'+item.cptKey+index"
+                  zIndex: currentCptIndex === index ? 1800 : cacheComponents.length - index}" :ref="'div'+item.cptKey+index"
                @mousedown="showConfigBar($event,item,index)" tabindex="0">
             <div v-show="currentCptIndex === index" style="position: fixed;border-top: 1px dashed #8A8A8A;width: 100%;left:0"/><!--顶部辅助线-->
             <div v-show="currentCptIndex === index" style="position: fixed;border-right: 1px dashed #8A8A8A;height:100%;top:0"/><!--左侧辅助线-->
@@ -259,8 +257,15 @@ export default {
       copyItem.cptX = item.cptX+30//复制的组件向右下偏移
       copyItem.cptY = item.cptY+30
       copyItem.id = require('uuid').v1();
-      this.cacheComponents.push(copyItem);
-      this.currentCptIndex = this.cacheComponents.length - 1//聚焦到复制的组件
+      this.cacheComponents.unshift(copyItem);
+      this.currentCptIndex = 0//聚焦到复制的组件
+    },
+    layerOnDrop(draggedIndex, endIndex){
+      const draggedItem = this.cacheComponents[draggedIndex];
+      this.cacheComponents.splice(draggedIndex, 1);
+      this.cacheComponents.splice(endIndex, 0, draggedItem);
+      this.currentCptIndex = endIndex;
+      this.currentCpt = draggedItem
     },
     refreshCptData(){
       const refName = this.currentCpt.cptKey + this.currentCptIndex;
@@ -365,14 +370,13 @@ export default {
         cptOption: config.option,
         cptX: Math.round(e.offsetX),
         cptY: Math.round(e.offsetY),
-        cptZ: 100,
         cptWidth: config.width ? config.width:400,
         cptHeight: config.height ? config.height : 300,
         id: require('uuid').v1(),
       }
-      this.cacheComponents.push(cpt);
+      this.cacheComponents.unshift(cpt);
       this.cacheChoices = {}//多选清空
-      this.showConfigBar({}, cpt, this.cacheComponents.length - 1)//丢下组件后刷新组件属性栏
+      this.showConfigBar({}, cpt, 0)//丢下组件后刷新组件属性栏
       this.$refs['configBar'].showCptConfig();
     },
   },

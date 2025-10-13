@@ -5,13 +5,13 @@
     <div style="position:relative;transform-origin:0 0;"
          :style="{width:windowWidth+'px',height:conHeight+'px',transform: 'scale('+containerScale+')'}">
       <transition-group appear name="bounce">
-        <div v-for="item in designCache.components" :key="item.id"
+        <div v-for="(item,index) in designCache.components" :key="item.id"
              style="position: absolute;"
              :style="{width:Math.round(item.cptWidth)+'px',
                   height:Math.round(item.cptHeight)+'px',
                   top:Math.round(item.cptY)+'px',
                   left:Math.round(item.cptX)+'px',
-                  zIndex:item.cptZ}">
+                  zIndex:designCache.components.length - index}">
 
           <component :is="item.cptKey" :width="Math.round(item.cptWidth)"
                    :height="Math.round(item.cptHeight)" @reload="loadCacheData"
@@ -117,7 +117,7 @@ export default {
 
 <style scoped>
 .bounce-enter-active{
-  transition: all 1s;
+  transition: all .6s;
   /*animation: bounce-in 1s;*/
 }
 .bounce-enter{

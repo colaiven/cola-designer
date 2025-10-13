@@ -6,23 +6,20 @@
         </el-row>
         <el-tabs v-show="configBarShow" v-model="configTab" :stretch="true">
           <el-tab-pane label="坐标" name="basic">
-            <div style="width: 200px; margin: 0 auto">
-              <el-row style="padding: 10px 6px 0 6px">
-                宽度：<el-input-number :min="20" :max="2000" v-model="currentCpt.cptWidth" size="small" />
-              </el-row>
-              <el-row style="padding: 10px 6px 0 6px">
-                高度：<el-input-number :min="20" :max="1500" v-model="currentCpt.cptHeight" size="small"/>
-              </el-row>
-              <el-row style="padding: 10px 6px 0 6px">
-                X 轴：<el-input-number :min="-500" :max="2500" v-model="currentCpt.cptX" size="small"/>
-              </el-row>
-              <el-row style="padding: 10px 6px 0 6px">
-                Y 轴：<el-input-number :min="-500" v-model="currentCpt.cptY" size="small"/>
-              </el-row>
-              <el-row style="padding: 10px 6px 0 6px">
-                Z 轴：<el-input-number :min="1" :max="1800" v-model="currentCpt.cptZ" size="small"/>
-              </el-row>
-            </div>
+            <el-form label-width="90px">
+              <el-form-item label="宽度：">
+                <el-input-number :min="20" :max="2000" v-model="currentCpt.cptWidth" size="small" style="width: 90%"/>
+              </el-form-item>
+              <el-form-item label="高度：">
+                <el-input-number :min="20" :max="1500" v-model="currentCpt.cptHeight" size="small" style="width: 90%"/>
+              </el-form-item>
+              <el-form-item label="X 轴：">
+                <el-input-number :min="-500" :max="2500" v-model="currentCpt.cptX" size="small" style="width: 90%"/>
+              </el-form-item>
+              <el-form-item label="Y 轴：">
+                <el-input-number :min="-500" v-model="currentCpt.cptY" size="small" style="width: 90%"/>
+              </el-form-item>
+            </el-form>
           </el-tab-pane>
           <el-tab-pane label="属性" name="custom">
             <div class="customForm" :style="{height:(height-140)+'px'}" v-if="currentCpt && currentCpt.cptOption">
